@@ -17,7 +17,7 @@ import type {
   PlacementStats,
   ReferralFee,
   ReferralStats,
-} from "./types"
+} from "./types";
 
 // Mock data
 const mockUser: User = {
@@ -25,7 +25,7 @@ const mockUser: User = {
   name: "Olivia Rhye",
   email: "olivia@untitledui.com",
   avatar: "/professional-woman-diverse.png",
-}
+};
 
 const mockFacility: Facility = {
   id: "1",
@@ -66,14 +66,23 @@ const mockFacility: Facility = {
     "Special dietary restrictions",
   ],
   careServices: ["Assisted Living", "Memory Care"],
-  availableTimes: ["12:00 PM", "11:00 AM", "10:00 AM", "09:00 AM", "11:00 AM", "10:00 AM", "09:00 AM", "11:00 AM"],
+  availableTimes: [
+    "12:00 PM",
+    "11:00 AM",
+    "10:00 AM",
+    "09:00 AM",
+    "11:00 AM",
+    "10:00 AM",
+    "09:00 AM",
+    "11:00 AM",
+  ],
   video: {
     title: "Villa Tour",
     description:
       "Set apart from the main community building, our villas offer spacious 2-bedroom, 2-bathroom layouts complete with an attached parking garage and private enclosed patio designed for comfort, convenience, and independence.",
     url: "/assisted-living-villa-tour-video-thumbnail.png",
   },
-}
+};
 
 const mockChartData: ChartData[] = [
   { month: "Jan", value: 100 },
@@ -88,7 +97,7 @@ const mockChartData: ChartData[] = [
   { month: "Oct", value: 200 },
   { month: "Nov", value: 180 },
   { month: "Dec", value: 220 },
-]
+];
 
 const mockBlogCategories: BlogCategory[] = [
   {
@@ -123,7 +132,7 @@ const mockBlogCategories: BlogCategory[] = [
     color: "#F59E0B",
     postCount: 3,
   },
-]
+];
 
 const mockBlogPost: BlogPost = {
   id: "1",
@@ -151,7 +160,7 @@ const mockBlogPost: BlogPost = {
   seoTitle: "How to Choose the Right Senior Care Facility - Complete Guide",
   seoDescription:
     "Comprehensive guide to selecting the perfect senior care facility. Learn about costs, services, and key factors to consider.",
-}
+};
 
 const mockPlacement: Placement = {
   id: "1",
@@ -183,7 +192,7 @@ const mockPlacement: Placement = {
   notes: "Customer was very satisfied with the facility tour and amenities.",
   createdDate: "2024-01-05",
   updatedDate: "2024-01-15",
-}
+};
 
 const mockTourBooking: TourBooking = {
   id: "1",
@@ -210,8 +219,9 @@ const mockTourBooking: TourBooking = {
   updatedDate: "2024-01-10",
   followUpRequired: true,
   rating: 5,
-  feedback: "Excellent facility with caring staff. Very impressed with the amenities.",
-}
+  feedback:
+    "Excellent facility with caring staff. Very impressed with the amenities.",
+};
 
 const mockReferralFee: ReferralFee = {
   id: "1",
@@ -243,15 +253,15 @@ const mockReferralFee: ReferralFee = {
   notes: "Successful referral with quick placement",
   createdDate: "2024-01-15",
   updatedDate: "2024-02-15",
-}
+};
 
 // API functions
-export type ApiType = typeof api
+export type ApiType = typeof api;
 
 export const api = {
   // Dashboard
   getDashboardStats: async (): Promise<DashboardStats> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       totalFacilities: 1234,
       totalServiceProviders: 1234,
@@ -263,36 +273,42 @@ export const api = {
       customersGrowth: 30,
       placementsGrowth: 30,
       earningsGrowth: 30,
-    }
+    };
   },
 
   getChartData: async (): Promise<ChartData[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return mockChartData
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return mockChartData;
   },
 
   // Facilities
-  getFacilities: async (page = 1, limit = 10): Promise<{ facilities: Facility[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  getFacilities: async (
+    page = 1,
+    limit = 10
+  ): Promise<{ facilities: Facility[]; total: number }> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const facilities = Array.from({ length: 12 }, (_, i) => ({
       ...mockFacility,
       id: `facility-${i + 1}`,
       status: i % 4 === 3 ? ("Unavailable" as const) : ("Available" as const),
-    }))
+    }));
     return {
       facilities: facilities.slice((page - 1) * limit, page * limit),
       total: facilities.length,
-    }
+    };
   },
 
   getFacility: async (id: string): Promise<Facility> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return { ...mockFacility, id }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return { ...mockFacility, id };
   },
 
   // Service Providers
-  getServiceProviders: async (page = 1, limit = 10): Promise<{ providers: ServiceProvider[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  getServiceProviders: async (
+    page = 1,
+    limit = 10
+  ): Promise<{ providers: ServiceProvider[]; total: number }> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const providers = Array.from({ length: 12 }, (_, i) => ({
       id: `provider-${i + 1}`,
       name: "Olivia Rhye",
@@ -306,7 +322,8 @@ export const api = {
         image: "/assisted-living-facility.png",
       },
       serviceProvided: 123,
-      subscription: i % 3 === 0 ? ("Unsubscribed" as const) : ("Subscribed" as const),
+      subscription:
+        i % 3 === 0 ? ("Unsubscribed" as const) : ("Subscribed" as const),
       documents: [
         {
           id: "1",
@@ -317,15 +334,15 @@ export const api = {
           url: "#",
         },
       ],
-    }))
+    }));
     return {
       providers: providers.slice((page - 1) * limit, page * limit),
       total: providers.length,
-    }
+    };
   },
 
   getServiceProvider: async (id: string): Promise<ServiceProvider> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       id,
       name: "Olivia Rhye",
@@ -374,17 +391,23 @@ export const api = {
           url: "#",
         },
       ],
-    }
+    };
   },
 
   // Customers
-  getCustomers: async (page = 1, limit = 10): Promise<{ customers: Customer[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  getCustomers: async (
+    page = 1,
+    limit = 10
+  ): Promise<{ customers: Customer[]; total: number }> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const customers = Array.from({ length: 12 }, (_, i) => ({
       id: `customer-${i + 1}`,
       name: "Olivia Rhye",
       email: "olivia@untitledui.com",
-      phone: i % 3 === 0 ? undefined : `(${200 + i}) 555-01${i.toString().padStart(2, "0")}`,
+      phone:
+        i % 3 === 0
+          ? undefined
+          : `(${200 + i}) 555-01${i.toString().padStart(2, "0")}`,
       avatar: "/diverse-group.png",
       location: "2972 Westheimer Rd, Santa Ana, Illinois",
       totalTours: 123,
@@ -392,15 +415,15 @@ export const api = {
       joiningDate: "Jan 06, 2025",
       tourHistory: [],
       bookingHistory: [],
-    }))
+    }));
     return {
       customers: customers.slice((page - 1) * limit, page * limit),
       total: customers.length,
-    }
+    };
   },
 
   getCustomer: async (id: string): Promise<Customer> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       id,
       name: "Olivia Rhye",
@@ -419,7 +442,12 @@ export const api = {
         location: "North Port, Florida",
         scheduledDate: "12/08/2025",
         scheduledTime: "11:00 AM",
-        status: i === 0 ? ("Upcoming" as const) : i === 2 ? ("Cancelled" as const) : ("Completed" as const),
+        status:
+          i === 0
+            ? ("Upcoming" as const)
+            : i === 2
+            ? ("Cancelled" as const)
+            : ("Completed" as const),
       })),
       bookingHistory: Array.from({ length: 5 }, (_, i) => ({
         id: `booking-${i + 1}`,
@@ -429,12 +457,12 @@ export const api = {
         checkInTime: "12:00 PM",
         status: i === 3 ? ("Cancelled" as const) : ("Paid" as const),
       })),
-    }
+    };
   },
 
   // Reviews
   getRecentReviews: async (): Promise<Review[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return Array.from({ length: 2 }, (_, i) => ({
       id: `review-${i + 1}`,
       customerName: "Connect Directly",
@@ -444,44 +472,44 @@ export const api = {
         "I've been ordering from TABLEFRESH for over year now, and the quality of their organic produce is consistently excellent.",
       location: "Portland, OR",
       date: "2 days ago",
-    }))
+    }));
   },
 
   // Notifications
   getNotifications: async (): Promise<Notification[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return Array.from({ length: 9 }, (_, i) => ({
       id: `notification-${i + 1}`,
       title: "Notification Title",
       message: "Here's notification text.",
       time: "34m ago",
       type: "Properties Listing" as const,
-    }))
+    }));
   },
 
   // Pending Listings
   getPendingListings: async (): Promise<PendingListing[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return Array.from({ length: 10 }, (_, i) => ({
       id: `pending-${i + 1}`,
       facility: { ...mockFacility, id: `pending-facility-${i + 1}` },
       createdOn: "06/01/2025",
       status: "Pending",
-    }))
+    }));
   },
 
   // Actions
   approveListing: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
   },
 
   declineListing: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
   },
 
   getCurrentUser: async (): Promise<User> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return mockUser
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return mockUser;
   },
 
   // Blog Posts
@@ -489,9 +517,9 @@ export const api = {
     page = 1,
     limit = 10,
     status?: string,
-    category?: string,
+    category?: string
   ): Promise<{ posts: BlogPost[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const posts = Array.from({ length: 21 }, (_, i) => ({
       ...mockBlogPost,
@@ -521,74 +549,92 @@ export const api = {
       ][i % 21],
       slug: `blog-post-${i + 1}`,
       category: mockBlogCategories[i % 4],
-      status: i % 5 === 0 ? ("Draft" as const) : i % 7 === 0 ? ("Scheduled" as const) : ("Published" as const),
+      status:
+        i % 5 === 0
+          ? ("Draft" as const)
+          : i % 7 === 0
+          ? ("Scheduled" as const)
+          : ("Published" as const),
       views: Math.floor(Math.random() * 2000) + 100,
       readTime: Math.floor(Math.random() * 10) + 3,
-      publishDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-    }))
+      publishDate: new Date(
+        Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+      )
+        .toISOString()
+        .split("T")[0],
+    }));
 
-    let filteredPosts = posts
+    let filteredPosts = posts;
     if (status && status !== "all") {
-      filteredPosts = posts.filter((post) => post.status.toLowerCase() === status.toLowerCase())
+      filteredPosts = posts.filter(
+        (post) => post.status.toLowerCase() === status.toLowerCase()
+      );
     }
     if (category && category !== "all") {
-      filteredPosts = filteredPosts.filter((post) => post.category.slug === category)
+      filteredPosts = filteredPosts.filter(
+        (post) => post.category.slug === category
+      );
     }
 
     return {
       posts: filteredPosts.slice((page - 1) * limit, page * limit),
       total: filteredPosts.length,
-    }
+    };
   },
 
   getBlogPost: async (id: string): Promise<BlogPost> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return { ...mockBlogPost, id }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return { ...mockBlogPost, id };
   },
 
   createBlogPost: async (postData: Partial<BlogPost>): Promise<BlogPost> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockBlogPost,
       id: `post-${Date.now()}`,
       ...postData,
       createdDate: new Date().toISOString().split("T")[0],
       updatedDate: new Date().toISOString().split("T")[0],
-    } as BlogPost
+    } as BlogPost;
   },
 
-  updateBlogPost: async (id: string, postData: Partial<BlogPost>): Promise<BlogPost> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  updateBlogPost: async (
+    id: string,
+    postData: Partial<BlogPost>
+  ): Promise<BlogPost> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockBlogPost,
       id,
       ...postData,
       updatedDate: new Date().toISOString().split("T")[0],
-    } as BlogPost
+    } as BlogPost;
   },
 
   deleteBlogPost: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
   },
 
   // Blog Categories
   getBlogCategories: async (): Promise<BlogCategory[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    return mockBlogCategories
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockBlogCategories;
   },
 
-  createBlogCategory: async (categoryData: Partial<BlogCategory>): Promise<BlogCategory> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  createBlogCategory: async (
+    categoryData: Partial<BlogCategory>
+  ): Promise<BlogCategory> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       id: `category-${Date.now()}`,
       postCount: 0,
       ...categoryData,
-    } as BlogCategory
+    } as BlogCategory;
   },
 
   // Blog Stats
   getBlogStats: async (): Promise<BlogStats> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       totalPosts: 21,
       publishedPosts: 15,
@@ -598,12 +644,16 @@ export const api = {
       totalCategories: 4,
       postsGrowth: 12,
       viewsGrowth: 18,
-    }
+    };
   },
 
   // Placements
-  getPlacements: async (page = 1, limit = 10, status?: string): Promise<{ placements: Placement[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  getPlacements: async (
+    page = 1,
+    limit = 10,
+    status?: string
+  ): Promise<{ placements: Placement[]; total: number }> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const placements = Array.from({ length: 24 }, (_, i) => ({
       ...mockPlacement,
@@ -633,52 +683,69 @@ export const api = {
           "Harmony House",
         ][i % 6],
       },
-      status: ["Pending", "Confirmed", "Completed", "Cancelled"][i % 4] as Placement["status"],
+      status: ["Pending", "Confirmed", "Completed", "Cancelled"][
+        i % 4
+      ] as Placement["status"],
       amount: Math.floor(Math.random() * 2000) + 1500,
       commission: Math.floor(Math.random() * 300) + 150,
-      placementDate: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-    }))
+      placementDate: new Date(
+        Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000
+      )
+        .toISOString()
+        .split("T")[0],
+    }));
 
-    let filteredPlacements = placements
+    let filteredPlacements = placements;
     if (status && status !== "all") {
-      filteredPlacements = placements.filter((p) => p.status.toLowerCase() === status.toLowerCase())
+      filteredPlacements = placements.filter(
+        (p) => p.status.toLowerCase() === status.toLowerCase()
+      );
     }
 
     return {
       placements: filteredPlacements.slice((page - 1) * limit, page * limit),
       total: filteredPlacements.length,
-    }
+    };
   },
 
   getPlacement: async (id: string): Promise<Placement> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return { ...mockPlacement, id }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return { ...mockPlacement, id };
   },
 
-  createPlacement: async (placementData: Partial<Placement>): Promise<Placement> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  createPlacement: async (
+    placementData: Partial<Placement>
+  ): Promise<Placement> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockPlacement,
       id: `placement-${Date.now()}`,
       ...placementData,
       createdDate: new Date().toISOString().split("T")[0],
       updatedDate: new Date().toISOString().split("T")[0],
-    } as Placement
+    } as Placement;
   },
 
-  updatePlacement: async (id: string, placementData: Partial<Placement>): Promise<Placement> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  updatePlacement: async (
+    id: string,
+    placementData: Partial<Placement>
+  ): Promise<Placement> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockPlacement,
       id,
       ...placementData,
       updatedDate: new Date().toISOString().split("T")[0],
-    } as Placement
+    } as Placement;
   },
 
   // Tours
-  getTourBookings: async (page = 1, limit = 10, status?: string): Promise<{ tours: TourBooking[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  getTourBookings: async (
+    page = 1,
+    limit = 10,
+    status?: string
+  ): Promise<{ tours: TourBooking[]; total: number }> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const tours = Array.from({ length: 32 }, (_, i) => ({
       ...mockTourBooking,
@@ -708,53 +775,75 @@ export const api = {
           "Harmony House",
         ][i % 6],
       },
-      status: ["Scheduled", "Confirmed", "Completed", "Cancelled", "No-Show"][i % 5] as TourBooking["status"],
-      tourType: ["In-Person", "Virtual", "Self-Guided"][i % 3] as TourBooking["tourType"],
-      scheduledDate: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-      scheduledTime: ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM", "4:00 PM"][i % 6],
+      status: ["Scheduled", "Confirmed", "Completed", "Cancelled", "No-Show"][
+        i % 5
+      ] as TourBooking["status"],
+      tourType: ["In-Person", "Virtual", "Self-Guided"][
+        i % 3
+      ] as TourBooking["tourType"],
+      scheduledDate: new Date(
+        Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000
+      )
+        .toISOString()
+        .split("T")[0],
+      scheduledTime: [
+        "9:00 AM",
+        "10:00 AM",
+        "11:00 AM",
+        "2:00 PM",
+        "3:00 PM",
+        "4:00 PM",
+      ][i % 6],
       rating: i % 3 === 0 ? Math.floor(Math.random() * 2) + 4 : undefined,
-    }))
+    }));
 
-    let filteredTours = tours
+    let filteredTours = tours;
     if (status && status !== "all") {
-      filteredTours = tours.filter((t) => t.status.toLowerCase() === status.toLowerCase())
+      filteredTours = tours.filter(
+        (t) => t.status.toLowerCase() === status.toLowerCase()
+      );
     }
 
     return {
       tours: filteredTours.slice((page - 1) * limit, page * limit),
       total: filteredTours.length,
-    }
+    };
   },
 
   getTourBooking: async (id: string): Promise<TourBooking> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return { ...mockTourBooking, id }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return { ...mockTourBooking, id };
   },
 
-  createTourBooking: async (tourData: Partial<TourBooking>): Promise<TourBooking> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  createTourBooking: async (
+    tourData: Partial<TourBooking>
+  ): Promise<TourBooking> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockTourBooking,
       id: `tour-${Date.now()}`,
       ...tourData,
       createdDate: new Date().toISOString().split("T")[0],
       updatedDate: new Date().toISOString().split("T")[0],
-    } as TourBooking
+    } as TourBooking;
   },
 
-  updateTourBooking: async (id: string, tourData: Partial<TourBooking>): Promise<TourBooking> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  updateTourBooking: async (
+    id: string,
+    tourData: Partial<TourBooking>
+  ): Promise<TourBooking> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockTourBooking,
       id,
       ...tourData,
       updatedDate: new Date().toISOString().split("T")[0],
-    } as TourBooking
+    } as TourBooking;
   },
 
   // Placement Stats
   getPlacementStats: async (): Promise<PlacementStats> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       totalPlacements: 1234,
       completedPlacements: 987,
@@ -769,16 +858,16 @@ export const api = {
       placementsGrowth: 15,
       toursGrowth: 22,
       revenueGrowth: 18,
-    }
+    };
   },
 
   // Referral Fees
   getReferralFees: async (
     page = 1,
     limit = 10,
-    status?: string,
+    status?: string
   ): Promise<{ referrals: ReferralFee[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const referrals = Array.from({ length: 28 }, (_, i) => ({
       ...mockReferralFee,
@@ -822,63 +911,80 @@ export const api = {
           "Harmony House",
         ][i % 6],
       },
-      status: ["Pending", "Paid", "Processing", "Cancelled"][i % 4] as ReferralFee["status"],
+      status: ["Pending", "Paid", "Processing", "Cancelled"][
+        i % 4
+      ] as ReferralFee["status"],
       feeAmount: Math.floor(Math.random() * 500) + 200,
-      referralDate: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      referralDate: new Date(
+        Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000
+      )
+        .toISOString()
+        .split("T")[0],
       placementDate:
         i % 4 !== 3
-          ? new Date(Date.now() - Math.random() * 60 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+          ? new Date(Date.now() - Math.random() * 60 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split("T")[0]
           : undefined,
       paymentDate:
         i % 4 === 1
-          ? new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+          ? new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split("T")[0]
           : undefined,
-    }))
+    }));
 
-    let filteredReferrals = referrals
+    let filteredReferrals = referrals;
     if (status && status !== "all") {
-      filteredReferrals = referrals.filter((r) => r.status.toLowerCase() === status.toLowerCase())
+      filteredReferrals = referrals.filter(
+        (r) => r.status.toLowerCase() === status.toLowerCase()
+      );
     }
 
     return {
       referrals: filteredReferrals.slice((page - 1) * limit, page * limit),
       total: filteredReferrals.length,
-    }
+    };
   },
 
   getReferralFee: async (id: string): Promise<ReferralFee> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    return { ...mockReferralFee, id }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return { ...mockReferralFee, id };
   },
 
-  createReferralFee: async (referralData: Partial<ReferralFee>): Promise<ReferralFee> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  createReferralFee: async (
+    referralData: Partial<ReferralFee>
+  ): Promise<ReferralFee> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockReferralFee,
       id: `referral-${Date.now()}`,
       ...referralData,
       createdDate: new Date().toISOString().split("T")[0],
       updatedDate: new Date().toISOString().split("T")[0],
-    } as ReferralFee
+    } as ReferralFee;
   },
 
-  updateReferralFee: async (id: string, referralData: Partial<ReferralFee>): Promise<ReferralFee> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+  updateReferralFee: async (
+    id: string,
+    referralData: Partial<ReferralFee>
+  ): Promise<ReferralFee> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockReferralFee,
       id,
       ...referralData,
       updatedDate: new Date().toISOString().split("T")[0],
-    } as ReferralFee
+    } as ReferralFee;
   },
 
   deleteReferralFee: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
   },
 
   // Referral Stats
   getReferralStats: async (): Promise<ReferralStats> => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return {
       totalEarnings: 45680,
       pendingPayments: 8950,
@@ -888,17 +994,50 @@ export const api = {
       averageFee: 368,
       earningsGrowth: 12,
       referralsGrowth: 18,
-    }
+    };
   },
 
   processReferralPayment: async (id: string): Promise<ReferralFee> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return {
       ...mockReferralFee,
       id,
       status: "Paid",
       paymentDate: new Date().toISOString().split("T")[0],
       updatedDate: new Date().toISOString().split("T")[0],
-    }
+    };
   },
+};
+
+import axios from "axios";
+
+import { getSession } from "next-auth/react";
+
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+
+// Create axios instance
+const apiBase = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+// Add request interceptor to attach token from next-auth session
+apiBase.interceptors.request.use(
+  async (config) => {
+    const session = await getSession();
+    if (session?.accessToken) {
+      config.headers.Authorization = `Bearer ${session.accessToken}`;
+    } else {
+      console.warn("No token in session");
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// User Related APIs
+
+export async function getUserProfile(userId: string) {
+  const response = await apiBase.get(`user/${userId}`);
+  return response.data;
 }
