@@ -72,7 +72,7 @@ const VerifyOTPForm = () => {
       }
 
       toast.success("Email verified successfully!");
-      router.push(`/forget-password?email=${email}&token=${data?.data}`);
+      router.push(`/reset-password?email=${email}&token=${data?.data}`);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -110,7 +110,7 @@ const VerifyOTPForm = () => {
         {/* Right side form */}
         <div className="flex items-center justify-center">
           <div className="w-xl mx-auto">
-            <h2 className="text-2xl font-bold text-green-600 mb-2 text-center">
+            <h2 className="text-4xl font-playfair font-bold text-green-600 mb-2 text-center">
               Verify Email
             </h2>
             <p className="text-gray-500 text-center mb-6">
@@ -187,7 +187,7 @@ const VerifyOTPForm = () => {
             <button
               onClick={handleVerify}
               disabled={loading}
-              className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition disabled:opacity-50"
+              className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
             >
               {loading ? "Verifying..." : "Verify"}
             </button>

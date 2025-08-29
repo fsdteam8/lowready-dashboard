@@ -66,8 +66,8 @@ const ForgotPasswordForm = () => {
         transition={{ duration: 0.5 }}
         className="flex items-center justify-center"
       >
-        <div className="w-xl mx-auto">
-          <h2 className="text-3xl font-bold text-green-600 mb-2">
+        <div className="w-xl mx-auto space-y-1.5">
+          <h2 className="text-4xl font-playfair font-bold text-green-600 mb-2">
             Forgot Password
           </h2>
           <p className="text-gray-500 mb-6">
@@ -81,10 +81,11 @@ const ForgotPasswordForm = () => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="space-y-2">
                     <FormLabel>Email Address</FormLabel>
                     <FormControl>
                       <Input
+                      className="h-12"
                         type="email"
                         placeholder="hello@example.com"
                         {...field}
