@@ -1,72 +1,62 @@
-"use client"
+"use client";
 
-import { ArrowLeft, Check, X } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { Sidebar } from "@/components/sidebar"
-import { Header } from "@/components/header"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Pagination } from "@/components/pagination"
-import { usePendingListings, useApproveListing, useDeclineListing } from "@/hooks/use-facilities"
-import { useState } from "react"
+import { ArrowLeft, Check, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Pagination } from "@/components/pagination";
+import {
+  usePendingListings,
+  useApproveListing,
+  useDeclineListing,
+} from "@/hooks/use-facilities";
+import { useState } from "react";
 
 export default function PendingListingsPage() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const { data: pendingListings, isLoading } = usePendingListings()
-  const approveMutation = useApproveListing()
-  const declineMutation = useDeclineListing()
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: pendingListings, isLoading } = usePendingListings();
+  const approveMutation = useApproveListing();
+  const declineMutation = useDeclineListing();
 
   const handleApprove = async (id: string) => {
     try {
-      await approveMutation.mutateAsync(id)
+      await approveMutation.mutateAsync(id);
     } catch (error) {
-      console.error("Failed to approve listing:", error)
+      console.error("Failed to approve listing:", error);
     }
-  }
+  };
 
   const handleDecline = async (id: string) => {
     try {
-      await declineMutation.mutateAsync(id)
+      await declineMutation.mutateAsync(id);
     } catch (error) {
-      console.error("Failed to decline listing:", error)
+      console.error("Failed to decline listing:", error);
     }
-  }
+  };
 
   if (isLoading) {
     return (
       <div className="flex h-screen">
-        <Sidebar />
-        <div className="flex-1">
-          <Header
-            title="Pending Listings (123)"
-            subtitle="Keep track of all your facilities, update details, and stay organized."
-          />
-          <div className="flex items-center justify-center h-96">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-primary mx-auto"></div>
-              <p className="mt-2 text-gray-600">Loading pending listings...</p>
-            </div>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-primary mx-auto"></div>
+            <p className="mt-2 text-gray-600">Loading pending listings...</p>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
-  const itemsPerPage = 10
-  const totalPages = Math.ceil((pendingListings?.length || 0) / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentItems = pendingListings?.slice(startIndex, startIndex + itemsPerPage) || []
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil((pendingListings?.length || 0) / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems =
+    pendingListings?.slice(startIndex, startIndex + itemsPerPage) || [];
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header
-          title="Pending Listings (123)"
-          subtitle="Keep track of all your facilities, update details, and stay organized."
-        />
-
         <main className="flex-1 overflow-y-auto p-6">
           {/* Back button */}
           <div className="mb-6">
@@ -106,7 +96,9 @@ export default function PendingListingsPage() {
                       </div>
                       <div>
                         <p className="font-medium">{listing.facility.name}</p>
-                        <p className="text-sm text-gray-600">{listing.facility.location}</p>
+                        <p className="text-sm text-gray-600">
+                          {listing.facility.location}
+                        </p>
                       </div>
                     </div>
 
@@ -114,13 +106,18 @@ export default function PendingListingsPage() {
 
                     <div>
                       <Link href={`/facilities/${listing.facility.id}`}>
-                        <Button variant="ghost" className="text-green-primary hover:text-green-secondary">
+                        <Button
+                          variant="ghost"
+                          className="text-green-primary hover:text-green-secondary"
+                        >
                           View Details
                         </Button>
                       </Link>
                     </div>
 
-                    <div className="text-sm text-gray-600">{listing.status}</div>
+                    <div className="text-sm text-gray-600">
+                      {listing.status}
+                    </div>
 
                     <div className="col-span-2 flex items-center justify-center gap-2">
                       <Button
@@ -152,11 +149,15 @@ export default function PendingListingsPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-6">
-              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
             </div>
           )}
         </main>
       </div>
     </div>
-  )
+  );
 }

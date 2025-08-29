@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CustomersTable } from "@/components/customers-table";
 import { useCustomers } from "@/hooks/use-customers";
+import { clear } from "console";
 
 export default function CustomersPage() {
   const [currentPage, setCurrentPage] = useState(1);

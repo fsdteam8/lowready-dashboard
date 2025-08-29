@@ -7,6 +7,7 @@ import { DeleteConfirmModal } from "@/components/delete-confirm-modal";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface BlogDetailProps {
   params: Promise<{
@@ -141,7 +142,9 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
       <div className="bg-white rounded-lg overflow-hidden">
         {/* Hero Image */}
         <div className="relative h-64 md:h-80">
-          <img
+          <Image
+            width={800}
+            height={600}
             src={blog.image || "/placeholder.svg"}
             alt={blog.title}
             className="w-full h-full object-cover"
@@ -185,8 +188,7 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
         onClose={() => setDeleteModal(false)}
         onConfirm={handleDelete}
         title="Are You Sure?"
-        description="Are you sure you want to delete this blog?"
-        isLoading={isDeleting}
+        message="Are you sure you want to delete this blog?"
       />
     </div>
   );
