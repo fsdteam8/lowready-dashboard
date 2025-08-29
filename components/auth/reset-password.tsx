@@ -52,7 +52,7 @@ const ResetPassword = () => {
     mutationFn: async (password: string) => resetPassword(password, token),
     onSuccess: (data) => {
       toast.success(data.message);
-      router.push(`/`);
+      router.push(`/login`);
     },
     onError: (error) => {
       if (error instanceof Error) {

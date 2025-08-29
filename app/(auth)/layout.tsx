@@ -17,7 +17,7 @@ export default function RootLayout({
           className="h-[120px] w-[250px] object-contain"
         />
       </div>
-      <div className="flex h-[calc(100vh-120px)] container mx-auto items-center justify-center">
+      <div className="flex h-[calc(100vh-120px)] container mx-auto items-center justify-center font-poppins">
         {children}
       </div>
     </div>

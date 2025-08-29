@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -109,16 +108,16 @@ const VerifyOTPForm = () => {
       <div className="">
         {/* Right side form */}
         <div className="flex items-center justify-center">
-          <div className="w-xl mx-auto">
-            <h2 className="text-4xl font-playfair font-bold text-green-600 mb-2 text-center">
+          <div className="">
+            <h2 className="text-4xl font-playfair font-bold text-green-600 mb-2">
               Verify Email
             </h2>
-            <p className="text-gray-500 text-center mb-6">
+            <p className="text-gray-500 mb-6 font-poppins">
               Enter OTP to verify your email address
             </p>
 
             {/* OTP inputs */}
-            <div className="flex justify-center gap-3 mb-4">
+            <div className="flex justify-center gap-5 mb-4">
               {otp.map((digit, i) => (
                 <input
                   key={i}
@@ -153,7 +152,7 @@ const VerifyOTPForm = () => {
                     );
                     (nextInput as HTMLInputElement)?.focus();
                   }}
-                  className="w-12 h-12 border border-green-400 rounded text-center text-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-16 h-16 border border-green-400 rounded text-center text-xl focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               ))}
             </div>
