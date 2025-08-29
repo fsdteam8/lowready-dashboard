@@ -44,7 +44,7 @@ const ForgotPasswordForm = () => {
     mutationFn: (email: string) => forgatePassword(email),
     onSuccess: (data: { message: string; email: string }) => {
       toast.success(data.message || "OTP sent to your email");
-      router.push(`/forget-otp?email=${email}`);
+      router.push(`/verify-otp?email=${email}`);
     },
     onError: (error: { message: string }) => {
       toast.error(error.message || "Failed to send OTP");
@@ -57,49 +57,16 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <section className="min-h-screen grid lg:grid-cols-2 relative">
-      {/* back to home  */}
-      <button
-        onClick={() => router.push("/")}
-        className="absolute top-24 right-28 md:right-48 text-green-600 hover:underline cursor-pointer"
-      >
-        Back to Home
-      </button>
-
-      {/* Left side image */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="relative hidden lg:block"
-      >
-        <Image
-          src="/signup.png"
-          alt="Login background"
-          width={800}
-          height={800}
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute top-6 left-6 text-white text-2xl font-bold">
-          ALH Hub
-        </div>
-      </motion.div>
-
-      {/* Back button */}
-      <button
-        onClick={() => router.push("/")}
-        className="absolute top-24 right-28 md:right-48 text-green-600 hover:underline cursor-pointer"
-      >
-        Back to Home
-      </button>
+    <section className="">
 
       {/* Right side form */}
       <motion.div
         initial={{ x: 50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="flex items-center justify-center p-6"
+        className="flex items-center justify-center"
       >
-        <div className="w-full max-w-md">
+        <div className="w-xl mx-auto">
           <h2 className="text-3xl font-bold text-green-600 mb-2">
             Forgot Password
           </h2>
