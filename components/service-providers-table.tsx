@@ -1,0 +1,147 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Pagination } from "@/components/pagination"
+import type { ServiceProvider } from "@/lib/types"
+
+interface ServiceProvidersTableProps {
+  providers: ServiceProvider[]
+  total: number
+  currentPage: number
+  onPageChange: (page: number) => void
+  onSearch: (query: string) => void
+}
+
+export function ServiceProvidersTable({
+  providers,
+  total,
+  currentPage,
+  onPageChange,
+  onSearch,
+}: ServiceProvidersTableProps) {
+  const [searchQuery, setSearchQuery] = useState("")
+  const itemsPerPage = 10
+  const totalPages = Math.ceil(total / itemsPerPage)
+
+  const handleSearch = () => {
+    onSearch(searchQuery)
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch()
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Search */}
+      <div className="flex items-center gap-4 max-w-md">
+        <div className="relative flex-1">
+          <Input
+            placeholder="Search by name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="pr-10"
+          />
+          <Button
+            size="sm"
+            onClick={handleSearch}
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 bg-green-primary hover:bg-green-secondary"
+          >
+            <Search className="h-4 w-4 mr-1" />
+            Search
+          </Button>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-lg border bg-white">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-green-bg">
+              <TableHead>Service Providers</TableHead>
+              <TableHead>Phone Number</TableHead>
+              <TableHead>Facility</TableHead>
+              <TableHead>Service Provided</TableHead>
+              <TableHead>Subscription</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {providers.map((provider) => (
+              <TableRow key={provider.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-10 w-10 rounded-full overflow-hidden">
+                      <Image
+                        src={provider.avatar || "/professional-person.png"}
+                        alt={provider.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-medium">{provider.name}</p>
+                      <p className="text-sm text-gray-600">{provider.email}</p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{provider.phone || "-"}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-10 w-10 rounded-lg overflow-hidden">
+                      <Image
+                        src={provider.facility.image || "/assisted-living-facility.png"}
+                        alt={provider.facility.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-medium">{provider.facility.name}</p>
+                      <p className="text-sm text-gray-600">{provider.facility.location}</p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{provider.serviceProvided}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={provider.subscription === "Subscribed" ? "default" : "secondary"}
+                    className={
+                      provider.subscription === "Subscribed"
+                        ? "bg-green-bg text-green-success"
+                        : "bg-gray-100 text-gray-600"
+                    }
+                  >
+                    {provider.subscription}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/service-providers/${provider.id}`}>
+                    <Button variant="ghost" className="text-green-primary hover:text-green-secondary">
+                      Details
+                    </Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination */}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+    </div>
+  )
+}
