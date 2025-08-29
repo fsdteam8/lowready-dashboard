@@ -3,6 +3,7 @@ import { Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "sonner";
+import { AuthProvider } from "@/providers/session-provider";
 
 export const metadata: Metadata = {
   title: "AlhHub Dashboard",
@@ -29,10 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} ${playfair.variable} antialiased`}>
-        <QueryProvider>
-          {children}
-          <Toaster position="top-right"/>
-        </QueryProvider>
+        <AuthProvider>
+          <QueryProvider>
+            {children}
+            <Toaster position="top-right" />
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );
