@@ -423,6 +423,7 @@ export interface FacilityResponse {
   rating?: number;
   ratingCount?: number;
   address?: string;
+  status?: string;
 }
 
 export interface FacilityAllData {

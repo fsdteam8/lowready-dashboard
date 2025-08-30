@@ -74,9 +74,9 @@ export function FacilitiesTable({
             <TableRow className="bg-green-bg">
               <TableHead>Facility</TableHead>
               <TableHead>Created On</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Option</TableHead>
+              <TableHead>Total Booking</TableHead>
+              <TableHead>Total Tours</TableHead>
+              <TableHead>Total Earnings</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -114,7 +114,7 @@ export function FacilitiesTable({
                     <Link href={`/facilities/${facility?._id}`}>
                       <Button
                         variant="ghost"
-                        className="text-green-primary hover:text-green-secondary"
+                        className="text-green-primary hover:text-green-secondary bg-[]"
                       >
                         View Details
                       </Button>
@@ -125,8 +125,8 @@ export function FacilitiesTable({
                       variant={facility.availability  ? "default" : "secondary"}
                       className={
                         facility.availability
-                          ? "bg-green-bg text-green-success"
-                          : "bg-red-bg text-red-error"
+                          ? "bg-green-[#E6FAEE] text-[#27BE69] px-4 py-1"
+                          : "bg-[#FEECEE] text-[#E5102E] "
                       }
                     >
                       {facility.availability ? "Available" : "Unavailable"}

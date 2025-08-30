@@ -12,27 +12,22 @@ import {
   useDeclineListing,
 } from "@/hooks/use-facilities";
 import { useState } from "react";
+import { FacilityResponse } from "@/lib/types";
 
 export default function PendingListingsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: pendingListings, isLoading } = usePendingListings();
+  const itemsPerPage = 10;
+
+  const { data: pendingListings, isLoading } = usePendingListings(currentPage, itemsPerPage);
   const approveMutation = useApproveListing();
   const declineMutation = useDeclineListing();
 
-  const handleApprove = async (id: string) => {
-    try {
-      await approveMutation.mutateAsync(id);
-    } catch (error) {
-      console.error("Failed to approve listing:", error);
-    }
+  const handleApprove = (id: string) => {
+    approveMutation.mutate({ id, status: "approved" });
   };
 
-  const handleDecline = async (id: string) => {
-    try {
-      await declineMutation.mutateAsync(id);
-    } catch (error) {
-      console.error("Failed to decline listing:", error);
-    }
+  const handleDecline = (id: string) => {
+    declineMutation.mutate({ id, status: "decline" });
   };
 
   if (isLoading) {
@@ -48,11 +43,8 @@ export default function PendingListingsPage() {
     );
   }
 
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil((pendingListings?.length || 0) / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems =
-    pendingListings?.slice(startIndex, startIndex + itemsPerPage) || [];
+  const currentItems = pendingListings?.data || [];
+  const totalPages = pendingListings?.totalPages || 1;
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -81,31 +73,31 @@ export default function PendingListingsPage() {
 
           {/* Listings */}
           <div className="space-y-4">
-            {currentItems.map((listing) => (
-              <Card key={listing.id}>
+            {currentItems.map((listing: FacilityResponse) => (
+              <Card key={listing._id}>
                 <CardContent className="p-4">
                   <div className="grid grid-cols-6 gap-4 items-center">
                     <div className="flex items-center gap-3">
                       <div className="relative h-12 w-12 rounded-lg overflow-hidden">
                         <Image
-                          src="/assisted-living-facility.png"
-                          alt={listing.facility.name}
+                          src={listing.images?.[0]?.url || "/assisted-living-facility.png"}
+                          alt={listing?.name}
                           fill
                           className="object-cover"
                         />
                       </div>
                       <div>
-                        <p className="font-medium">{listing.facility.name}</p>
-                        <p className="text-sm text-gray-600">
-                          {listing.facility.location}
-                        </p>
+                        <p className="font-medium">{listing.name}</p>
+                        <p className="text-sm text-gray-600">{listing.location}</p>
                       </div>
                     </div>
 
-                    <div className="text-sm">{listing.createdOn}</div>
+                    <div className="text-sm">
+                      {new Date(listing.createdAt).toLocaleDateString()}
+                    </div>
 
                     <div>
-                      <Link href={`/facilities/${listing.facility.id}`}>
+                      <Link href={`/facilities/${listing._id}`}>
                         <Button
                           variant="ghost"
                           className="text-green-primary hover:text-green-secondary"
@@ -115,15 +107,13 @@ export default function PendingListingsPage() {
                       </Link>
                     </div>
 
-                    <div className="text-sm text-gray-600">
-                      {listing.status}
-                    </div>
+                    <div className="text-sm text-gray-600">{listing.status}</div>
 
                     <div className="col-span-2 flex items-center justify-center gap-2">
                       <Button
                         size="sm"
-                        className="bg-green-primary hover:bg-green-secondary"
-                        onClick={() => handleApprove(listing.id)}
+                        className="bg-green-primary cursor-pointer hover:bg-green-secondary hover:bg-green-900"
+                        onClick={() => handleApprove(listing._id)}
                         disabled={approveMutation.isPending}
                       >
                         <Check className="h-4 w-4 mr-1" />
@@ -132,8 +122,8 @@ export default function PendingListingsPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-red-error border-red-error hover:bg-red-bg bg-transparent"
-                        onClick={() => handleDecline(listing.id)}
+                        className="text-red-error border-red-error cursor-pointer hover:bg-red-bg bg-transparent hover:bg-green-400 hover:text-white"
+                        onClick={() => handleDecline(listing._id)}
                         disabled={declineMutation.isPending}
                       >
                         <X className="h-4 w-4 mr-1" />

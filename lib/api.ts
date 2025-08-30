@@ -8,7 +8,7 @@ import type {
   ChartData,
   Review,
   Notification,
-  PendingListing,
+
   BlogPost,
   BlogCategory,
   BlogStats,
@@ -17,7 +17,7 @@ import type {
   PlacementStats,
   ReferralFee,
   ReferralStats,
-  FacilityAllData,
+
 } from "./types";
 
 // Mock data
@@ -471,21 +471,6 @@ export const api = {
     }));
   },
 
-  // Pending Listings
-  getPendingListings: async (): Promise<PendingListing[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: `pending-${i + 1}`,
-      facility: { ...mockFacility, id: `pending-facility-${i + 1}` },
-      createdOn: "06/01/2025",
-      status: "Pending",
-    }));
-  },
-
-  // Actions
-  approveListing: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  },
 
   declineListing: async (id: string): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -1037,3 +1022,26 @@ export async function getAllFacilityData(page: number, limit: number) {
     return { data: [], totalPages: 1 };
   }
 }
+
+export async function getpendingFacilityData(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/facility/all?page=${page}&limit=${limit}&status=pending`
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+export async function approveListing(id: string, status: string) {
+  try {
+    const res = await apiBase.put(`/facility/update-status/${id}`, { status }); 
+    return res.data;
+  } catch (error) {
+    console.error("Error updating facility status:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
