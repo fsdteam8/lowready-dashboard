@@ -42,7 +42,7 @@ export default function FacilitiesPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <FacilitiesTable
-            facilities={data?.facilities || []}
+            facilities={data?.data || []}
             total={data?.total || 0}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
