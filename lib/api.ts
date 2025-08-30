@@ -379,32 +379,32 @@ export const api = {
   },
 
   // Customers
-  getCustomers: async (
-    page = 1,
-    limit = 10
-  ): Promise<{ customers: Customer[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const customers = Array.from({ length: 12 }, (_, i) => ({
-      id: `customer-${i + 1}`,
-      name: "Olivia Rhye",
-      email: "olivia@untitledui.com",
-      phone:
-        i % 3 === 0
-          ? undefined
-          : `(${200 + i}) 555-01${i.toString().padStart(2, "0")}`,
-      avatar: "/diverse-group.png",
-      location: "2972 Westheimer Rd, Santa Ana, Illinois",
-      totalTours: 123,
-      totalPlacements: 123,
-      joiningDate: "Jan 06, 2025",
-      tourHistory: [],
-      bookingHistory: [],
-    }));
-    return {
-      customers: customers.slice((page - 1) * limit, page * limit),
-      total: customers.length,
-    };
-  },
+  // getCustomers: async (
+  //   page = 1,
+  //   limit = 10
+  // ): Promise<{ customers: Customer[]; total: number }> => {
+  //   await new Promise((resolve) => setTimeout(resolve, 500));
+  //   const customers = Array.from({ length: 12 }, (_, i) => ({
+  //     id: `customer-${i + 1}`,
+  //     name: "Olivia Rhye",
+  //     email: "olivia@untitledui.com",
+  //     phone:
+  //       i % 3 === 0
+  //         ? undefined
+  //         : `(${200 + i}) 555-01${i.toString().padStart(2, "0")}`,
+  //     avatar: "/diverse-group.png",
+  //     location: "2972 Westheimer Rd, Santa Ana, Illinois",
+  //     totalTours: 123,
+  //     totalPlacements: 123,
+  //     joiningDate: "Jan 06, 2025",
+  //     tourHistory: [],
+  //     bookingHistory: [],
+  //   }));
+  //   return {
+  //     customers: customers.slice((page - 1) * limit, page * limit),
+  //     total: customers.length,
+  //   };
+  // },
 
   getCustomer: async (id: string): Promise<Customer> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -1026,6 +1026,37 @@ export async function getUserProfile(userId: string) {
   return response.data;
 }
 
+// get all customers
+export async function getCustomers(page: number, limit: number) {
+  const response = await apiBase.get(
+    `/user/customers?page=${page}&limit=${limit}`
+  );
+  return response.data;
+}
+
+// get single customers data 
+export async function getSingleCustomer(id: string) {
+  const res = await apiBase.get(`/user/${id}`);
+  return res.data;
+}
+
+
+// get tour visit bokking detailes 
+export async function getVisitBooking(id: string) {
+  const res = await apiBase.get(`/visit-booking/${id}`);
+  return res.data;
+}
+
+// get Booking History
+export async function getBookingHistory(userId: string, page: number, limit: number) {
+  try {
+    const res = await apiBase.get(`/bookings/user/${userId}?page=${page}&limit=${limit}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching booking history:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
 // facilities api intigration
 
 export async function getAllFacilityData(page: number, limit: number) {
