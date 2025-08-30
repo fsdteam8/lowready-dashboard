@@ -72,7 +72,7 @@ const LoginForm = () => {
         const user = session?.user as SessionUserWithRole | undefined;
 
         if (user?.role === "admin") {
-          router.push("/dashboard");
+          router.push("/");
         } else {
           toast.error("You do not have access to this application.");
         }
