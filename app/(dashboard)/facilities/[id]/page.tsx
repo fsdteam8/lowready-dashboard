@@ -3,8 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, Play, Eye } from "lucide-react";
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 0fbeab0ea4a92f641e0e4b0467afba90071e799f
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
