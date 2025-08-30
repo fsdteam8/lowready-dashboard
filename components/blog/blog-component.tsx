@@ -69,14 +69,6 @@ export default function BlogsPage() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-semibold text-green-600">
-          Blogs Management
-        </h1>
-        <p className="text-gray-600 mt-1">
-          Welcome back! Here&apos;s what&apos;s happening with your app today.
-        </p>
-      </div>
 
       {/* Search and Add Blog */}
       <div className="flex items-center justify-between gap-4">
@@ -228,8 +220,7 @@ export default function BlogsPage() {
         onClose={closeDeleteModal}
         onConfirm={handleDelete}
         title="Are You Sure?"
-        description="Are you sure you want to delete this blog?"
-        isLoading={isDeleting}
+        message="Are you sure you want to delete this blog?"
       />
     </div>
   );
