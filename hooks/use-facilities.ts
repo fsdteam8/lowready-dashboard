@@ -1,14 +1,16 @@
 "use client"
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { api } from "@/lib/api"
+import { api, getAllFacilityData } from "@/lib/api"
 
 export function useFacilities(page = 1, limit = 10) {
   return useQuery({
     queryKey: ["facilities", page, limit],
-    queryFn: () => api.getFacilities(page, limit),
+    queryFn: () => getAllFacilityData(page, limit),
   })
 }
+
+
 
 export function useFacility(id: string) {
   return useQuery({

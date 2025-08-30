@@ -17,6 +17,7 @@ import type {
   PlacementStats,
   ReferralFee,
   ReferralStats,
+  FacilityAllData,
 } from "./types";
 
 // Mock data
@@ -279,23 +280,6 @@ export const api = {
   getChartData: async (): Promise<ChartData[]> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
     return mockChartData;
-  },
-
-  // Facilities
-  getFacilities: async (
-    page = 1,
-    limit = 10
-  ): Promise<{ facilities: Facility[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const facilities = Array.from({ length: 12 }, (_, i) => ({
-      ...mockFacility,
-      id: `facility-${i + 1}`,
-      status: i % 4 === 3 ? ("Unavailable" as const) : ("Available" as const),
-    }));
-    return {
-      facilities: facilities.slice((page - 1) * limit, page * limit),
-      total: facilities.length,
-    };
   },
 
   getFacility: async (id: string): Promise<Facility> => {
@@ -1070,6 +1054,17 @@ export async function getBookingHistory(userId: string, page: number, limit: num
     return res.data;
   } catch (error) {
     console.error("Error fetching booking history:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+// facilities api intigration
+
+export async function getAllFacilityData(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(`/facility/all?page=${page}&limit=${limit}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
     return { data: [], totalPages: 1 };
   }
 }
