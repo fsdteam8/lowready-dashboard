@@ -1034,23 +1034,28 @@ export async function getCustomers(page: number, limit: number) {
   return response.data;
 }
 
-// get single customers data 
+// get single customers data
 export async function getSingleCustomer(id: string) {
   const res = await apiBase.get(`/user/${id}`);
   return res.data;
 }
 
-
-// get tour visit bokking detailes 
+// get tour visit bokking detailes
 export async function getVisitBooking(id: string) {
   const res = await apiBase.get(`/visit-booking/${id}`);
   return res.data;
 }
 
 // get Booking History
-export async function getBookingHistory(userId: string, page: number, limit: number) {
+export async function getBookingHistory(
+  userId: string,
+  page: number,
+  limit: number
+) {
   try {
-    const res = await apiBase.get(`/bookings/user/${userId}?page=${page}&limit=${limit}`);
+    const res = await apiBase.get(
+      `/bookings/user/${userId}?page=${page}&limit=${limit}`
+    );
     return res.data;
   } catch (error) {
     console.error("Error fetching booking history:", error);
@@ -1071,44 +1076,45 @@ export async function getAllFacilityData(page: number, limit: number) {
 
 // get all blogs
 export async function getAllBlogs(page: number, limit: number) {
-  const response = await apiBase.get(
-    `/blog/all?page=${page}&limit=${limit}`
-  );
+  const response = await apiBase.get(`/blog/all?page=${page}&limit=${limit}`);
   return response.data;
 }
 
-// Get single Blog 
+// Get single Blog
 export async function getSingleBlog(id: string) {
   const res = await apiBase.get(`/blog/${id}`);
   return res.data;
 }
 
-// Delete single Blog 
+// Delete single Blog
 export async function deleteSingleBlog(id: string) {
   const res = await apiBase.delete(`/blog/delete/${id}`);
   return res.data;
 }
 
 // add blog
-// export async function createBlogs(
-//   data: { blogTitle: string; readingTime: string, blogDescription: string },
-//   image?: File
-// ) {
-//   try {
-//     const formData = new FormData();
-//     formData.append("data", JSON.stringify(data));
-//     if (image) {
-//       formData.append("image", image);
-//     }
+export async function createBlogs(
+  data: { title: string; description: string },
+  image?: File
+) {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
 
-//     const response = await apiBase.post("/blog/create", formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
+    if (image) {
+      formData.append("image", image);
+    }
 
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+    const response = await apiBase.post("/blog/create", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in createBlogs API:", error);
+    throw error;
+  }
+}
