@@ -1052,7 +1052,6 @@ import type {
   ChartData,
   Review,
   Notification,
-  PendingListing,
   BlogPost,
   BlogCategory,
   BlogStats,
@@ -1351,12 +1350,7 @@ export const api = {
     };
   },
 
-  getFacility: async (id: string): Promise<Facility> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return { ...mockFacility, id };
-  },
-
-  // Service Providers - REAL API INTEGRATION
+  // Service Providers
   getServiceProviders: async (
     page = 1,
     limit = 10,
@@ -1472,22 +1466,6 @@ export const api = {
       time: "34m ago",
       type: "Properties Listing" as const,
     }));
-  },
-
-  // Pending Listings
-  getPendingListings: async (): Promise<PendingListing[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: `pending-${i + 1}`,
-      facility: { ...mockFacility, id: `pending-facility-${i + 1}` },
-      createdOn: "06/01/2025",
-      status: "Pending",
-    }));
-  },
-
-  // Actions
-  approveListing: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
   },
 
   declineListing: async (id: string): Promise<void> => {
@@ -2050,13 +2028,71 @@ export async function getBookingHistory(userId: string, page: number, limit: num
 }
 // facilities api intigration
 
-export async function getAllFacilityData(page: number, limit: number) {
+export async function getAllFacilityData() {
   try {
-    const res = await apiBase.get(`/facility/all?page=${page}&limit=${limit}`);
+    const res = await apiBase.get(`/payment/all?type=booking`);
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
     return { data: [], totalPages: 1 };
+  }
+}
+
+export async function getpendingFacilityData(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/facility/all?page=${page}&limit=${limit}&status=pending`
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+export async function approveListing(id: string, status: string) {
+  try {
+    const res = await apiBase.put(`/facility/update-status/${id}`, { status });
+    return res.data;
+  } catch (error) {
+    console.error("Error updating facility status:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+//get single facility
+
+export async function getSingleFacility(id: string) {
+  try {
+    const res = await apiBase.get(`/facility/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+
+
+  
+
+export async function getreviewFacility(id: string) {
+  try {
+    const res = await apiBase.get(`/facility/summary/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+export async function getFacilitys() {
+  try {
+    const res = await apiBase.get(`/facility/all`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: []};
   }
 }
 

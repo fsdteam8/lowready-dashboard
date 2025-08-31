@@ -18,10 +18,14 @@ export interface Facility {
   price: number;
   status: FacilityStatus;
   createdOn: string;
-  totalPlacements: number;
-  totalTours: number;
+  totalPlacement: number;
+  totalTour: number;
   totalEarnings: number;
-  images: string[];
+  images: {
+    public_id: string;
+    url: string;
+    _id: string;
+  }[];
   amenities: string[];
   careServices: string[];
   availableTimes: string[];
@@ -30,6 +34,7 @@ export interface Facility {
     description: string;
     url: string;
   };
+  createdAt?: string;
 }
 
 export interface ServiceProvider {
@@ -388,6 +393,8 @@ export enum ReferralStatus {
 }
 
 export interface FacilityResponse {
+  totalAdminShare?: string | number;
+  facility?: Facility;
   _id: string;
   availability: boolean;
   name: string;
@@ -429,6 +436,7 @@ export interface FacilityResponse {
   rating?: number;
   ratingCount?: number;
   address?: string;
+  status?: string;
 }
 
 export interface FacilityAllData {

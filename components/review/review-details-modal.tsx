@@ -41,9 +41,7 @@ export function ReviewDetailsModal({ isOpen, onClose, review }: ReviewDetailsMod
               <p className="text-sm text-gray-500">{review.location}</p>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600">
-            <X className="h-5 w-5" />
-          </Button>
+          
         </div>
 
         <div className="px-6 pb-6">
