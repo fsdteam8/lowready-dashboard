@@ -124,7 +124,7 @@ export interface DashboardStats {
 
 export interface ChartData {
   month: string;
-  value: number;
+  totalEarnings: number;
 }
 
 export interface Notification {
