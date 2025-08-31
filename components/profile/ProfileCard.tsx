@@ -13,7 +13,8 @@ export function ProfileCard(userId: userIdProps) {
 
   const session = useSession();
   console.log(session);
-    const user = userId == null ? userId : session.data?.user.id 
+    const user = userId !== null ? userId.userId : session.data?.user.id 
+    console.log(user)
   const {
     data: userProfile,
     isLoading,
@@ -21,6 +22,9 @@ export function ProfileCard(userId: userIdProps) {
   } = useUserProfile(user as string);
 
 //   } = useUserProfile(session.data?.user.id as string);
+
+
+console.log("Received id:", userId)
 
   if (isLoading) {
     return (
