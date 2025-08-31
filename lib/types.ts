@@ -16,6 +16,7 @@ export interface Facility {
   location: string;
   description: string;
   price: number;
+  availability: boolean;
   status: FacilityStatus;
   createdOn: string;
   totalPlacement: number;
