@@ -1118,3 +1118,31 @@ export async function createBlogs(
     throw error;
   }
 }
+
+// Update Blog API
+export async function updateBlog(
+  blogId: string,
+  data: { title: string; description: string },
+  image?: File
+) {
+  const formData = new FormData();
+
+  // ✅ text fields append
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  // ✅ image append (optional)
+  if (image) {
+    formData.append("image", image);
+  }
+
+  // ✅ API call
+  const response = await apiBase.put(`/blog/update/${blogId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+}

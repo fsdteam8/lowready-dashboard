@@ -6,6 +6,7 @@ import {
   deleteSingleBlog,
   getAllBlogs,
   getSingleBlog,
+  updateBlog,
 } from "@/lib/api";
 
 // Get All Blogs
@@ -53,6 +54,33 @@ export function useBlogCrate() {
     },
     onError: (error) => {
       console.error("Blog create failed:", error);
+    },
+  });
+}
+
+// Update Blog Hook
+export function useUpdateBlog() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      blogId,
+      data,
+      image,
+    }: {
+      blogId: string;
+      data: { title: string; description: string };
+      image?: File;
+    }) => updateBlog(blogId, data, image),
+
+    onSuccess: () => {
+      // ✅ update হবার পরে সব blogs refetch হবে
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      queryClient.invalidateQueries({ queryKey: ["singleBlog"] });
+    },
+
+    onError: (error) => {
+      console.error("Blog update failed:", error);
     },
   });
 }

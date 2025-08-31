@@ -11,10 +11,12 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useBlogCrate } from "@/hooks/useBlogs";
+import Image from "next/image";
 
 export default function AddBlogPage() {
   const router = useRouter();
   const { mutate } = useBlogCrate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -45,6 +47,8 @@ export default function AddBlogPage() {
       return;
     }
 
+    setIsLoading(true); // loading start
+
     mutate(
       {
         data: {
@@ -61,15 +65,16 @@ export default function AddBlogPage() {
             description: "",
             image: null,
           });
+          setIsLoading(false); // loading end
           router.push("/blogs");
         },
         onError: () => {
           toast.error("Failed to create blog");
+          setIsLoading(false); // loading end
         },
       }
     );
   };
-
   const handleCancel = () => {
     router.push("/blogs");
   };
@@ -132,37 +137,57 @@ export default function AddBlogPage() {
               className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center space-y-4 cursor-pointer"
               onClick={() => document.getElementById("image-upload")?.click()}
             >
-              <div className="flex justify-center">
-                <Upload className="h-12 w-12 text-gray-400" />
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">
-                  Browse and choose the files you want to upload from your
-                  computer
-                </p>
-                <div className="flex justify-center ">
-                  <label htmlFor="image-upload">
-                    <Button
-                      type="button"
-                      size="sm"
-                      className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      <Plus className="h-4 w-4 " />
-                    </Button>
-                  </label>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                </div>
-              </div>
+              {!formData.image && (
+                <>
+                  <div className="flex justify-center">
+                    <Upload className="h-12 w-12 text-gray-400" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      Browse and choose the files you want to upload from your
+                      computer
+                    </p>
+                    <div className="flex justify-center">
+                      <label htmlFor="image-upload">
+                        <Button
+                          type="button"
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </label>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
               {formData.image && (
-                <p className="text-sm text-green-600 font-medium">
-                  {formData.image.name}
-                </p>
+                <div className="relative w-full h-48">
+                  <Image
+                    src={URL.createObjectURL(formData.image)}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-lg"
+                    width={200}
+                    height={200}
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, image: null }))
+                    }
+                    className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1"
+                  >
+                    ✕
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -172,8 +197,9 @@ export default function AddBlogPage() {
             <Button
               onClick={handleSave}
               className="w-full bg-green-600 hover:bg-green-700 text-white h-12 cursor-pointer"
+              disabled={isLoading}
             >
-              Save
+              {isLoading ? "Saving..." : "Save"}
             </Button>
             <Button
               onClick={handleCancel}
