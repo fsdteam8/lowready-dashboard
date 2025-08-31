@@ -4,7 +4,6 @@ import type {
   Facility,
   ServiceProvider,
   Customer,
-  DashboardStats,
   ChartData,
   Review,
   Notification,
@@ -85,20 +84,20 @@ const mockFacility: Facility = {
   },
 };
 
-const mockChartData: ChartData[] = [
-  { month: "Jan", value: 100 },
-  { month: "Feb", value: 120 },
-  { month: "Mar", value: 140 },
-  { month: "Apr", value: 110 },
-  { month: "May", value: 160 },
-  { month: "Jun", value: 180 },
-  { month: "Jul", value: 150 },
-  { month: "Aug", value: 170 },
-  { month: "Sep", value: 190 },
-  { month: "Oct", value: 200 },
-  { month: "Nov", value: 180 },
-  { month: "Dec", value: 220 },
-];
+// const mockChartData: ChartData[] = [
+//   { month: "Jan", value: 100 },
+//   { month: "Feb", value: 120 },
+//   { month: "Mar", value: 140 },
+//   { month: "Apr", value: 110 },
+//   { month: "May", value: 160 },
+//   { month: "Jun", value: 180 },
+//   { month: "Jul", value: 150 },
+//   { month: "Aug", value: 170 },
+//   { month: "Sep", value: 190 },
+//   { month: "Oct", value: 200 },
+//   { month: "Nov", value: 180 },
+//   { month: "Dec", value: 220 },
+// ];
 
 const mockBlogCategories: BlogCategory[] = [
   {
@@ -261,25 +260,24 @@ export type ApiType = typeof api;
 
 export const api = {
   // Dashboard
-  getDashboardStats: async (): Promise<DashboardStats> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return {
-      totalFacilities: 1234,
-      totalServiceProviders: 1234,
-      totalCustomers: 1234,
-      totalPlacements: 1234,
-      earnings: 1234,
-      facilitiesGrowth: 30,
-      serviceProvidersGrowth: 30,
-      customersGrowth: 30,
-      placementsGrowth: 30,
-      earningsGrowth: 30,
-    };
+  getDashboardStats: async () => {
+    try {
+      const res = await apiBase.get(`/dashboard/admin-dashboard`);
+      return res.data.data;
+    } catch (error) {
+      console.error("Error fetching facilities:", error);
+      return { data: [], totalPages: 1 };
+    }
   },
 
   getChartData: async (): Promise<ChartData[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockChartData;
+    try {
+      const res = await apiBase.get(`dashboard/admin-dashboard/total/earnings`);
+      return res.data.data;
+    } catch (error) {
+      console.error("Error fetching facilities:", error);
+      return { data: [], totalPages: 1 };
+    }
   },
 
   getFacility: async (id: string): Promise<Facility> => {
