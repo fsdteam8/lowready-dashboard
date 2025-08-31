@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Check, X, Eye } from "lucide-react";
+import {  Check, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -177,12 +177,9 @@ export default function PendingListingsPage() {
                           <Check className="h-8 w-8 text-green-600" />
                         </div>
                         <h3 className="text-lg font-medium text-gray-900 mb-2">
-                          No Pending Listings
+                          No Facilities Pending 
                         </h3>
-                        <p className="text-gray-600">
-                          All facility submissions have been reviewed. Check
-                          back later for new submissions.
-                        </p>
+                       
                       </div>
                     </TableCell>
                   </TableRow>
