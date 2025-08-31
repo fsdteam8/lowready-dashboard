@@ -3,10 +3,10 @@ import Image from "next/image"
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import type { Document } from "@/lib/types"
+import type { NewDocument } from "@/lib/types"
 
 interface DocumentModalProps {
-  document: Document | null
+  document: NewDocument | null
   isOpen: boolean
   onClose: () => void
 }
@@ -28,7 +28,7 @@ export function DocumentModal({ document, isOpen, onClose }: DocumentModalProps)
           {/* Document preview - showing vintage certificate as example */}
           <div className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/lowready91__Client_File_.png-RfpH9lgqn8F168q81EaDpJhtMe975B.jpeg"
+              src={document.file.url}
               alt={document.type}
               fill
               className="object-contain"
@@ -37,13 +37,13 @@ export function DocumentModal({ document, isOpen, onClose }: DocumentModalProps)
 
           <div className="mt-4 space-y-2 text-sm text-gray-600">
             <p>
-              <span className="font-medium">Format:</span> {document.format}
+              <span className="font-medium">Format:</span> {document.file.public_id}
             </p>
             <p>
-              <span className="font-medium">Size:</span> {document.size}
+              <span className="font-medium">Size:</span> {document.file.public_id}
             </p>
             <p>
-              <span className="font-medium">Uploaded:</span> {document.uploadedDate}
+              <span className="font-medium">Uploaded:</span> {document.createdAt}
             </p>
           </div>
         </div>
