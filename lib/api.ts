@@ -1,4 +1,5 @@
 // API service layer with mock data
+import { dataTagErrorSymbol } from "@tanstack/react-query";
 import type {
   User,
   Facility,
@@ -720,6 +721,21 @@ export async function getpendingFacilityData(page: number, limit: number) {
     return { data: [], totalPages: 1 };
   }
 }
+
+
+// all pending dataTagErrorSymbol 
+export async function getpendingallFacilityData() {
+  try {
+    const res = await apiBase.get(
+      `/facility/all?status=pending`
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
 
 export async function approveListing(id: string, status: string) {
   try {

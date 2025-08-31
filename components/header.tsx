@@ -69,7 +69,7 @@ export function Header() {
   });
 
   const pathname = usePathname();
-   console.log('pathname',pathname);
+
    
    const isPathName = pathname.split('/');
    const activePage = navigation.find((nav) => nav.href === pathname);;

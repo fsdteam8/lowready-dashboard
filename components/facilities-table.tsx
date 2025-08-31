@@ -23,35 +23,52 @@ import {
 import { FacilityResponse } from "@/lib/types";
 import { Pagination } from "./pagination";
 
+import { useQuery } from "@tanstack/react-query";
+import { getpendingallFacilityData } from "@/lib/api";
+
 interface FacilitiesTableProps {
   facilities: FacilityResponse[];
   onPageChange: (page: number) => void;
 }
 
-export function FacilitiesTable({ facilities, onPageChange }: FacilitiesTableProps) {
+export function FacilitiesTable({
+  facilities,
+  onPageChange,
+}: FacilitiesTableProps) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  
+
   // Filter facilities based on status
   const filteredFacilities = useMemo(() => {
     if (statusFilter === "all") return facilities;
-    
-    return facilities.filter(facility => {
+
+    return facilities.filter((facility) => {
       // Check both possible locations for availability
-      const isAvailable = facility?.facility?.availability ?? facility?.availability;
-      
+      const isAvailable =
+        facility?.facility?.availability ?? facility?.availability;
+
       if (statusFilter === "available") return isAvailable === true;
       if (statusFilter === "unavailable") return isAvailable === false;
       return true;
     });
   }, [facilities, statusFilter]);
 
+  // pending fetch
+  const { data: pendingListings } = useQuery({
+    queryKey:['pending-listings'],
+    queryFn:getpendingallFacilityData
+  });
+  // console.log(pendingListings.meta.total,'pending');
+  
   // Pagination logic
   const totalItems = filteredFacilities.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedFacilities = filteredFacilities.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedFacilities = filteredFacilities.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -84,7 +101,7 @@ export function FacilitiesTable({ facilities, onPageChange }: FacilitiesTablePro
         </div>
         <Link href="/facilities/pending">
           <Button className="bg-green-primary hover:bg-green-secondary">
-            Pending Listings ()
+            Pending Listings ({pendingListings?.meta?.total || 0})
           </Button>
         </Link>
       </div>
@@ -92,7 +109,7 @@ export function FacilitiesTable({ facilities, onPageChange }: FacilitiesTablePro
       {/* Table */}
       <div className="rounded-lg border bg-white">
         <Table>
-          <TableHeader >
+          <TableHeader>
             <TableRow className="bg-[#E6FAEE] text-[#343A40] text-[14px] font-normal ">
               <TableHead>Facility</TableHead>
               <TableHead>Created On</TableHead>
@@ -106,7 +123,7 @@ export function FacilitiesTable({ facilities, onPageChange }: FacilitiesTablePro
             {paginatedFacilities.length > 0 ? (
               paginatedFacilities.map((facility) => {
                 const isAvailable = getAvailabilityStatus(facility);
-                
+
                 return (
                   <TableRow key={facility._id}>
                     {/* Facility Info */}
@@ -150,7 +167,9 @@ export function FacilitiesTable({ facilities, onPageChange }: FacilitiesTablePro
                     <TableCell>{facility.facility?.totalTour ?? 0}</TableCell>
 
                     {/* Total Earnings */}
-                    <TableCell className="text-[#68706A] text-[16px] leading-[150%]">${facility.totalAdminShare ?? 0}</TableCell>
+                    <TableCell className="text-[#68706A] text-[16px] leading-[150%]">
+                      ${facility.totalAdminShare ?? 0}
+                    </TableCell>
 
                     {/* Status */}
                     <TableCell>
