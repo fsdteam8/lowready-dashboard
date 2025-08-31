@@ -8,7 +8,59 @@ import { Button } from "@/components/ui/button";
 import { ReviewDetailsModal } from "@/components/review/review-details-modal";
 import { DeleteConfirmModal } from "@/components/review/delete-confirm-modal";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { getFacilitys } from "@/lib/api";
+import { useSession } from "next-auth/react";
 
+// -------- FacilityResponse Interface --------
+export interface FacilityResponse {
+  totalAdminShare?: string | number;
+  facility?: FacilityResponse;
+  _id: string;
+  availability: boolean;
+  name: string;
+  location: string;
+  description: string;
+  price: number;
+  userId: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  images: {
+    public_id: string;
+    url: string;
+    _id: string;
+  }[];
+  base: string;
+  careServices: string[];
+  amenities: string[];
+  amenitiesServices: {
+    image: { public_id: string; url: string };
+    name: string;
+  }[];
+  about: string;
+  videoTitle?: string;
+  videoDescription?: string;
+  uploadVideo?: string;
+  availableTime?: string[];
+  facilityLicenseNumber?: string;
+  medicaidPrograms: {
+    public_id: string;
+    url: string;
+    _id: string;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  rating?: number;
+  ratingCount?: number;
+  address?: string;
+  status?: string;
+}
+
+// -------- ReviewData for Table --------
 interface ReviewData {
   id: string;
   customerName: string;
@@ -27,89 +79,32 @@ export default function ReviewsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState<ReviewData | null>(null);
 
-  const reviews: ReviewData[] = useMemo(
-    () => [
-      {
-        id: "1",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 5,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-      {
-        id: "2",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 4,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-      {
-        id: "3",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 3,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-      {
-        id: "4",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 2,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-      {
-        id: "5",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 1,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-      {
-        id: "6",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 2,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-      {
-        id: "7",
-        customerName: "Olivia Rhye",
-        customerEmail: "olivia@untitledui.com",
-        customerAvatar: "/professional-woman.png",
-        rating: 3,
-        comment:
-          "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lore...",
-        location: "Portland, OR",
-        date: "Jan 06, 2025",
-      },
-    ],
-    []
-  );
+  const { data: session } = useSession();
 
+  // Fetch facilities data
+  const { data: facilities = [] } = useQuery<FacilityResponse[]>({
+    queryKey: ["facilities"],
+    queryFn: () => getFacilitys(),
+  });
+
+  // Map FacilityResponse[] -> ReviewData[]
+  const reviews: ReviewData[] = useMemo(() => {
+    if (!facilities) return [];
+    return facilities.map((f) => ({
+      id: f._id,
+      customerName: f.userId
+        ? `${f.userId.firstName} ${f.userId.lastName}`
+        : "Unknown User",
+      customerEmail: f.userId?.email || "N/A",
+      customerAvatar: f.images?.[0]?.url || "/placeholder.svg",
+      rating: f.rating || 0,
+      comment: f.description || "No description",
+      location: f.location || "Unknown",
+      date: new Date(f.createdAt).toLocaleDateString(),
+    }));
+  }, [facilities]);
+
+  // Pagination
   const itemsPerPage = 5;
   const totalPages = Math.ceil(reviews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -134,74 +129,51 @@ export default function ReviewsPage() {
     }
   };
 
-  const renderStars = (rating: number) => {
-    return (
-      <div className="flex items-center gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={`h-4 w-4 ${
-              i < rating
-                ? "fill-yellow-400 text-yellow-400"
-                : "fill-gray-200 text-gray-200"
-            }`}
-          />
-        ))}
-      </div>
-    );
-  };
+  const renderStars = (rating: number) => (
+    <div className="flex items-center gap-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`h-4 w-4 ${
+            i < rating
+              ? "fill-yellow-400 text-yellow-400"
+              : "fill-gray-200 text-gray-200"
+          }`}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <div className="flex h-screen bg-gray-50">
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
+          {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-            {[
-              {
-                title: "5 Star Ratings",
-                count: "123",
-                growth: "+ 36% from the last month",
-              },
-              {
-                title: "4 Star Ratings",
-                count: "123",
-                growth: "+ 36% from the last month",
-              },
-              {
-                title: "3 Star Ratings",
-                count: "123",
-                growth: "+ 36% from the last month",
-              },
-              {
-                title: "2 Star Ratings",
-                count: "123",
-                growth: "+ 36% from the last month",
-              },
-              {
-                title: "1 Star Ratings",
-                count: "123",
-                growth: "+ 36% from the last month",
-              },
-            ].map((stat, index) => (
-              <Card key={index}>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-600">
-                    {stat.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-gray-900 mb-1">
-                    {stat.count}
-                  </div>
-                  <div className="text-xs text-green-600 flex items-center gap-1">
-                    <span>↗</span>
-                    <span>{stat.growth}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {[1, 2, 3, 4, 5].map((star) => {
+              const count = reviews.filter((r) => r.rating === star).length;
+              return (
+                <Card key={star}>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-gray-600">
+                      {star} Star Ratings
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-gray-900 mb-1">
+                      {count}
+                    </div>
+                    <div className="text-xs text-green-600 flex items-center gap-1">
+                      <span>↗</span>
+                      <span>Updated</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
+          {/* Table */}
           <Card>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
@@ -237,9 +209,7 @@ export default function ReviewsPage() {
                           <div className="flex items-center gap-3">
                             <Avatar className="h-10 w-10">
                               <AvatarImage
-                                src={
-                                  review.customerAvatar || "/placeholder.svg"
-                                }
+                                src={review.customerAvatar}
                                 alt={review.customerName}
                               />
                               <AvatarFallback>
@@ -261,14 +231,8 @@ export default function ReviewsPage() {
                             {review.comment}
                           </div>
                         </td>
-                        <td className="py-4 px-6">
-                          {renderStars(review.rating)}
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="text-sm text-gray-900">
-                            {review.date}
-                          </div>
-                        </td>
+                        <td className="py-4 px-6">{renderStars(review.rating)}</td>
+                        <td className="py-4 px-6">{review.date}</td>
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-2">
                             <Button
@@ -297,6 +261,7 @@ export default function ReviewsPage() {
             </CardContent>
           </Card>
 
+          {/* Pagination */}
           <div className="flex items-center justify-between mt-6">
             <div className="text-sm text-gray-600">
               Showing {startIndex + 1} to{" "}
@@ -313,33 +278,21 @@ export default function ReviewsPage() {
               >
                 ‹
               </Button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <Button
-                    key={page}
-                    variant={currentPage === page ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setCurrentPage(page)}
-                    className={`h-8 w-8 p-0 ${
-                      currentPage === page
-                        ? "bg-green-600 text-white hover:bg-green-700"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    {page}
-                  </Button>
-                )
-              )}
-              {totalPages > 5 && (
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <Button
-                  variant="outline"
+                  key={page}
+                  variant={currentPage === page ? "default" : "outline"}
                   size="sm"
-                  disabled
-                  className="h-8 w-8 p-0 bg-transparent"
+                  onClick={() => setCurrentPage(page)}
+                  className={`h-8 w-8 p-0 ${
+                    currentPage === page
+                      ? "bg-green-600 text-white hover:bg-green-700"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
                 >
-                  ...
+                  {page}
                 </Button>
-              )}
+              ))}
               <Button
                 variant="outline"
                 size="sm"

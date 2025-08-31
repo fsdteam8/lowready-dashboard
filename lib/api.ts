@@ -1048,3 +1048,28 @@ export async function getSingleFacility(id: string) {
     return { data: [], totalPages: 1 };
   }
 }
+
+
+
+  
+
+export async function getreviewFacility(id: string) {
+  try {
+    const res = await apiBase.get(`/facility/summary/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+export async function getFacilitys() {
+  try {
+    const res = await apiBase.get(`/facility/all`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: []};
+  }
+}
+
