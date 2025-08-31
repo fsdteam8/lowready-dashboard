@@ -2,7 +2,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
-import { Pencil } from "lucide-react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useSession } from "next-auth/react";
 

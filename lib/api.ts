@@ -2061,3 +2061,47 @@ export async function getAllFacilityData(page: number, limit: number) {
     return { data: [], totalPages: 1 };
   }
 }
+
+// get all blogs
+export async function getAllBlogs(page: number, limit: number) {
+  const response = await apiBase.get(
+    `/blog/all?page=${page}&limit=${limit}`
+  );
+  return response.data;
+}
+
+// Get single Blog 
+export async function getSingleBlog(id: string) {
+  const res = await apiBase.get(`/blog/${id}`);
+  return res.data;
+}
+
+// Delete single Blog 
+export async function deleteSingleBlog(id: string) {
+  const res = await apiBase.delete(`/blog/delete/${id}`);
+  return res.data;
+}
+
+// add blog
+// export async function createBlogs(
+//   data: { blogTitle: string; readingTime: string, blogDescription: string },
+//   image?: File
+// ) {
+//   try {
+//     const formData = new FormData();
+//     formData.append("data", JSON.stringify(data));
+//     if (image) {
+//       formData.append("image", image);
+//     }
+
+//     const response = await apiBase.post("/blog/create", formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
