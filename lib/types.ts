@@ -18,10 +18,14 @@ export interface Facility {
   price: number;
   status: FacilityStatus;
   createdOn: string;
-  totalPlacements: number;
-  totalTours: number;
+  totalPlacement: number;
+  totalTour: number;
   totalEarnings: number;
-  images: string[];
+  images: {
+    public_id: string;
+    url: string;
+    _id: string;
+  }[];
   amenities: string[];
   careServices: string[];
   availableTimes: string[];
@@ -30,22 +34,26 @@ export interface Facility {
     description: string;
     url: string;
   };
+  createdAt?: string;
 }
 
 export interface ServiceProvider {
-  id: string;
+  _id: string;
   name: string;
   email: string;
-  phone: string;
-  avatar?: string;
+  phoneNum: string;
+  avatar?: {
+    url:string,
+  };
   facility: {
     id: string;
     name: string;
     location: string;
     image: string;
   };
-  serviceProvided: number;
-  subscription: SubscriptionStatus;
+  stree:string,
+  onboardingStatus: boolean;
+  subscriptionStatus: SubscriptionStatus;
   documents: Document[];
 }
 
@@ -121,7 +129,7 @@ export interface DashboardStats {
 
 export interface ChartData {
   month: string;
-  value: number;
+  totalEarnings: number;
 }
 
 export interface Notification {
@@ -342,6 +350,9 @@ export enum SubscriptionStatus {
   UNSUBSCRIBED = "Unsubscribed",
 }
 
+
+
+
 export enum TourStatus {
   UPCOMING = "Upcoming",
   COMPLETED = "Completed",
@@ -382,6 +393,8 @@ export enum ReferralStatus {
 }
 
 export interface FacilityResponse {
+  totalAdminShare?: string | number;
+  facility?: Facility;
   _id: string;
   availability: boolean;
   name: string;
@@ -423,9 +436,29 @@ export interface FacilityResponse {
   rating?: number;
   ratingCount?: number;
   address?: string;
+  status?: string;
 }
 
 export interface FacilityAllData {
   data: FacilityResponse[];
   totalPages?: number;
+}
+
+// types/notification.ts
+export interface INotification {
+  _id: string;
+  to: string;
+  message: string;
+  isViewed: boolean;
+  type: string;
+  id: string; // This seems to reference another entity
+  createdAt: string;
+  updatedAt: string;
+}
+
+// The response structure from your API
+export interface NotificationsResponse {
+  success: boolean;
+  data: INotification[];
+  message?: string;
 }

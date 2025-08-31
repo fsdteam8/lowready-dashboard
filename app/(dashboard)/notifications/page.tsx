@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,15 +10,55 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getNotifications, clearAllNotifications } from "@/lib/api";
+import { useSession } from "next-auth/react";
+
+import { formatDistanceToNow } from "date-fns";
+import { INotification } from "@/lib/types";
 
 export default function NotificationsPage() {
   const [filter, setFilter] = useState("all");
-  const { data: notifications, isLoading } = useQuery({
-    queryKey: ["notifications"],
-    queryFn: api.getNotifications,
+  const { data: session } = useSession();
+  const queryClient = useQueryClient();
+  const userId = session?.user.id || "";
+
+  const {
+    data: notifications = [],
+    isLoading,
+    error,
+  } = useQuery<INotification[]>({
+    queryKey: ["notifications", userId],
+    queryFn: () => getNotifications(userId),
+    enabled: !!userId, // Only run query if userId exists
   });
+
+  // // Mark as read mutation
+  // const markAsReadMutation = useMutation({
+  //   mutationFn: (notificationId: string) => markNotificationAsRead(notificationId),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+  //   },
+  // });
+
+  // Clear all mutation
+  const clearAllMutation = useMutation({
+    mutationFn: () => clearAllNotifications(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+    },
+  });
+
+  // Filter notifications based on selection
+  const filteredNotifications = useMemo(() => {
+    if (filter === "all") return notifications;
+    return notifications.filter((notification) => notification.type === filter);
+  }, [notifications, filter]);
+
+  // Format time using date-fns
+  const formatTime = (dateString: string) => {
+    return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+  };
 
   if (isLoading) {
     return (
@@ -35,13 +75,75 @@ export default function NotificationsPage() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex h-screen">
+        <div className="flex-1">
+          <div className="flex items-center justify-center h-96">
+            <div className="text-center">
+              <p className="text-red-500">Error loading notifications</p>
+              <p className="text-gray-600 text-sm mt-2">{error.message}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen bg-gray-50">
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-4xl mx-auto">
-            {/* Header with filter and actions */}
-            <div className="flex items-center justify-between mb-6">
+          <div className="flex justify-between items-start mx-auto">
+           
+
+            {/* Notifications List */}
+            <div className="space-y-4 w-[70%]">
+              {filteredNotifications.length === 0 ? (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <p className="text-gray-500">No notifications found</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                filteredNotifications.map((notification) => (
+                  <Card
+                    key={notification._id}
+                    className={
+                      notification.isViewed
+                        ? "opacity-70"
+                        : "border-green-primary border"
+                    }
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold text-[#208436] text-[18px] capitalize">
+                              {notification.type.replace("-", " ")}
+                            </h3>
+                            {!notification.isViewed && (
+                              <span className="bg-green-primary text-white text-xs px-2 py-1 rounded-full">
+                                New
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm lg-[16px] text-[#68706A] font-normal mt-1">
+                            {notification.message}
+                          </p>
+                        </div>
+                        <span className="text-xs font-normal text-gray-500 whitespace-nowrap ml-4">
+                          {formatTime(notification.createdAt)}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+            
+            {/* notification side list  */}
+            <div className="flex flex-col gap-10 justify-between items-center mb-6 w-[25%]">
               <div className="flex items-center gap-4">
                 <span className="text-sm font-medium">Filter</span>
                 <Select value={filter} onValueChange={setFilter}>
@@ -68,36 +170,20 @@ export default function NotificationsPage() {
                 <Button
                   variant="outline"
                   className="text-red-error border-red-error hover:bg-red-bg bg-transparent"
+                  onClick={() => clearAllMutation.mutate()}
+                  disabled={
+                    clearAllMutation.isPending || notifications.length === 0
+                  }
                 >
-                  Clear All
+                  {clearAllMutation.isPending ? "Clearing..." : "Clear All"}
                 </Button>
-                <Button className="bg-green-primary hover:bg-green-secondary">
+                <Button
+                  className="bg-green-primary hover:bg-green-secondary"
+                  disabled={notifications.length === 0}
+                >
                   Mark as Read
                 </Button>
               </div>
-            </div>
-
-            {/* Notifications List */}
-            <div className="space-y-4">
-              {notifications?.map((notification) => (
-                <Card key={notification.id}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-medium text-green-primary">
-                          {notification.title}
-                        </h3>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {notification.message}
-                        </p>
-                      </div>
-                      <span className="text-sm text-gray-500">
-                        {notification.time}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         </main>
