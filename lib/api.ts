@@ -279,22 +279,6 @@ export const api = {
     return res.data.data;
   },
 
-  // Facilities
-  getFacilities: async (
-    page = 1,
-    limit = 10
-  ): Promise<{ facilities: Facility[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const facilities = Array.from({ length: 12 }, (_, i) => ({
-      ...mockFacility,
-      id: `facility-${i + 1}`,
-      status: i % 4 === 3 ? ("Unavailable" as const) : ("Available" as const),
-    }));
-    return {
-      facilities: facilities.slice((page - 1) * limit, page * limit),
-      total: facilities.length,
-    };
-  },
 
   // Service Providers
   getServiceProviders: async (
@@ -328,33 +312,6 @@ export const api = {
 },
 
 
-  // Customers
-  // getCustomers: async (
-  //   page = 1,
-  //   limit = 10
-  // ): Promise<{ customers: Customer[]; total: number }> => {
-  //   await new Promise((resolve) => setTimeout(resolve, 500));
-  //   const customers = Array.from({ length: 12 }, (_, i) => ({
-  //     id: `customer-${i + 1}`,
-  //     name: "Olivia Rhye",
-  //     email: "olivia@untitledui.com",
-  //     phone:
-  //       i % 3 === 0
-  //         ? undefined
-  //         : `(${200 + i}) 555-01${i.toString().padStart(2, "0")}`,
-  //     avatar: "/diverse-group.png",
-  //     location: "2972 Westheimer Rd, Santa Ana, Illinois",
-  //     totalTours: 123,
-  //     totalPlacements: 123,
-  //     joiningDate: "Jan 06, 2025",
-  //     tourHistory: [],
-  //     bookingHistory: [],
-  //   }));
-  //   return {
-  //     customers: customers.slice((page - 1) * limit, page * limit),
-  //     total: customers.length,
-  //   };
-  // },
 
   getCustomer: async (id: string): Promise<Customer> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
