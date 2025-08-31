@@ -38,19 +38,22 @@ export interface Facility {
 }
 
 export interface ServiceProvider {
-  id: string;
+  _id: string;
   name: string;
   email: string;
-  phone: string;
-  avatar?: string;
+  phoneNum: string;
+  avatar?: {
+    url:string,
+  };
   facility: {
     id: string;
     name: string;
     location: string;
     image: string;
   };
-  serviceProvided: number;
-  subscription: SubscriptionStatus;
+  stree:string,
+  onboardingStatus: boolean;
+  subscriptionStatus: SubscriptionStatus;
   documents: Document[];
 }
 
@@ -126,7 +129,7 @@ export interface DashboardStats {
 
 export interface ChartData {
   month: string;
-  value: number;
+  totalEarnings: number;
 }
 
 export interface Notification {
@@ -346,6 +349,9 @@ export enum SubscriptionStatus {
   SUBSCRIBED = "Subscribed",
   UNSUBSCRIBED = "Unsubscribed",
 }
+
+
+
 
 export enum TourStatus {
   UPCOMING = "Upcoming",

@@ -30,11 +30,11 @@ export function DeleteConfirmModal({ isOpen, onClose, onConfirm, title, message 
             <Button
               variant="outline"
               onClick={onClose}
-              className="px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50 bg-transparent"
+              className="px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50 bg-transparent cursor-pointer"
             >
               Cancel
             </Button>
-            <Button onClick={onConfirm} className="px-6 py-2 bg-red-600 text-white hover:bg-red-700">
+            <Button onClick={onConfirm} className="px-6 py-2 bg-red-600 text-white hover:bg-red-700 cursor-pointer">
               Delete
             </Button>
           </div>
