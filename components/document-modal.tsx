@@ -1,53 +1,75 @@
-"use client"
-import Image from "next/image"
-import { X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import type { NewDocument } from "@/lib/types"
+"use client";
+import Image from "next/image";
+// import { X } from "lucide-react";
+// import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import type { NewDocument } from "@/lib/types";
 
 interface DocumentModalProps {
-  document: NewDocument | null
-  isOpen: boolean
-  onClose: () => void
+  document: NewDocument | null;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function DocumentModal({ document, isOpen, onClose }: DocumentModalProps) {
-  if (!document) return null
+export function DocumentModal({
+  document,
+  isOpen,
+  onClose,
+}: DocumentModalProps) {
+  if (!document) return null;
+
+  console.log("Document URL:", document.file.url);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
         <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <DialogTitle>{document.type}</DialogTitle>
-          <Button variant="ghost" size="icon" onClick={onClose}>
+          {/* <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </DialogHeader>
 
         <div className="flex-1 overflow-auto">
           {/* Document preview - showing vintage certificate as example */}
           <div className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden">
-            <Image
-              src={document.file.url}
-              alt={document.type}
-              fill
-              className="object-contain"
-            />
+            {document.file.url.endsWith(".pdf") ? (
+              <iframe
+                src={document.file.url}
+                className="w-full h-full"
+                title="PDF Preview"
+              />
+            ) : (
+              <Image
+                src={document.file.url || "/logo.png"}
+                alt={document.type}
+                fill
+                className="object-contain"
+              />
+            )}
           </div>
 
           <div className="mt-4 space-y-2 text-sm text-gray-600">
             <p>
-              <span className="font-medium">Format:</span> {document.file.public_id}
+              <span className="font-medium">Format:</span>{" "}
+              {document.file.public_id}
             </p>
             <p>
-              <span className="font-medium">Size:</span> {document.file.public_id}
+              <span className="font-medium">Size:</span>{" "}
+              {document.file.public_id}
             </p>
             <p>
-              <span className="font-medium">Uploaded:</span> {document.createdAt}
+              <span className="font-medium">Uploaded:</span>{" "}
+              {document.createdAt}
             </p>
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

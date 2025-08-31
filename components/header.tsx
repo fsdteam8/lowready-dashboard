@@ -69,16 +69,15 @@ export function Header() {
   });
 
   const pathname = usePathname();
-   console.log('pathname',pathname);
-   
-   const isPathName = pathname.split('/');
-   const activePage = navigation.find((nav) => nav.href === pathname);;
+  const parentPath = `/${pathname.split("/")[1] || ""}`;
+
+  const activePage = navigation.find((nav) => nav.href === parentPath);
+
   return (
     <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>
         <h1 className="text-2xl font-semibold text-[#28A745]">
-          {isPathName}
-            
+          {activePage?.name || "Dashboard"}
         </h1>
         <p className="text-sm text-gray-600">
           {activePage?.description || "Welcome to your dashboard."}
@@ -88,17 +87,15 @@ export function Header() {
       <div className="flex items-center gap-4">
         {/* Notifications */}
         <DropdownMenu>
-          
-              <Link href={`/notifications`}>
+          <Link href={`/notifications`}>
             <Button variant="ghost" size="icon" className="relative">
-              
               <Bell className="h-5 w-5" />
               <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full bg-red-500 p-0 text-xs text-white">
                 1
               </Badge>
             </Button>
-              </Link>
-          
+          </Link>
+
           <DropdownMenuContent align="end" className="w-80">
             <DropdownMenuItem>
               <div className="flex flex-col gap-1">

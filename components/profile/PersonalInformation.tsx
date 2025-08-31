@@ -13,8 +13,6 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Crown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 // ✅ Zod Schema for Validation
 const profileSchema = z.object({

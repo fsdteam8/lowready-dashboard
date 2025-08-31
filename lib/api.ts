@@ -859,9 +859,7 @@ export async function createBlogs(
 //     throw error;
 //   }
 // }
-<<<<<<< HEAD
-=======
-
+ 
 
 // Notification 
 
@@ -964,5 +962,3 @@ export async function DeleteReview(id: string) {
   }
 }
 
-
->>>>>>> 37d965c4c0c7c9f1788c0c07748d8c36ef267834
