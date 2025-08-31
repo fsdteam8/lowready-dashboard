@@ -1,19 +1,42 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { api } from "@/lib/api"
+import { useQuery } from "@tanstack/react-query";
+import {
+  getBookingHistory,
+  getCustomers,
+  getSingleCustomer,
+  getVisitBooking,
+} from "@/lib/api";
 
 export function useCustomers(page = 1, limit = 10) {
   return useQuery({
     queryKey: ["customers", page, limit],
-    queryFn: () => api.getCustomers(page, limit),
-  })
+    queryFn: () => getCustomers(page, limit),
+  });
 }
 
-export function useCustomer(id: string) {
+// get single customers data
+export function useSingleCustomer(id: string) {
   return useQuery({
     queryKey: ["customer", id],
-    queryFn: () => api.getCustomer(id),
+    queryFn: () => getSingleCustomer(id),
     enabled: !!id,
-  })
+  });
+}
+
+// get visit bokking detailes
+export function useVisitBooking(id: string) {
+  return useQuery({
+    queryKey: ["visitBooking", id],
+    queryFn: () => getVisitBooking(id),
+    enabled: !!id,
+  });
+}
+
+// get Booking History
+export function useBookingHistory(id: string, page = 1, limit = 10) {
+  return useQuery({
+    queryKey: ["bookingHistory", id, page, limit],
+    queryFn: () => getBookingHistory(id, page, limit),
+  });
 }

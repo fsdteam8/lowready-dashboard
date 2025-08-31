@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Pagination } from "@/components/pagination"
 import type { ServiceProvider } from "@/lib/types"
+import { projectOnExit } from "next/dist/build/swc/generated-native"
 
 interface ServiceProvidersTableProps {
   providers: ServiceProvider[]
@@ -20,6 +21,9 @@ interface ServiceProvidersTableProps {
   onPageChange: (page: number) => void
   onSearch: (query: string) => void
 }
+
+
+
 
 export function ServiceProvidersTable({
   providers,
@@ -31,7 +35,7 @@ export function ServiceProvidersTable({
   const [searchQuery, setSearchQuery] = useState("")
   const itemsPerPage = 10
   const totalPages = Math.ceil(total / itemsPerPage)
-
+  console.log(providers)
   const handleSearch = () => {
     onSearch(searchQuery)
   }
@@ -79,13 +83,14 @@ export function ServiceProvidersTable({
             </TableRow>
           </TableHeader>
           <TableBody>
+            
             {providers.map((provider) => (
-              <TableRow key={provider.id}>
+              <TableRow key={provider._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="relative h-10 w-10 rounded-full overflow-hidden">
                       <Image
-                        src={provider.avatar || "/professional-person.png"}
+                        src={provider.avatar?.url || "/professional-person.png"}
                         alt={provider.name}
                         fill
                         className="object-cover"
@@ -97,38 +102,38 @@ export function ServiceProvidersTable({
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>{provider.phone || "-"}</TableCell>
+                <TableCell>{provider.phoneNum || "-"}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="relative h-10 w-10 rounded-lg overflow-hidden">
                       <Image
-                        src={provider.facility.image || "/assisted-living-facility.png"}
-                        alt={provider.facility.name}
+                        src={provider.avatar?.url || "/assisted-living-facility.png"}
+                        alt={provider.name}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div>
-                      <p className="font-medium">{provider.facility.name}</p>
-                      <p className="text-sm text-gray-600">{provider.facility.location}</p>
+                      <p className="font-medium">{provider.name}</p>
+                      <p className="text-sm text-gray-600">{provider.stree}</p>
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>{provider.serviceProvided}</TableCell>
+                <TableCell>{provider.onboardingStatus ? "Active" : "Inactive"}</TableCell>
                 <TableCell>
                   <Badge
-                    variant={provider.subscription === "Subscribed" ? "default" : "secondary"}
+                    variant={provider.subscriptionStatus === "Subscribed" ? "default" : "secondary"}
                     className={
-                      provider.subscription === "Subscribed"
+                      provider.subscriptionStatus === "Subscribed"
                         ? "bg-green-bg text-green-success"
                         : "bg-gray-100 text-gray-600"
                     }
                   >
-                    {provider.subscription}
+                    {provider.subscriptionStatus}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/service-providers/${provider.id}`}>
+                  <Link href={`/service-providers/${provider._id}`}>
                     <Button variant="ghost" className="text-green-primary hover:text-green-secondary">
                       Details
                     </Button>

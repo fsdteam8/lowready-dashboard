@@ -3,20 +3,14 @@
 import { StatsCard } from "@/components/stats-card";
 import { RecentSection } from "@/components/recent-section";
 import { ReviewsSection } from "@/components/reviews-section";
-import {
-  useDashboardStats,
-  useChartData,
-  useRecentReviews,
-} from "@/hooks/use-dashboard";
+import { useDashboardStats, useRecentReviews } from "@/hooks/use-dashboard";
 import { Building2, UserCheck, Users, MapPin, DollarSign } from "lucide-react";
-import { ChartBarInteractive } from "@/components/chart-bar-interactive";
+import ChartBarInteractive from "@/components/chart-bar-interactive";
 
 export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
-  const { data: chartData, isLoading: chartLoading } = useChartData();
   const { data: reviews, isLoading: reviewsLoading } = useRecentReviews();
 
-  console.log(chartData);
   // Mock data for recent sections
   const recentServiceProviders = [
     {
@@ -108,7 +102,7 @@ export default function DashboardPage() {
     },
   ];
 
-  if (statsLoading || chartLoading || reviewsLoading) {
+  if (statsLoading || reviewsLoading) {
     return (
       <div className="flex h-screen">
         <div className="flex items-center justify-center h-96">
@@ -122,7 +116,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex-col h-screen bg-gray-50">
+    <div className="flex-col h-screen bg-gray-50 pt-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <StatsCard
           title="Total Facilities"
@@ -144,13 +138,13 @@ export default function DashboardPage() {
         />
         <StatsCard
           title="Total Placements"
-          value={stats?.totalPlacements || 0}
-          growth={stats?.placementsGrowth || 0}
+          value={stats?.totalBookings || 0}
+          growth={stats?.bookingsGrowth || 0}
           icon={<MapPin className="h-6 w-6" />}
         />
         <StatsCard
           title="Earnings"
-          value={`$${stats?.earnings?.toLocaleString() || 0}`}
+          value={`$${stats?.totalEarnings?.toLocaleString() || 0}`}
           growth={stats?.earningsGrowth || 0}
           icon={<DollarSign className="h-6 w-6" />}
         />

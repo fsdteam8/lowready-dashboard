@@ -1,31 +1,66 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { Booking } from "@/lib/types"
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface BookingHistoryTableProps {
-  bookings: Booking[]
+  bookings: Booking[];
+}
+
+export interface FacilityImage {
+  _id: string;
+  public_id: string;
+  url: string;
+}
+
+export interface Facility {
+  _id: string;
+  name: string;
+  location: string;
+  images: FacilityImage[];
+}
+
+export type BookingStatus = "upcoming" | "completed" | "cancelled";
+
+export interface Booking {
+  id?: string; 
+  _id: string;  
+  facility?: Facility;
+  placeName?: string;  
+  visitDate?: string;  
+  duration?: string;  
+  status: BookingStatus;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
   const getStatusColor = (status: Booking["status"]) => {
     switch (status) {
-      case "Paid":
-        return "bg-green-bg text-green-success"
-      case "Cancelled":
-        return "bg-red-bg text-red-error"
+      case "upcoming":
+        return "bg-blue-100 text-blue-700 p-3 text-[14px]";
+      case "completed":
+        return "bg-green-100 text-green-700 p-3 text-[14px]";
+      case "cancelled":
+        return "bg-red-100 text-red-700 p-3 text-[14px]";
       default:
-        return "bg-gray-100 text-gray-600"
+        return "bg-gray-100 text-gray-600 p-3 text-[14px]";
     }
-  }
+  };
 
   return (
     <div className="rounded-lg border bg-white">
       <Table>
         <TableHeader>
-          <TableRow className="bg-green-bg">
+          <TableRow className="bg-[#E6F9EB] hover:bg-[#E6F9EB] text-[#343A40] text-[14px]">
             <TableHead>Place Name</TableHead>
             <TableHead>Booked Date</TableHead>
             <TableHead>Check-In Time</TableHead>
@@ -33,33 +68,51 @@ export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bookings.map((booking) => (
-            <TableRow key={booking.id}>
+          {bookings.slice(0, 5).map((booking) => (
+            <TableRow key={booking.id || booking._id}>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <div className="relative h-10 w-10 rounded-lg overflow-hidden">
                     <Image
-                      src={booking.placeImage || "/assisted-living-facility.png"}
-                      alt={booking.placeName}
+                      src={
+                        booking.facility?.images?.[0]?.url ||
+                        "/assisted-living-facility.png"
+                      }
+                      alt={booking.facility?.name || "Facility"}
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div>
-                    <p className="font-medium">{booking.placeName}</p>
-                    <p className="text-sm text-gray-600">Florida, USA</p>
+                    <p className="font-medium">{booking.facility?.name}</p>
+                    <p className="text-sm text-gray-600">
+                      {booking.facility?.location}
+                    </p>
                   </div>
                 </div>
               </TableCell>
-              <TableCell>{booking.bookedDate}</TableCell>
-              <TableCell>{booking.checkInTime}</TableCell>
+
               <TableCell>
-                <Badge className={getStatusColor(booking.status)}>{booking.status}</Badge>
+                {booking.visitDate
+                  ? new Date(booking.visitDate).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "2-digit",
+                      year: "numeric",
+                    })
+                  : "N/A"}
+              </TableCell>
+
+              <TableCell>{booking.duration || "N/A"}</TableCell>
+
+              <TableCell>
+                <Badge className={getStatusColor(booking.status)}>
+                  {booking.status}
+                </Badge>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

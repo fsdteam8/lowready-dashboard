@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { CustomersTable } from "@/components/customers-table";
 import { useCustomers } from "@/hooks/use-customers";
-import { clear } from "console";
 
 export default function CustomersPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, error } = useCustomers(currentPage, 10);
+  const { data: customars, isLoading, error } = useCustomers(currentPage, 10);
+
 
   if (isLoading) {
     return (
@@ -43,8 +43,8 @@ export default function CustomersPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <CustomersTable
-            customers={data?.customers || []}
-            total={data?.total || 0}
+            customers={customars?.data || []}
+            total={customars?.meta?.total || 0}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
           />
