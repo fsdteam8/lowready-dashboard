@@ -83,7 +83,7 @@ export function FacilitiesTable({ facilities }: FacilitiesTableProps) {
                             facility.facility?.images?.[0]?.url ||
                             "/assisted-living-facility.png"
                           }
-                          alt={facility.name}
+                          alt={facility._id}
                           fill
                           className="object-cover"
                         />

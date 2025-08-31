@@ -1060,6 +1060,8 @@ import type {
   PlacementStats,
   ReferralFee,
   ReferralStats,
+  NotificationsResponse,
+  INotification,
 } from "./types";
 
 import axios from "axios";
@@ -1375,33 +1377,7 @@ export const api = {
    
   },
 
-  // Customers
-  // getCustomers: async (
-  //   page = 1,
-  //   limit = 10
-  // ): Promise<{ customers: Customer[]; total: number }> => {
-  //   await new Promise((resolve) => setTimeout(resolve, 500));
-  //   const customers = Array.from({ length: 12 }, (_, i) => ({
-  //     id: `customer-${i + 1}`,
-  //     name: "Olivia Rhye",
-  //     email: "olivia@untitledui.com",
-  //     phone:
-  //       i % 3 === 0
-  //         ? undefined
-  //         : `(${200 + i}) 555-01${i.toString().padStart(2, "0")}`,
-  //     avatar: "/diverse-group.png",
-  //     location: "2972 Westheimer Rd, Santa Ana, Illinois",
-  //     totalTours: 123,
-  //     totalPlacements: 123,
-  //     joiningDate: "Jan 06, 2025",
-  //     tourHistory: [],
-  //     bookingHistory: [],
-  //   }));
-  //   return {
-  //     customers: customers.slice((page - 1) * limit, page * limit),
-  //     total: customers.length,
-  //   };
-  // },
+
 
   getCustomer: async (id: string): Promise<Customer> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -1456,17 +1432,7 @@ export const api = {
     }));
   },
 
-  // Notifications
-  getNotifications: async (): Promise<Notification[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return Array.from({ length: 9 }, (_, i) => ({
-      id: `notification-${i + 1}`,
-      title: "Notification Title",
-      message: "Here's notification text.",
-      time: "34m ago",
-      type: "Properties Listing" as const,
-    }));
-  },
+
 
   declineListing: async (id: string): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -2142,4 +2108,77 @@ export async function deleteSingleBlog(id: string) {
 
 
 // Notification 
+
+
+
+export async function getNotifications(userId: string): Promise<INotification[]> {
+  try {
+    const res = await apiBase.get<NotificationsResponse>(`/notifications/${userId}`);
+    if (res.data.success) {
+      return res.data.data;
+    }
+    throw new Error(res.data.message || 'Failed to fetch notifications');
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error fetching notifications: ${error.message}`);
+    }
+    throw new Error('Unknown error occurred while fetching notifications');
+  }
+}
+// lib/api.ts
+export async function markNotificationAsRead(notificationId: string): Promise<void> {
+  try {
+    const res = await apiBase.patch(`/notifications/${notificationId}/read`);
+    if (!res.data.success) {
+      throw new Error(res.data.message || 'Failed to mark notification as read');
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error marking notification as read: ${error.message}`);
+    }
+    throw new Error('Unknown error occurred');
+  }
+}
+
+export async function clearAllNotifications(userId: string): Promise<void> {
+  try {
+    const res = await apiBase.delete(`/notifications/${userId}/clear`);
+    if (!res.data.success) {
+      throw new Error(res.data.message || 'Failed to clear notifications');
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error clearing notifications: ${error.message}`);
+    }
+    throw new Error('Unknown error occurred');
+  }
+}
+
+//review rating deleter
+
+export async function reviewReting() {
+  try {
+    const res = await apiBase.get(`/review-rating`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error fetching notifications: ${error.message}`);
+    }
+    throw error;
+  }
+}
+
+export async function DeleteReview(id: string) {
+  try {
+    console.log('id check',id);
+    
+    const res = await apiBase.delete(`/review-rating/${id}`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error Deleted you Review: ${error.message}`);
+    }
+  }
+}
+
 
