@@ -16,12 +16,17 @@ export interface Facility {
   location: string;
   description: string;
   price: number;
+  availability: boolean;
   status: FacilityStatus;
   createdOn: string;
-  totalPlacements: number;
-  totalTours: number;
+  totalPlacement: number;
+  totalTour: number;
   totalEarnings: number;
-  images: string[];
+  images: {
+    public_id: string;
+    url: string;
+    _id: string;
+  }[];
   amenities: string[];
   careServices: string[];
   availableTimes: string[];
@@ -30,6 +35,7 @@ export interface Facility {
     description: string;
     url: string;
   };
+  createdAt?: string;
 }
 
 export interface ServiceProvider {
@@ -424,6 +430,8 @@ export enum ReferralStatus {
 }
 
 export interface FacilityResponse {
+  totalAdminShare?: string | number;
+  facility?: Facility;
   _id: string;
   availability: boolean;
   name: string;
@@ -465,9 +473,29 @@ export interface FacilityResponse {
   rating?: number;
   ratingCount?: number;
   address?: string;
+  status?: string;
 }
 
 export interface FacilityAllData {
   data: FacilityResponse[];
   totalPages?: number;
+}
+
+// types/notification.ts
+export interface INotification {
+  _id: string;
+  to: string;
+  message: string;
+  isViewed: boolean;
+  type: string;
+  id: string; // This seems to reference another entity
+  createdAt: string;
+  updatedAt: string;
+}
+
+// The response structure from your API
+export interface NotificationsResponse {
+  success: boolean;
+  data: INotification[];
+  message?: string;
 }

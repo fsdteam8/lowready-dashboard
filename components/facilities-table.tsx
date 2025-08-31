@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -20,25 +20,48 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pagination } from "@/components/pagination";
 import { FacilityResponse } from "@/lib/types";
+import { Pagination } from "./pagination";
 
 interface FacilitiesTableProps {
   facilities: FacilityResponse[];
-  total: number;
-  currentPage: number;
   onPageChange: (page: number) => void;
 }
 
-export function FacilitiesTable({
-  facilities,
-  total,
-  currentPage,
-  onPageChange,
-}: FacilitiesTableProps) {
-  const [sortBy, setSortBy] = useState("name");
+export function FacilitiesTable({ facilities, onPageChange }: FacilitiesTableProps) {
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(total / itemsPerPage);
+  
+  // Filter facilities based on status
+  const filteredFacilities = useMemo(() => {
+    if (statusFilter === "all") return facilities;
+    
+    return facilities.filter(facility => {
+      // Check both possible locations for availability
+      const isAvailable = facility?.facility?.availability ?? facility?.availability;
+      
+      if (statusFilter === "available") return isAvailable === true;
+      if (statusFilter === "unavailable") return isAvailable === false;
+      return true;
+    });
+  }, [facilities, statusFilter]);
+
+  // Pagination logic
+  const totalItems = filteredFacilities.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedFacilities = filteredFacilities.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    onPageChange(page);
+  };
+
+  // Get availability status for display
+  const getAvailabilityStatus = (facility: FacilityResponse) => {
+    return facility?.facility?.availability ?? facility?.availability;
+  };
 
   return (
     <div className="space-y-4">
@@ -46,23 +69,22 @@ export function FacilitiesTable({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">Sort by</span>
-            <Select value={sortBy} onValueChange={setSortBy}>
+            <span className="text-sm font-medium">Filter by</span>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Select an option" />
+                <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="created">Created Date</SelectItem>
-                <SelectItem value="price">Price</SelectItem>
-                <SelectItem value="rating">Rating</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="available">Available</SelectItem>
+                <SelectItem value="unavailable">Unavailable</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <Link href="/facilities/pending">
           <Button className="bg-green-primary hover:bg-green-secondary">
-            Pending Listings (123)
+            Pending Listings ()
           </Button>
         </Link>
       </div>
@@ -70,70 +92,82 @@ export function FacilitiesTable({
       {/* Table */}
       <div className="rounded-lg border bg-white">
         <Table>
-          <TableHeader>
-            <TableRow className="bg-green-bg">
+          <TableHeader >
+            <TableRow className="bg-[#E6FAEE] text-[#343A40] text-[14px] font-normal ">
               <TableHead>Facility</TableHead>
               <TableHead>Created On</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Option</TableHead>
+              <TableHead>Total Booking</TableHead>
+              <TableHead>Total Tours</TableHead>
+              <TableHead>Total Earnings</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {facilities.length > 0 ? (
-              facilities.map((facility) => (
-                <TableRow key={facility?._id}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <div className="relative h-12 w-12 rounded-lg overflow-hidden">
-                        <Image
-                          src={
-                            facility?.images?.[0]?.url ||
-                            "/assisted-living-facility.png"
-                          }
-                          alt={facility?.name}
-                          fill
-                          className="object-cover"
-                        />
+            {paginatedFacilities.length > 0 ? (
+              paginatedFacilities.map((facility) => {
+                const isAvailable = getAvailabilityStatus(facility);
+                
+                return (
+                  <TableRow key={facility._id}>
+                    {/* Facility Info */}
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-12 w-12 rounded-lg overflow-hidden">
+                          <Image
+                            src={
+                              facility.facility?.images?.[0]?.url ||
+                              "/assisted-living-facility.png"
+                            }
+                            alt={facility.name || "Facility"}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="font-medium">{facility.name}</p>
+                          <p className="text-sm text-gray-600">
+                            {facility.facility?.location ?? "No address"}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium">{facility?.name}</p>
-                        <p className="text-sm text-gray-600">
-                          {facility?.location}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {new Date(facility?.createdAt).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>${facility?.price}</TableCell>
-                  <TableCell>{facility?.rating ?? "N/A"}</TableCell>
-                  <TableCell>
-                    <Link href={`/facilities/${facility?._id}`}>
-                      <Button
-                        variant="ghost"
-                        className="text-green-primary hover:text-green-secondary"
+                    </TableCell>
+
+                    {/* Created On */}
+                    <TableCell className="text-[#68706A] text-[16px] font-normal">
+                      {facility.facility?.createdAt
+                        ? new Date(
+                            facility.facility.createdAt
+                          ).toLocaleDateString()
+                        : "—"}
+                    </TableCell>
+
+                    {/* Total Booking */}
+                    <TableCell>
+                      {facility.facility?.totalPlacement ?? 0}
+                    </TableCell>
+
+                    {/* Total Tours */}
+                    <TableCell>{facility.facility?.totalTour ?? 0}</TableCell>
+
+                    {/* Total Earnings */}
+                    <TableCell className="text-[#68706A] text-[16px] leading-[150%]">${facility.totalAdminShare ?? 0}</TableCell>
+
+                    {/* Status */}
+                    <TableCell>
+                      <Badge
+                        variant={isAvailable ? "default" : "secondary"}
+                        className={
+                          isAvailable
+                            ? "bg-[#E6FAEE] text-[#27BE69] px-6 py-2"
+                            : "bg-[#FEECEE] text-[#E5102E] px-6 py-2"
+                        }
                       >
-                        View Details
-                      </Button>
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={facility.availability  ? "default" : "secondary"}
-                      className={
-                        facility.availability
-                          ? "bg-green-bg text-green-success"
-                          : "bg-red-bg text-red-error"
-                      }
-                    >
-                      {facility.availability ? "Available" : "Unavailable"}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))
+                        {isAvailable ? "Available" : "Unavailable"}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
@@ -149,11 +183,13 @@ export function FacilitiesTable({
       </div>
 
       {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={onPageChange}
-      />
+      {totalPages > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 }
