@@ -8,7 +8,6 @@ import type {
   ChartData,
   Review,
   Notification,
-
   BlogPost,
   BlogCategory,
   BlogStats,
@@ -17,7 +16,6 @@ import type {
   PlacementStats,
   ReferralFee,
   ReferralStats,
-
 } from "./types";
 
 // Mock data
@@ -282,11 +280,6 @@ export const api = {
     return mockChartData;
   },
 
-  getFacility: async (id: string): Promise<Facility> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return { ...mockFacility, id };
-  },
-
   // Service Providers
   getServiceProviders: async (
     page = 1,
@@ -470,7 +463,6 @@ export const api = {
       type: "Properties Listing" as const,
     }));
   },
-
 
   declineListing: async (id: string): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -1013,9 +1005,9 @@ export async function getUserProfile(userId: string) {
 
 // facilities api intigration
 
-export async function getAllFacilityData(page: number, limit: number) {
+export async function getAllFacilityData() {
   try {
-    const res = await apiBase.get(`/facility/all?page=${page}&limit=${limit}`);
+    const res = await apiBase.get(`/payment/all?type=booking`);
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
@@ -1037,7 +1029,7 @@ export async function getpendingFacilityData(page: number, limit: number) {
 
 export async function approveListing(id: string, status: string) {
   try {
-    const res = await apiBase.put(`/facility/update-status/${id}`, { status }); 
+    const res = await apiBase.put(`/facility/update-status/${id}`, { status });
     return res.data;
   } catch (error) {
     console.error("Error updating facility status:", error);
@@ -1045,3 +1037,14 @@ export async function approveListing(id: string, status: string) {
   }
 }
 
+//get single facility
+
+export async function getSingleFacility(id: string) {
+  try {
+    const res = await apiBase.get(`/facility/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}

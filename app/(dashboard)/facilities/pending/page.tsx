@@ -100,7 +100,7 @@ export default function PendingListingsPage() {
                       <Link href={`/facilities/${listing._id}`}>
                         <Button
                           variant="ghost"
-                          className="text-green-primary hover:text-green-secondary"
+                          className="text-[#208436] rounded-none border-b-1 border-[#208436]  cursor-pointer hover:bg-white hover:text-black "
                         >
                           View Details
                         </Button>

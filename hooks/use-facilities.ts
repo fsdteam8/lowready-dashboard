@@ -1,13 +1,13 @@
 "use client"
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { api, approveListing, getAllFacilityData, getpendingFacilityData } from "@/lib/api"
+import { api, approveListing, getAllFacilityData, getpendingFacilityData, getSingleFacility } from "@/lib/api"
 import { toast } from "sonner"
 
 export function useFacilities(page = 1, limit = 10) {
   return useQuery({
     queryKey: ["facilities", page, limit],
-    queryFn: () => getAllFacilityData(page, limit),
+    queryFn: () => getAllFacilityData(),
   })
 }
 
@@ -16,8 +16,9 @@ export function useFacilities(page = 1, limit = 10) {
 export function useFacility(id: string) {
   return useQuery({
     queryKey: ["facility", id],
-    queryFn: () => api.getFacility(id),
+    queryFn: () => getSingleFacility(id),
     enabled: !!id,
+    select: (data) => data?.data
   })
 }
 
