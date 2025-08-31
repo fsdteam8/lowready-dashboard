@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Star, Eye, Trash2 } from "lucide-react";
+import { Star, Eye, Trash2, ArrowUp } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -122,6 +122,8 @@ export default function ReviewsPage() {
   };
 
   const handleDeleteConfirm = () => {
+    console.log('hello how are you');
+    
     if (reviewToDelete) {
       toast.success("Review deleted successfully");
       setShowDeleteModal(false);
@@ -154,18 +156,18 @@ export default function ReviewsPage() {
               const count = reviews.filter((r) => r.rating === star).length;
               return (
                 <Card key={star}>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardHeader className="">
+                    <CardTitle className="text-sm lg:text-[20px]  text-[#343A40] font-semibold ">
                       {star} Star Ratings
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-gray-900 mb-1">
+                    <div className="text-2xl lg:text-[32px] font-semibold text-[#10421B] mb-1">
                       {count}
                     </div>
                     <div className="text-xs text-green-600 flex items-center gap-1">
-                      <span>↗</span>
-                      <span>Updated</span>
+                      <span>+ 36% from the last month</span>
+                      <ArrowUp className="w-3 h-3" />
                     </div>
                   </CardContent>
                 </Card>
@@ -231,7 +233,9 @@ export default function ReviewsPage() {
                             {review.comment}
                           </div>
                         </td>
-                        <td className="py-4 px-6">{renderStars(review.rating)}</td>
+                        <td className="py-4 px-6">
+                          {renderStars(review.rating)}
+                        </td>
                         <td className="py-4 px-6">{review.date}</td>
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-2">
@@ -278,21 +282,23 @@ export default function ReviewsPage() {
               >
                 ‹
               </Button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                  className={`h-8 w-8 p-0 ${
-                    currentPage === page
-                      ? "bg-green-600 text-white hover:bg-green-700"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  {page}
-                </Button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(page)}
+                    className={`h-8 w-8 p-0 ${
+                      currentPage === page
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    {page}
+                  </Button>
+                )
+              )}
               <Button
                 variant="outline"
                 size="sm"
