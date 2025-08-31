@@ -25,6 +25,8 @@ const handler = NextAuth({
 
           const data = await res.json();
 
+          console.log(data)
+
           if (!res.ok || !data.success || !data.data?.accessToken) {
             throw new Error(data.message || "Invalid credentials");
           }
