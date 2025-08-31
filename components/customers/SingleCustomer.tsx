@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { TourHistoryTable } from "@/components/tour-history-table";
 import { BookingHistoryTable } from "@/components/booking-history-table";
 import { useSingleCustomer, useVisitBooking } from "@/hooks/use-customers";
 import { useParams } from "next/navigation";
+import ProfileCard from "../profile/ProfileCard";
 
 export default function SingleCustomer() {
   const params = useParams();
@@ -18,8 +18,7 @@ export default function SingleCustomer() {
     error,
   } = useSingleCustomer(params.id as string);
   const { data: visitBooking } = useVisitBooking(params.id as string);
-
-//   console.log(visitBooking?.data);
+ 
   const customerData = customer?.data;
 
   if (isLoading) {
@@ -64,82 +63,7 @@ export default function SingleCustomer() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Profile */}
             <div className="lg:col-span-1">
-              <Card className="bg-gradient-to-br from-green-primary to-green-secondary text-white">
-                <CardContent className="p-6 text-center">
-                  <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white/20">
-                    <Image
-                      src={
-                        customerData?.avatar?.url ||
-                        "/professional-woman-with-red-flower.png"
-                      }
-                      alt={`${customerData.firstName} ${customerData.lastName}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <h2 className="text-xl font-semibold mb-2 text-[#28A745]">
-                    {customerData.firstName} {customerData.lastName}
-                  </h2>
-                  <p className="text-[#68706A ] mb-6">{customerData.email}</p>
-
-                  <div className="space-y-3 text-left">
-                    <div>
-                      <span className="text-white/80">Name:</span>
-                      <p className="font-medium">
-                        {customerData.firstName} {customerData.lastName}
-                      </p>
-                    </div>
-                    {customerData.bio && (
-                      <div>
-                        <span className="text-white/80">Bio:</span>
-                        <p className="font-medium">{customerData.bio}</p>
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-white/80">Email:</span>
-                      <p className="font-medium">{customerData.email}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Phone:</span>
-                      <p className="font-medium">{customerData.phoneNum}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Gender:</span>
-                      <p className="font-medium">{customerData.gender}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Date of Birth:</span>
-                      <p className="font-medium">
-                        {new Date(
-                          customerData.dateOfBirth
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Location:</span>
-                      <p className="font-medium">
-                        {customerData.street}, {customerData.postCode}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Joined:</span>
-                      <p className="font-medium">
-                        {new Date(customerData.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Subscription:</span>
-                      <p className="font-medium">
-                        {customerData.subscriptionStatus} (
-                        {customerData.isSubscriptionActive
-                          ? "Active"
-                          : "Inactive"}
-                        )
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <ProfileCard />
             </div>
 
             {/* Right Column - History */}

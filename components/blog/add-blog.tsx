@@ -35,6 +35,9 @@ export default function AddBlogPage() {
       return;
     }
 
+    // এখানে formData দেখাবে
+    console.log("Form Data:", formData);
+
     setIsLoading(true);
     try {
       // Simulate API call
@@ -42,6 +45,7 @@ export default function AddBlogPage() {
       toast.success("Blog created successfully");
       router.push("/blogs");
     } catch (error) {
+      console.error("Error creating blog:", error);
       toast.error("Failed to create blog");
     } finally {
       setIsLoading(false);
@@ -49,7 +53,7 @@ export default function AddBlogPage() {
   };
 
   const handleCancel = () => {
-    router.push("/blogs");
+    // router.push("/blogs");
   };
 
   return (
