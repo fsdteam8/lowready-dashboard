@@ -1442,142 +1442,7 @@ export const api = {
     await new Promise((resolve) => setTimeout(resolve, 500));
     return mockUser;
   },
-
-  // Blog Posts
-  getBlogPosts: async (
-    page = 1,
-    limit = 10,
-    status?: string,
-    category?: string
-  ): Promise<{ posts: BlogPost[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const posts = Array.from({ length: 21 }, (_, i) => ({
-      ...mockBlogPost,
-      id: `post-${i + 1}`,
-      title: [
-        "Essential Guide to Choosing the Right Senior Care Facility",
-        "10 Warning Signs Your Loved One Needs Assisted Living",
-        "Understanding Memory Care: What Families Need to Know",
-        "The Complete Guide to Senior Care Costs and Insurance",
-        "How to Prepare for the Transition to Senior Living",
-        "Nutrition and Wellness Programs in Senior Care",
-        "Technology in Senior Care: Improving Quality of Life",
-        "Creating a Safe Home Environment for Aging Adults",
-        "The Importance of Social Activities in Senior Communities",
-        "Managing Medications: A Guide for Caregivers",
-        "Physical Therapy Benefits for Senior Citizens",
-        "Dealing with Dementia: Support for Families",
-        "Senior Care During Holiday Seasons",
-        "The Role of Family in Senior Care Decisions",
-        "Understanding Different Levels of Senior Care",
-        "Financial Planning for Long-term Senior Care",
-        "Mental Health Support in Senior Living Communities",
-        "Choosing Between In-home Care and Facility Care",
-        "The Benefits of Pet Therapy for Seniors",
-        "Emergency Preparedness in Senior Care Facilities",
-        "Building Strong Relationships with Care Providers",
-      ][i % 21],
-      slug: `blog-post-${i + 1}`,
-      category: mockBlogCategories[i % 4],
-      status:
-        i % 5 === 0
-          ? ("Draft" as const)
-          : i % 7 === 0
-          ? ("Scheduled" as const)
-          : ("Published" as const),
-      views: Math.floor(Math.random() * 2000) + 100,
-      readTime: Math.floor(Math.random() * 10) + 3,
-      publishDate: new Date(
-        Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
-      )
-        .toISOString()
-        .split("T")[0],
-    }));
-
-    let filteredPosts = posts;
-    if (status && status !== "all") {
-      filteredPosts = posts.filter(
-        (post) => post.status.toLowerCase() === status.toLowerCase()
-      );
-    }
-    if (category && category !== "all") {
-      filteredPosts = filteredPosts.filter(
-        (post) => post.category.slug === category
-      );
-    }
-
-    return {
-      posts: filteredPosts.slice((page - 1) * limit, page * limit),
-      total: filteredPosts.length,
-    };
-  },
-
-  getBlogPost: async (id: string): Promise<BlogPost> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return { ...mockBlogPost, id };
-  },
-
-  createBlogPost: async (postData: Partial<BlogPost>): Promise<BlogPost> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return {
-      ...mockBlogPost,
-      id: `post-${Date.now()}`,
-      ...postData,
-      createdDate: new Date().toISOString().split("T")[0],
-      updatedDate: new Date().toISOString().split("T")[0],
-    } as BlogPost;
-  },
-
-  updateBlogPost: async (
-    id: string,
-    postData: Partial<BlogPost>
-  ): Promise<BlogPost> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return {
-      ...mockBlogPost,
-      id,
-      ...postData,
-      updatedDate: new Date().toISOString().split("T")[0],
-    } as BlogPost;
-  },
-
-  deleteBlogPost: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  },
-
-  // Blog Categories
-  getBlogCategories: async (): Promise<BlogCategory[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockBlogCategories;
-  },
-
-  createBlogCategory: async (
-    categoryData: Partial<BlogCategory>
-  ): Promise<BlogCategory> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return {
-      id: `category-${Date.now()}`,
-      postCount: 0,
-      ...categoryData,
-    } as BlogCategory;
-  },
-
-  // Blog Stats
-  getBlogStats: async (): Promise<BlogStats> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return {
-      totalPosts: 21,
-      publishedPosts: 15,
-      draftPosts: 4,
-      scheduledPosts: 2,
-      totalViews: 25430,
-      totalCategories: 4,
-      postsGrowth: 12,
-      viewsGrowth: 18,
-    };
-  },
-
+ 
   // Placements
   getPlacements: async (
     page = 1,
@@ -1670,107 +1535,8 @@ export const api = {
     } as Placement;
   },
 
-  // Tours
-  getTourBookings: async (
-    page = 1,
-    limit = 10,
-    status?: string
-  ): Promise<{ tours: TourBooking[]; total: number }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const tours = Array.from({ length: 32 }, (_, i) => ({
-      ...mockTourBooking,
-      id: `tour-${i + 1}`,
-      customer: {
-        ...mockTourBooking.customer,
-        name: [
-          "Olivia Rhye",
-          "Michael Chen",
-          "Sarah Wilson",
-          "David Thompson",
-          "Lisa Anderson",
-          "Robert Garcia",
-          "Emily Davis",
-          "James Rodriguez",
-        ][i % 8],
-        email: `customer${i + 1}@example.com`,
-      },
-      facility: {
-        ...mockTourBooking.facility,
-        name: [
-          "Sunny Hills Assisted Living",
-          "Golden Years Care",
-          "Comfort Living Center",
-          "Peaceful Gardens",
-          "Serenity Manor",
-          "Harmony House",
-        ][i % 6],
-      },
-      status: ["Scheduled", "Confirmed", "Completed", "Cancelled", "No-Show"][
-        i % 5
-      ] as TourBooking["status"],
-      tourType: ["In-Person", "Virtual", "Self-Guided"][
-        i % 3
-      ] as TourBooking["tourType"],
-      scheduledDate: new Date(
-        Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000
-      )
-        .toISOString()
-        .split("T")[0],
-      scheduledTime: [
-        "9:00 AM",
-        "10:00 AM",
-        "11:00 AM",
-        "2:00 PM",
-        "3:00 PM",
-        "4:00 PM",
-      ][i % 6],
-      rating: i % 3 === 0 ? Math.floor(Math.random() * 2) + 4 : undefined,
-    }));
-
-    let filteredTours = tours;
-    if (status && status !== "all") {
-      filteredTours = tours.filter(
-        (t) => t.status.toLowerCase() === status.toLowerCase()
-      );
-    }
-
-    return {
-      tours: filteredTours.slice((page - 1) * limit, page * limit),
-      total: filteredTours.length,
-    };
-  },
-
-  getTourBooking: async (id: string): Promise<TourBooking> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return { ...mockTourBooking, id };
-  },
-
-  createTourBooking: async (
-    tourData: Partial<TourBooking>
-  ): Promise<TourBooking> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return {
-      ...mockTourBooking,
-      id: `tour-${Date.now()}`,
-      ...tourData,
-      createdDate: new Date().toISOString().split("T")[0],
-      updatedDate: new Date().toISOString().split("T")[0],
-    } as TourBooking;
-  },
-
-  updateTourBooking: async (
-    id: string,
-    tourData: Partial<TourBooking>
-  ): Promise<TourBooking> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return {
-      ...mockTourBooking,
-      id,
-      ...tourData,
-      updatedDate: new Date().toISOString().split("T")[0],
-    } as TourBooking;
-  },
+ 
+ 
 
   // Placement Stats
   getPlacementStats: async (): Promise<PlacementStats> => {
@@ -1969,23 +1735,28 @@ export async function getCustomers(page: number, limit: number) {
   return response.data;
 }
 
-// get single customers data 
+// get single customers data
 export async function getSingleCustomer(id: string) {
   const res = await apiBase.get(`/user/${id}`);
   return res.data;
 }
 
-
-// get tour visit bokking detailes 
+// get tour visit bokking detailes
 export async function getVisitBooking(id: string) {
   const res = await apiBase.get(`/visit-booking/${id}`);
   return res.data;
 }
 
 // get Booking History
-export async function getBookingHistory(userId: string, page: number, limit: number) {
+export async function getBookingHistory(
+  userId: string,
+  page: number,
+  limit: number
+) {
   try {
-    const res = await apiBase.get(`/bookings/user/${userId}?page=${page}&limit=${limit}`);
+    const res = await apiBase.get(
+      `/bookings/user/${userId}?page=${page}&limit=${limit}`
+    );
     return res.data;
   } catch (error) {
     console.error("Error fetching booking history:", error);
@@ -2064,42 +1835,48 @@ export async function getFacilitys() {
 
 // get all blogs
 export async function getAllBlogs(page: number, limit: number) {
-  const response = await apiBase.get(
-    `/blog/all?page=${page}&limit=${limit}`
-  );
+  const response = await apiBase.get(`/blog/all?page=${page}&limit=${limit}`);
   return response.data;
 }
 
-// Get single Blog 
+// Get single Blog
 export async function getSingleBlog(id: string) {
   const res = await apiBase.get(`/blog/${id}`);
   return res.data;
 }
 
-// Delete single Blog 
+// Delete single Blog
 export async function deleteSingleBlog(id: string) {
   const res = await apiBase.delete(`/blog/delete/${id}`);
   return res.data;
 }
 
 // add blog
-// export async function createBlogs(
-//   data: { blogTitle: string; readingTime: string, blogDescription: string },
-//   image?: File
-// ) {
-//   try {
-//     const formData = new FormData();
-//     formData.append("data", JSON.stringify(data));
-//     if (image) {
-//       formData.append("image", image);
-//     }
+export async function createBlogs(
+  data: { title: string; description: string },
+  image?: File
+) {
+  try {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
 
-//     const response = await apiBase.post("/blog/create", formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
+    if (image) {
+      formData.append("image", image);
+    }
 
+    const response = await apiBase.post("/blog/create", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in createBlogs API:", error);
+        throw error;
+  }
+}
 //     return response.data;
 //   } catch (error) {
 //     throw error;
@@ -2168,6 +1945,33 @@ export async function reviewReting() {
   }
 }
 
+// Update Blog API
+export async function updateBlog(
+  blogId: string,
+  data: { title: string; description: string },
+  image?: File
+) {
+  const formData = new FormData();
+
+  // ✅ text fields append
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  // ✅ image append (optional)
+  if (image) {
+    formData.append("image", image);
+  }
+
+  // ✅ API call
+  const response = await apiBase.put(`/blog/update/${blogId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+}
 export async function DeleteReview(id: string) {
   try {
     console.log('id check',id);
