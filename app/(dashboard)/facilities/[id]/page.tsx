@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowLeft, Play, Eye } from "lucide-react";
+
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useFacility } from "@/hooks/use-facilities";
-import Link from "next/link";
+
+import {
+  useApproveListing,
+  useDeclineListing,
+  useFacility,
+} from "@/hooks/use-facilities";
+import { Check, X } from "lucide-react";
 
 interface FacilityDetailsPageProps {
   params: {
@@ -21,300 +26,229 @@ export default function FacilityDetailsPage({
   const { data: facility, isLoading, error } = useFacility(params.id);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen">
-        <div className="flex-1">
-          <div className="flex items-center justify-center h-96">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-primary mx-auto"></div>
-              <p className="mt-2 text-gray-600">Loading facility details...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const approveMutation = useApproveListing();
+  const declineMutation = useDeclineListing();
 
-  if (error || !facility) {
+  const handleApprove = (id: string) => {
+    approveMutation.mutate({ id, status: "approved" });
+  };
+
+  const handleDecline = (id: string) => {
+    declineMutation.mutate({ id, status: "decline" });
+  };
+
+  if (isLoading)
     return (
-      <div className="flex h-screen">
-        <div className="flex-1">
-          <div className="flex items-center justify-center h-96">
-            <div className="text-center text-red-600">
-              <p>Error loading facility details. Please try again.</p>
-            </div>
-          </div>
-        </div>
+      <div className="flex h-screen items-center justify-center">
+        Loading...
       </div>
     );
-  }
+  if (error || !facility)
+    return (
+      <div className="flex h-screen items-center justify-center">Not found</div>
+    );
+
+  const selectedImage = facility.images?.[selectedImageIndex]?.url;
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-y-auto p-6">
-          {/* Back button */}
-          <div className="mb-6">
-            <Link href="/facilities">
-              <Button variant="ghost" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Facilities
-              </Button>
-            </Link>
-          </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 pt-10 gap-6">
+      {/* Left Column → All Text */}
+      <div className="space-y-6">
+        {/* Availability + Title */}
+        <div className="">
+          <p className="text-[#343A40] text-[16px]">Availabilty</p>
+          <Badge
+            className={
+              facility.availability
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }
+          >
+            {facility.availability ? "Available" : "Not Available"}
+          </Badge>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column - Images and Info */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Availability Badge */}
-              <div className="flex items-center gap-2">
-                <Badge className="bg-green-bg text-green-success">
-                  Available
-                </Badge>
+          <h1 className="text-[16px] pt-[24px] font-semibold">Name</h1>
+          <p className="text-[#6C757D] text-[16px] font-normal leading-[150%]">
+            {facility.name}
+          </p>
+        </div>
+        <div>
+          <h2 className="text-[16px] font-semibold pt-[24px]">Location</h2>
+          <p className="text-[#6C757D] text-[16px] font-normal leading-[150%]">
+            {facility.location}
+          </p>
+        </div>
+        <div>
+          <h2 className="text-[16px] font-semibold pt-[24px]">Discription</h2>
+          <p className="text-[#6C757D] text-[16px] font-normal leading-[150%]">
+            {facility.description}
+          </p>
+        </div>
+        <div>
+          <h2 className="text-[16px] font-semibold pt-[24px]">Price</h2>
+          <p className="text-[#6C757D] text-[16px] font-normal leading-[150%]">
+            ${facility.price}
+          </p>
+        </div>
+        <div>
+          <h4 className="text-[16px] font-semibold pt-[24px]">Amenities</h4>
+          <div className=" flex items-center gap-2 text-sm flex-wrap">
+            {facility.amenities?.map((amenity: string, i: number) => (
+              <div key={i}>
+                <p className="text-[#68706A] bg-[#E6E7E6] border-1 px-4 py-1">
+                  {amenity}
+                </p>
               </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Main Image */}
-              <div className="relative h-96 rounded-lg overflow-hidden">
+        {/* Care Offering */}
+        <div className="rounded-2xl ">
+          <div>
+            <h2 className="text-[#343A40] text-[24px] font-bold ">
+              Care Offering
+            </h2>
+          </div>
+          <div>
+            <div className="grid grid-cols-2 gap-6 ">
+              <div>
+                <h4 className="font-medium mb-2 pt-[24px]">Care Services</h4>
+                <div className="flex items-center gap-2 text-sm flex-wrap">
+                  {facility.careServices?.map((service: string, i: number) => (
+                    <div key={i} className="">
+                      <p className="flex items-center gap-2 text-[#68706A] bg-[#E6E7E6] border-1 px-4 py-1">
+                        <Check className="w-4 h-4 text-green-400" /> {service}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* About Section */}
+        <div className="rounded-2xl shadow-md">
+          <h2 className="text-xl  font-semibold">
+            About{" "}
+            <span className="text-green-300">Sunny Hills Assisted Living</span>
+          </h2>
+          <p className="mt-2  text-[16px] text-[#68706A]">
+            Sunny Hills offers a vibrant community, dedicated caregivers, and a
+            wide range of amenities designed to provide comfort and security.
+            Residents enjoy social activities, wellness programs, and delicious
+            meals while living in a welcoming environment.
+          </p>
+
+          <h2 className="text-[20px] pt-[32px]">
+            Why Choose Sunny Hills Assisted Living?
+          </h2>
+          <ul className="list-disc pl-6 mt-4 space-y-1">
+            <li>
+              🏡 Comfortable Living Spaces – Modern rooms and cozy common areas
+              designed for relaxation.
+            </li>
+            <li>
+              👩‍⚕️ Personalized Care Plans – Tailored assistance to meet
+              individual health and lifestyle needs.
+            </li>
+            <li>
+              🍲 Nutritious Dining – Fresh, chef-prepared meals served daily.
+            </li>
+          </ul>
+        </div>
+
+        {/* Video Section */}
+        {facility.uploadVideo && (
+          <div className="rounded-2xl shadow-md">
+            <div>
+              <h2 className="text-xl text-[32px] py-5 font-semibold">
+                {facility?.videoTitle}{" "}
+                <span className="text-green-400">Tour</span>
+              </h2>
+
+              {/* Video Description */}
+              <p className="text-[16px] text-[#8E938F] py-3">
+                {facility?.videoDescription}
+              </p>
+              <p className="py-3">Video</p>
+            </div>
+
+            <div className="relative h-56 rounded-xl overflow-hidden shadow-md bg-gray-100">
+              <video
+                src={facility.uploadVideo}
+                controls
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
+        <div>
+          <ul className="flex flex-wrap gap-4">
+            {facility.availableTime.map((item: string, id: number) => (
+              <li className="bg-[#E6E7E6] px-4 py-2 shadow-2xs hover:bg-green-300 hover:text-white cursor-pointer" key={id}>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Right Column → All Images */}
+      <div className="space-y-4">
+        {/* Main Image */}
+        <div className="relative h-96 rounded-2xl overflow-hidden shadow-md">
+          <Image
+            src={selectedImage}
+            alt={facility.name}
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        {/* Image Gallery */}
+        <div className="flex flex-wrap gap-2">
+          {facility.images?.map(
+            (img: { public_id: string; url: string }, index: number) => (
+              <button
+                key={img.public_id}
+                onClick={() => setSelectedImageIndex(index)}
+                className={`relative aspect-square rounded-lg overflow-hidden border-2 transition ${
+                  selectedImageIndex === index ? "" : ""
+                }`}
+              >
                 <Image
-                  src={
-                    facility.images[selectedImageIndex] ||
-                    "/assisted-living-facility.png"
-                  }
-                  alt={facility.name}
+                  src={img.url}
+                  alt={`${facility.name} ${index + 1}`}
                   fill
                   className="object-cover"
                 />
-              </div>
-
-              {/* Image Gallery */}
-              <div className="grid grid-cols-5 gap-2">
-                {facility.images.slice(0, 5).map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`relative h-20 rounded-lg overflow-hidden border-2 ${
-                      selectedImageIndex === index
-                        ? "border-green-primary"
-                        : "border-transparent"
-                    }`}
-                  >
-                    <Image
-                      src={image || "/assisted-living-facility.png"}
-                      alt={`${facility.name} ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-
-              {/* Care Offering */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Care Offering</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-medium mb-2">Care Services</h4>
-                      <div className="grid grid-cols-3 gap-4">
-                        {facility.careServices.map((service, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-green-primary rounded-full"></div>
-                            <span className="text-sm">{service}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium mb-2">Amenities Services</h4>
-                      <div className="grid grid-cols-2 gap-4">
-                        {facility.amenities.map((amenity, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-green-primary rounded-full"></div>
-                            <span className="text-sm">{amenity}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* About Section */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>About</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-medium mb-2">Description</h4>
-                      <p className="text-sm text-gray-600">
-                        {facility.description}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium mb-2">
-                        Why Choose {facility.name}?
-                      </h4>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-primary rounded-full mt-2"></div>
-                          <span>
-                            Comfortable Living Spaces - Modern rooms and cozy
-                            common areas designed for relaxation.
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-primary rounded-full mt-2"></div>
-                          <span>
-                            Personalized Care Plans - Tailored assistance to
-                            meet individual health and lifestyle needs.
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-primary rounded-full mt-2"></div>
-                          <span>
-                            Nutritious Dining - Fresh, chef-prepared meals
-                            served daily.
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-primary rounded-full mt-2"></div>
-                          <span>
-                            Engaging Activities - Social, cultural, and
-                            recreational programs that keep residents active and
-                            happy.
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-primary rounded-full mt-2"></div>
-                          <span>
-                            24/7 Safety & Support - Secure environment with
-                            round-the-clock professional staff.
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-primary rounded-full mt-2"></div>
-                          <span>
-                            Family Connection - Open communication and regular
-                            updates to keep families reassured.
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Video Section */}
-              {facility.video && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Video</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-medium">{facility.video.title}</h4>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {facility.video.description}
-                        </p>
-                      </div>
-                      <div className="relative h-48 rounded-lg overflow-hidden bg-gray-100">
-                        <Image
-                          src={facility.video.url || "/placeholder.svg"}
-                          alt={facility.video.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Button
-                            size="lg"
-                            className="rounded-full bg-white/90 text-gray-900 hover:bg-white"
-                          >
-                            <Play className="h-6 w-6" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
-            {/* Right Column - Facility Info */}
-            <div className="space-y-6">
-              {/* Basic Info */}
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold mb-2">
-                    {facility.name}
-                  </h2>
-                  <p className="text-gray-600 mb-4">{facility.location}</p>
-
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Name:</span>
-                      <span className="font-medium">{facility.name}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Location:</span>
-                      <span className="font-medium">{facility.location}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Price:</span>
-                      <span className="font-medium">${facility.price}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Booked:</span>
-                      <span className="font-medium">Monthly</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Available Times */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Available Times</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-2">
-                    {facility.availableTimes.map((time, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        className="justify-center bg-transparent"
-                      >
-                        {time}
-                      </Button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Action Buttons */}
-              <div className="space-y-3">
-                <Button className="w-full bg-green-primary hover:bg-green-secondary">
-                  <Eye className="h-4 w-4 mr-2" />
-                  Approve
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full text-red-error border-red-error hover:bg-red-bg bg-transparent"
-                >
-                  Decline
-                </Button>
-              </div>
-            </div>
-          </div>
-        </main>
+              </button>
+            )
+          )}
+        </div>
+        <div className="col-span-2 flex items-center justify-center gap-2">
+          <Button
+            size="sm"
+            className="bg-green-primary w-1/2 cursor-pointer hover:bg-green-secondary hover:bg-green-900"
+            onClick={() => handleApprove(facility._id)}
+            disabled={approveMutation.isPending}
+          >
+            <Check className="h-4 w-4 mr-1" />
+            Approve
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-red-error w-1/2 border-red-error cursor-pointer hover:bg-red-bg bg-transparent hover:bg-green-400 hover:text-white"
+            onClick={() => handleDecline(facility._id)}
+            disabled={declineMutation.isPending}
+          >
+            <X className="h-4 w-4 mr-1" />
+            Decline
+          </Button>
+        </div>
       </div>
     </div>
   );

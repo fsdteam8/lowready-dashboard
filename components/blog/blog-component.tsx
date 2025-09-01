@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import Image from "next/image";
 import { useAllBlogs, useDeleteBlog } from "@/hooks/useBlogs";
+import BlogSkeleton from "./blogSkeloton";
 
 // ✅ Blog Type Definition
 interface Blog {
@@ -34,12 +35,18 @@ interface BlogsResponse {
 export default function BlogsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; blogId: string | null }>({
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    blogId: string | null;
+  }>({
     isOpen: false,
     blogId: null,
   });
 
-  const { data: blogsResponse } = useAllBlogs(currentPage, 10) as { data: BlogsResponse | undefined };
+const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
+  data: BlogsResponse | undefined;
+  isLoading: boolean;
+};
   const blogs: Blog[] = blogsResponse?.data || [];
   const meta: Meta | undefined = blogsResponse?.meta;
 
@@ -54,7 +61,7 @@ export default function BlogsPage() {
     if (!deleteModal.blogId) return;
 
     try {
-      await deleteBlogMutation.mutateAsync(deleteModal.blogId);  
+      await deleteBlogMutation.mutateAsync(deleteModal.blogId);
       toast.success("Blog deleted successfully");
       setDeleteModal({ isOpen: false, blogId: null });
     } catch {
@@ -62,9 +69,12 @@ export default function BlogsPage() {
     }
   };
 
-  const openDeleteModal = (blogId: string) => setDeleteModal({ isOpen: true, blogId });
-  const closeDeleteModal = () => setDeleteModal({ isOpen: false, blogId: null });
+  const openDeleteModal = (blogId: string) =>
+    setDeleteModal({ isOpen: true, blogId });
+  const closeDeleteModal = () =>
+    setDeleteModal({ isOpen: false, blogId: null });
 
+  if(isLoading) return <><BlogSkeleton /></>
   return (
     <div className="p-6 space-y-6">
       {/* Search + Add Blog */}
@@ -76,19 +86,22 @@ export default function BlogsPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1"
           />
-          <Button onClick={handleSearch} className="bg-green-600 hover:bg-green-700 text-white px-6">
+          <Button
+            onClick={handleSearch}
+            className="bg-green-600 hover:bg-green-700 text-white px-6"
+          >
             <Search className="h-4 w-4 mr-2" />
             Search
           </Button>
         </div>
         <Link href="/blogs/add">
-          <Button className="bg-green-600 hover:bg-green-700 text-white">
+          <Button className="bg-green-600 hover:bg-green-700 text-white cursor-pointer">
             <Plus className="h-4 w-4 mr-2" />
             Add Blog
           </Button>
         </Link>
       </div>
-
+ 
       {/* Table */}
       <div className="bg-white rounded-lg border">
         <div className="grid grid-cols-12 gap-4 p-4 bg-green-50 border-b font-medium text-gray-700">
@@ -113,8 +126,13 @@ export default function BlogsPage() {
                   className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                 />
                 <div className="min-w-0">
-                  <h3 className="font-medium text-gray-900 truncate">{blog.title}</h3>
-                  <p className="text-sm text-gray-600 truncate">{blog.description}</p>
+                  <h3 className="font-medium text-gray-900 truncate">
+                    {blog.title}
+                  </h3>
+                  <p
+                    className="text-sm text-gray-600 truncate"
+                    dangerouslySetInnerHTML={{ __html: blog.description }}
+                  ></p>
                 </div>
               </div>
 
@@ -122,16 +140,26 @@ export default function BlogsPage() {
                 {new Date(blog.createdAt).toLocaleDateString()}
               </div>
 
-              <div className="col-span-2 text-gray-600">{blog.readingTime || "12 min read"}</div>
+              <div className="col-span-2 text-gray-600">
+                {blog.readingTime || "12 min read"}
+              </div>
 
               <div className="col-span-4 flex items-center justify-center gap-2">
                 <Link href={`/blogs/${blog._id}`}>
-                  <Button variant="ghost" size="sm" className="text-green-600 hover:text-green-700 hover:bg-green-50 cursor-pointer">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-green-600 hover:text-green-700 hover:bg-green-50 cursor-pointer"
+                  >
                     <Eye className="h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href={`/blogs/${blog._id}/edit`}>
-                  <Button variant="ghost" size="sm" className="text-green-600 hover:text-green-700 hover:bg-green-50 cursor-pointer">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-green-600 hover:text-green-700 hover:bg-green-50 cursor-pointer"
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -165,17 +193,23 @@ export default function BlogsPage() {
               &lt;
             </Button>
 
-            {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={meta.page === page ? "default" : "outline"}
-                size="sm"
-                onClick={() => setCurrentPage(page)}
-                className={meta.page === page ? "bg-green-600 hover:bg-green-700 text-white cursor-pointer" : "hover:bg-gray-50 cursor-pointer"}
-              >
-                {page}
-              </Button>
-            ))}
+            {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map(
+              (page) => (
+                <Button
+                  key={page}
+                  variant={meta.page === page ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setCurrentPage(page)}
+                  className={
+                    meta.page === page
+                      ? "bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+                      : "hover:bg-gray-50 cursor-pointer"
+                  }
+                >
+                  {page}
+                </Button>
+              )
+            )}
 
             <Button
               variant="outline"

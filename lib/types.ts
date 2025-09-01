@@ -16,12 +16,17 @@ export interface Facility {
   location: string;
   description: string;
   price: number;
+  availability: boolean;
   status: FacilityStatus;
   createdOn: string;
-  totalPlacements: number;
-  totalTours: number;
+  totalPlacement: number;
+  totalTour: number;
   totalEarnings: number;
-  images: string[];
+  images: {
+    public_id: string;
+    url: string;
+    _id: string;
+  }[];
   amenities: string[];
   careServices: string[];
   availableTimes: string[];
@@ -30,10 +35,13 @@ export interface Facility {
     description: string;
     url: string;
   };
+  createdAt?: string;
 }
 
 export interface ServiceProvider {
   _id: string;
+  firstName: string;
+  lastName: string
   name: string;
   email: string;
   phoneNum: string;
@@ -52,18 +60,52 @@ export interface ServiceProvider {
   documents: Document[];
 }
 
-export interface Document {
-  id: string;
-  type:
-    | "National ID Card"
-    | "Business Registration Certificate"
-    | "Professional & Qualification Documents"
-    | "Health & Safety Documents";
-  format: string;
-  size: string;
-  uploadedDate: string;
-  url: string;
+export interface NewDocument {
+  _id: string;
+  type: string; // Example: "Identity & Legal Documents"
+  file: {
+    url: string;
+    public_id: string;
+  };
+  uploader: {
+    avatar: {
+      public_id: string;
+      url: string;
+    };
+    verificationInfo: {
+      token: string;
+      verified: boolean;
+    };
+    subscriptionStatus: string;
+    isSubscriptionActive: boolean;
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    gender: string;
+    avatars: string;
+    bio: string;
+    street: string;
+    postCode: number;
+    phoneNum: string;
+    dateOfBirth: string; // ISO string
+    password_reset_token: string;
+    refresh_token: string;
+    createdAt: string; // ISO string
+    updatedAt: string; // ISO string
+    onboardingStatus: boolean;
+    stripeAccountId: string;
+    accountLink: string;
+    totalPlacement: number;
+    totalTour: number;
+    __v: number;
+  };
+  createdAt: string; // ISO string
+  updatedAt: string; // ISO string
+  __v: number;
 }
+
 
 export interface Customer {
   bio: string;
@@ -388,6 +430,8 @@ export enum ReferralStatus {
 }
 
 export interface FacilityResponse {
+  totalAdminShare?: string | number;
+  facility?: Facility;
   _id: string;
   availability: boolean;
   name: string;
@@ -429,9 +473,29 @@ export interface FacilityResponse {
   rating?: number;
   ratingCount?: number;
   address?: string;
+  status?: string;
 }
 
 export interface FacilityAllData {
   data: FacilityResponse[];
   totalPages?: number;
+}
+
+// types/notification.ts
+export interface INotification {
+  _id: string;
+  to: string;
+  message: string;
+  isViewed: boolean;
+  type: string;
+  id: string; // This seems to reference another entity
+  createdAt: string;
+  updatedAt: string;
+}
+
+// The response structure from your API
+export interface NotificationsResponse {
+  success: boolean;
+  data: INotification[];
+  message?: string;
 }

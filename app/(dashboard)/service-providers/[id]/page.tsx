@@ -1,31 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, use } from "react";
 import { ArrowLeft, Eye } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentModal } from "@/components/document-modal";
-import { useServiceProvider } from "@/hooks/use-service-providers";
-import type { Document } from "@/lib/types";
+import {
+  useDocumentByID,
+  useServiceProvider,
+} from "@/hooks/use-service-providers";
+import type { NewDocument } from "@/lib/types";
+import ProfileCard from "@/components/profile/ProfileCard";
 
 interface ServiceProviderDetailsPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>; // params is now a Promise
 }
 
 export default function ServiceProviderDetailsPage({
   params,
 }: ServiceProviderDetailsPageProps) {
-  const { data: provider, isLoading, error } = useServiceProvider(params.id);
-  const [selectedDocument, setSelectedDocument] = useState<Document | null>(
+  const { id } = use(params); // <-- unwrap the promise
+
+  const { data: provider, isLoading: isProviderLoading } =
+    useServiceProvider(id);
+  const { data: documents } = useDocumentByID(id);
+
+  const [selectedDocument, setSelectedDocument] = useState<NewDocument | null>(
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleViewDocument = (document: Document) => {
+  const handleViewDocument = (document: NewDocument) => {
     setSelectedDocument(document);
     setIsModalOpen(true);
   };
@@ -35,32 +41,7 @@ export default function ServiceProviderDetailsPage({
     setSelectedDocument(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen">
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-primary mx-auto"></div>
-            <p className="mt-2 text-gray-600">
-              Loading service provider details...
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !provider) {
-    return (
-      <div className="flex h-screen">
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center text-red-600">
-            <p>Error loading service provider details. Please try again.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const docs: NewDocument[] = documents ?? [];
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -69,7 +50,7 @@ export default function ServiceProviderDetailsPage({
           {/* Back button */}
           <div className="mb-6">
             <Link href="/service-providers">
-              <Button variant="ghost" className="flex items-center gap-2">
+              <Button variant="ghost" className="flex items-center cursor-pointer gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back to Service Providers
               </Button>
@@ -79,87 +60,36 @@ export default function ServiceProviderDetailsPage({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Profile */}
             <div className="lg:col-span-1">
-              <Card className="bg-gradient-to-br from-green-primary to-green-secondary ">
-                <CardContent className="p-6 text-center">
-                  <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 bg-black/20 border-white/20">
-                    <Image
-                      src={
-                        provider.avatar ||
-                        "/professional-woman-with-red-flower.png"
-                      }
-                      alt={provider.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <h2 className="text-xl font-semibold mb-2">
-                    {provider.name}
-                  </h2>
-                  <p className="text-white/80 mb-6">{provider.email}</p>
-
-                  <div className="space-y-3 text-left">
-                    <div>
-                      <span className="text-white/80">Name:</span>
-                      <p className="font-medium">{provider.name}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Bio:</span>
-                      <p className="font-medium">
-                        Fashion designer passionate about creating styles that
-                        celebrate individuality and comfort.
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Email:</span>
-                      <p className="font-medium">{provider.email}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Phone:</span>
-                      <p className="font-medium">{provider.phone}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Location:</span>
-                      <p className="font-medium">
-                        1234 Oak Avenue, San Francisco, CA 94102A
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-white/80">Since:</span>
-                      <p className="font-medium">14 August, 2025</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {isProviderLoading ? (
+                <div className="w-96 mx-auto h-[400px] rounded-lg bg-gray-300 animate-pulse"></div>
+              ) : (
+                <ProfileCard userId={id} />
+              )}
             </div>
 
             {/* Right Column - Documents */}
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Personal Information</CardTitle>
-                  <p className="text-sm text-gray-600">
-                    Manage your personal information and profile details.
+                  <CardTitle>Documents</CardTitle>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Manage uploaded documents.
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {provider.documents.map((document) => (
+                  {docs.map((document) => (
                     <div
-                      key={document.id}
+                      key={document._id}
                       className="flex items-center justify-between p-4 border rounded-lg"
                     >
                       <div>
                         <h4 className="font-medium">{document.type}</h4>
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
-                          <span>{document.format}</span>
-                          <span>{document.size}</span>
-                          <span>Uploaded: {document.uploadedDate}</span>
-                        </div>
                       </div>
                       <Button
                         variant="ghost"
+                        className="cursor-pointer"
                         size="icon"
                         onClick={() => handleViewDocument(document)}
-                        className="text-gray-600 hover:text-gray-900"
                       >
                         <Eye className="h-4 w-4" />
                       </Button>

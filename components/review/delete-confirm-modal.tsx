@@ -2,7 +2,13 @@
 
 import { AlertTriangle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
 
 interface DeleteConfirmModalProps {
   isOpen: boolean
@@ -12,32 +18,43 @@ interface DeleteConfirmModalProps {
   message: string
 }
 
-export function DeleteConfirmModal({ isOpen, onClose, onConfirm, title, message }: DeleteConfirmModalProps) {
+export function DeleteConfirmModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+}: DeleteConfirmModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md p-6">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100">
+        <DialogHeader className="text-center">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-red-100">
             <AlertTriangle className="h-6 w-6 text-red-600" />
           </div>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-            <p className="text-sm text-gray-600">{message}</p>
-          </div>
+          <DialogTitle className="text-lg font-semibold text-gray-900">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="text-sm text-gray-600">
+            {message}
+          </DialogDescription>
+        </DialogHeader>
 
-          <div className="flex items-center gap-3 pt-2">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50 bg-transparent"
-            >
-              Cancel
-            </Button>
-            <Button onClick={onConfirm} className="px-6 py-2 bg-red-600 text-white hover:bg-red-700">
-              Delete
-            </Button>
-          </div>
+        <div className="flex items-center justify-center gap-3 pt-2">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50 bg-transparent"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={()=>onConfirm()}
+            className="px-6 py-2 bg-red-600 text-white hover:bg-red-700"
+          >
+            Delete
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

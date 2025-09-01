@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Search } from "lucide-react"
+import { Eye, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -61,9 +61,9 @@ export function ServiceProvidersTable({
           <Button
             size="sm"
             onClick={handleSearch}
-            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 bg-green-primary hover:bg-green-secondary"
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 cursor-pointer bg-green-primary hover:bg-green-secondary"
           >
-            <Search className="h-4 w-4 mr-1" />
+            <Search className="h-4 w-4 mr-1 " />
             Search
           </Button>
         </div>
@@ -91,13 +91,13 @@ export function ServiceProvidersTable({
                     <div className="relative h-10 w-10 rounded-full overflow-hidden">
                       <Image
                         src={provider.avatar?.url || "/professional-person.png"}
-                        alt={provider.name}
+                        alt={provider.firstName + provider.lastName || "user image"}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div>
-                      <p className="font-medium">{provider.name}</p>
+                      <p className="font-medium">{provider.firstName +" "+ provider.lastName}</p>
                       <p className="text-sm text-gray-600">{provider.email}</p>
                     </div>
                   </div>
@@ -108,13 +108,13 @@ export function ServiceProvidersTable({
                     <div className="relative h-10 w-10 rounded-lg overflow-hidden">
                       <Image
                         src={provider.avatar?.url || "/assisted-living-facility.png"}
-                        alt={provider.name}
+                        alt={provider.firstName +" "+ provider.lastName}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div>
-                      <p className="font-medium">{provider.name}</p>
+                      <p className="font-medium">{provider.firstName + provider.lastName}</p>
                       <p className="text-sm text-gray-600">{provider.stree}</p>
                     </div>
                   </div>
@@ -134,8 +134,8 @@ export function ServiceProvidersTable({
                 </TableCell>
                 <TableCell>
                   <Link href={`/service-providers/${provider._id}`}>
-                    <Button variant="ghost" className="text-green-primary hover:text-green-secondary">
-                      Details
+                    <Button variant="ghost" className="bg-green-200 text-green-500 hover:bg-green-400 cursor-pointer hover:text-white ">
+                      <Eye /> Details
                     </Button>
                   </Link>
                 </TableCell>
