@@ -11,7 +11,7 @@ export interface User {
 }
 
 export interface Facility {
-  id: string;
+  _id: string;
   name: string;
   location: string;
   description: string;

@@ -123,9 +123,11 @@ export function FacilitiesTable({
             {paginatedFacilities.length > 0 ? (
               paginatedFacilities.map((facility) => {
                 const isAvailable = getAvailabilityStatus(facility);
-
+              
+                 
                 return (
-                  <TableRow key={facility._id}>
+                  <TableRow key={facility?.facility?._id}>
+                    
                     {/* Facility Info */}
                     <TableCell>
                       <div className="flex items-center gap-3">
