@@ -54,6 +54,7 @@ export default function ServiceProvidersPage() {
       </div>
     );
   }
+  console.log("",data)
 
   return (
     <div className="flex h-screen bg-gray-50">
