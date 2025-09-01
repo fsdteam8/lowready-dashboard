@@ -101,7 +101,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
           </Button>
         </Link>
       </div>
-
+ 
       {/* Table */}
       <div className="bg-white rounded-lg border">
         <div className="grid grid-cols-12 gap-4 p-4 bg-green-50 border-b font-medium text-gray-700">
