@@ -34,62 +34,62 @@ const mockUser: User = {
   avatar: "/professional-woman-diverse.png",
 };
 
-const mockFacility: Facility = {
-  id: "1",
-  name: "Sunny Hills Assisted Living",
-  location: "Florida, USA",
-  description:
-    "Sunny Hills Assisted Living offers a warm and welcoming environment for seniors, providing personalized care, comfortable accommodations, and engaging activities.",
-  price: 2200,
-  status: "Available",
-  createdOn: "06/01/2025",
-  totalPlacements: 123,
-  totalTours: 123,
-  totalEarnings: 1234,
-  images: [
-    "/modern-assisted-living-facility-exterior.png",
-    "/assisted-living-interior-room.png",
-    "/assisted-living-dining-area.png",
-    "/assisted-living-garden.png",
-    "/assisted-living-common-area.png",
-  ],
-  amenities: [
-    "Assisted Living",
-    "Memory Care",
-    "Medication Management",
-    "ADT Tracking Support",
-    "Nutritious Meals",
-    "Housekeeping & Laundry",
-    "Transportation Services",
-    "Social & Recreational Activities",
-    "Outdoor Garden",
-    "Furnished",
-    "Emergency Alert System",
-    "Move-in coordination",
-    "Meal preparation and service",
-    "Community-sponsored activities",
-    "Pet-friendly",
-    "Faith-based",
-    "Special dietary restrictions",
-  ],
-  careServices: ["Assisted Living", "Memory Care"],
-  availableTimes: [
-    "12:00 PM",
-    "11:00 AM",
-    "10:00 AM",
-    "09:00 AM",
-    "11:00 AM",
-    "10:00 AM",
-    "09:00 AM",
-    "11:00 AM",
-  ],
-  video: {
-    title: "Villa Tour",
-    description:
-      "Set apart from the main community building, our villas offer spacious 2-bedroom, 2-bathroom layouts complete with an attached parking garage and private enclosed patio designed for comfort, convenience, and independence.",
-    url: "/assisted-living-villa-tour-video-thumbnail.png",
-  },
-};
+// const mockFacility: Facility = {
+//   id: "1",
+//   name: "Sunny Hills Assisted Living",
+//   location: "Florida, USA",
+//   description:
+//     "Sunny Hills Assisted Living offers a warm and welcoming environment for seniors, providing personalized care, comfortable accommodations, and engaging activities.",
+//   price: 2200,
+//   status: "Available",
+//   createdOn: "06/01/2025",
+//   totalPlacements: 123,
+//   totalTours: 123,
+//   totalEarnings: 1234,
+//   images: [
+//     "/modern-assisted-living-facility-exterior.png",
+//     "/assisted-living-interior-room.png",
+//     "/assisted-living-dining-area.png",
+//     "/assisted-living-garden.png",
+//     "/assisted-living-common-area.png",
+//   ],
+//   amenities: [
+//     "Assisted Living",
+//     "Memory Care",
+//     "Medication Management",
+//     "ADT Tracking Support",
+//     "Nutritious Meals",
+//     "Housekeeping & Laundry",
+//     "Transportation Services",
+//     "Social & Recreational Activities",
+//     "Outdoor Garden",
+//     "Furnished",
+//     "Emergency Alert System",
+//     "Move-in coordination",
+//     "Meal preparation and service",
+//     "Community-sponsored activities",
+//     "Pet-friendly",
+//     "Faith-based",
+//     "Special dietary restrictions",
+//   ],
+//   careServices: ["Assisted Living", "Memory Care"],
+//   availableTimes: [
+//     "12:00 PM",
+//     "11:00 AM",
+//     "10:00 AM",
+//     "09:00 AM",
+//     "11:00 AM",
+//     "10:00 AM",
+//     "09:00 AM",
+//     "11:00 AM",
+//   ],
+//   video: {
+//     title: "Villa Tour",
+//     description:
+//       "Set apart from the main community building, our villas offer spacious 2-bedroom, 2-bathroom layouts complete with an attached parking garage and private enclosed patio designed for comfort, convenience, and independence.",
+//     url: "/assisted-living-villa-tour-video-thumbnail.png",
+//   },
+// };
 
 // const mockChartData: ChartData[] = [
 //   { month: "Jan", value: 100 },
@@ -652,6 +652,8 @@ export async function getBookingHistory(
 
 export async function getRecentBooking(page: number, limit: number) {
   try {
+    console.log('hellos');
+    
     const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
     return res.data.data;
   } catch (error) {
@@ -724,6 +726,27 @@ export async function getreviewFacility(id: string) {
     return { data: [], totalPages: 1 };
   }
 }
+
+
+
+
+
+// all pending dataTagErrorSymbol 
+export async function getpendingallFacilityData() {
+  try {
+    const res = await apiBase.get(
+      `/facility/all?status=pending`
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return { data: [], totalPages: 1 };
+  }
+}
+
+
+
+
 
 export async function getFacilitys() {
   try {

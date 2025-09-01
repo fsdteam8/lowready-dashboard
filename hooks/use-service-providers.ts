@@ -23,8 +23,6 @@ export function useServiceProvider(id: string) {
   })
 }
 
-<<<<<<< HEAD
-=======
 export function useDocumentByID(uploaderId: string) {
   return useQuery<NewDocument[], Error>({
     queryKey: ["documents", uploaderId],
@@ -33,4 +31,3 @@ export function useDocumentByID(uploaderId: string) {
       
   });
 }
->>>>>>> 0cc80ce9b54b54ba4ae2087b9ab02594c5e2340b

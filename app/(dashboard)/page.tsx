@@ -160,7 +160,7 @@ export default function DashboardPage() {
         />
         <RecentSection
           title="Recent Customers"
-          items={recentCustomerData.data}
+          items={recentCustomerData?.data}
           seeAllHref="/customers"
         />
         <ReviewsSection reviews={reviews || []} />
