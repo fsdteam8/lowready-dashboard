@@ -15,7 +15,7 @@ import { Building2, UserCheck, Users, MapPin, DollarSign } from "lucide-react";
 import ChartBarInteractive from "@/components/chart-bar-interactive";
 import { useServiceProviders } from "@/hooks/use-service-providers";
 import { RecentServiceProvider } from "@/components/recent-service-provider";
-import { useCustomers } from "@/hooks/use-customers";
+import { useCustomers, useReviewRatings } from "@/hooks/use-customers";
 
 export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
@@ -27,64 +27,11 @@ export default function DashboardPage() {
     1,
     3
   );
-  console.log(recentCustomerData);
-
-  const recentBookings = [
-    {
-      id: "1",
-      name: "Olivia Rhye",
-      email: "example@example.com",
-      avatar: "/diverse-group.png",
-      location: "2715 Ash Dr, San Jose, South Dako...",
-      value: "$2,000",
-      status: "+123",
-    },
-    {
-      id: "2",
-      name: "Olivia Rhye",
-      email: "example@example.com",
-      avatar: "/diverse-group.png",
-      location: "2715 Ash Dr, San Jose, South Dako...",
-      value: "$2,000",
-      status: "+123",
-    },
-    {
-      id: "3",
-      name: "Olivia Rhye",
-      email: "example@example.com",
-      avatar: "/diverse-group.png",
-      location: "2715 Ash Dr, San Jose, South Dako...",
-      value: "$2,000",
-      status: "+123",
-    },
-  ];
-
-  const recentCustomers = [
-    {
-      id: "1",
-      name: "Olivia Rhye",
-      email: "example@example.com",
-      avatar: "/diverse-group.png",
-      location: "2715 Ash Dr, San Jose, South Dakota 83475",
-      action: "Details",
-    },
-    {
-      id: "2",
-      name: "Olivia Rhye",
-      email: "example@example.com",
-      avatar: "/diverse-group.png",
-      location: "2715 Ash Dr, San Jose, South Dakota 83475",
-      action: "Details",
-    },
-    {
-      id: "3",
-      name: "Olivia Rhye",
-      email: "example@example.com",
-      avatar: "/diverse-group.png",
-      location: "2715 Ash Dr, San Jose, South Dakota 83475",
-      action: "Details",
-    },
-  ];
+  const { data: recentreviewData, isLoading: reviewLoading } = useReviewRatings(
+    1,
+    3
+  );
+  // console.log(recentreviewData?.data);
 
   if (statsLoading || reviewsLoading || bookingsLoading) {
     return (
@@ -163,7 +110,7 @@ export default function DashboardPage() {
           items={recentCustomerData?.data}
           seeAllHref="/customers"
         />
-        <ReviewsSection reviews={reviews || []} />
+        <ReviewsSection reviews={recentreviewData?.data || []} />
       </div>
     </div>
   );
