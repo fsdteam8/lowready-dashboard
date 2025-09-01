@@ -1042,7 +1042,6 @@
 //   return response.data;
 // }
 
-
 // API service layer with mock data
 import type {
   User,
@@ -1065,7 +1064,8 @@ import type {
 import axios from "axios";
 import { getSession } from "next-auth/react";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
 
 // Create axios instance
 const apiBase = axios.create({
@@ -1356,23 +1356,23 @@ export const api = {
     limit = 10,
     search?: string
   ): Promise<{ providers: ServiceProvider[]; total: number }> => {
-    const searchParam = search ? `&search=${encodeURIComponent(search)}` : '';
-    
-    const response = apiBase.get(`/user/organizations?page=${page}&limit=${limit}${searchParam}`);
-   
+    const searchParam = search ? `&search=${encodeURIComponent(search)}` : "";
+
+    const response = apiBase.get(
+      `/user/organizations?page=${page}&limit=${limit}${searchParam}`
+    );
+
     const result = (await response).data;
-    
-    return result.data
-   
+
+    return result.data;
   },
 
   getServiceProvider: async (id: string): Promise<ServiceProvider> => {
-     const response =await apiBase.get(`/user/organizations}`);
-     
+    const response = await apiBase.get(`/user/organizations}`);
+
     const result = await response;
-    
-    return result.data
-   
+
+    return result.data;
   },
 
   // Customers
@@ -2003,29 +2003,54 @@ export async function getCustomers(page: number, limit: number) {
   return response.data;
 }
 
-// get single customers data 
+// get single customers data
 export async function getSingleCustomer(id: string) {
   const res = await apiBase.get(`/user/${id}`);
   return res.data;
 }
 
-
-// get tour visit bokking detailes 
+// get tour visit bokking detailes
 export async function getVisitBooking(id: string) {
   const res = await apiBase.get(`/visit-booking/${id}`);
   return res.data;
 }
 
 // get Booking History
-export async function getBookingHistory(userId: string, page: number, limit: number) {
+export async function getBookingHistory(
+  userId: string,
+  page: number,
+  limit: number
+) {
   try {
-    const res = await apiBase.get(`/bookings/user/${userId}?page=${page}&limit=${limit}`);
+    const res = await apiBase.get(
+      `/bookings/user/${userId}?page=${page}&limit=${limit}`
+    );
     return res.data;
   } catch (error) {
     console.error("Error fetching booking history:", error);
     return { data: [], totalPages: 1 };
   }
 }
+
+export async function getRecentBooking(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching recent bookings:", error);
+    throw error;
+  }
+}
+export async function getRecentCustomer(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching recent bookings:", error);
+    throw error;
+  }
+}
+
 // facilities api intigration
 
 export async function getAllFacilityData() {
@@ -2072,10 +2097,6 @@ export async function getSingleFacility(id: string) {
   }
 }
 
-
-
-  
-
 export async function getreviewFacility(id: string) {
   try {
     const res = await apiBase.get(`/facility/summary/${id}`);
@@ -2092,25 +2113,23 @@ export async function getFacilitys() {
     return res.data.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
-    return { data: []};
+    return { data: [] };
   }
 }
 
 // get all blogs
 export async function getAllBlogs(page: number, limit: number) {
-  const response = await apiBase.get(
-    `/blog/all?page=${page}&limit=${limit}`
-  );
+  const response = await apiBase.get(`/blog/all?page=${page}&limit=${limit}`);
   return response.data;
 }
 
-// Get single Blog 
+// Get single Blog
 export async function getSingleBlog(id: string) {
   const res = await apiBase.get(`/blog/${id}`);
   return res.data;
 }
 
-// Delete single Blog 
+// Delete single Blog
 export async function deleteSingleBlog(id: string) {
   const res = await apiBase.delete(`/blog/delete/${id}`);
   return res.data;
@@ -2140,6 +2159,4 @@ export async function deleteSingleBlog(id: string) {
 //   }
 // }
 
-
-// Notification 
-
+// Notification
