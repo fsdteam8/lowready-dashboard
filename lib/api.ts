@@ -13,6 +13,7 @@ import type {
   ReferralStats,
   NotificationsResponse,
   INotification,
+  NewDocument,
 } from "./types";
 
 import axios from "axios";
@@ -269,6 +270,13 @@ export const api = {
 
     return result.data;
   },
+
+  getDocumentByID: async (id: string): Promise<NewDocument[]> => {
+  const response = await apiBase.get(`/document/uploader/${id}`);
+  // API response structure: { success: true, data: [...] }
+  return Array.isArray(response.data.data) ? response.data.data : [];
+},
+
 
   getCustomer: async (id: string): Promise<Customer> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
