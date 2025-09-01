@@ -11,8 +11,9 @@ import {
   MapPin,
   MessageSquare,
   FileText,
-  DollarSign,
   LogOut,
+  CircleDollarSign,
+  Crown,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
@@ -35,7 +36,8 @@ const navigation = [
   { name: "Placements & Tours", href: "/placements", icon: MapPin },
   { name: "Reviews & Ratings", href: "/reviews", icon: MessageSquare },
   { name: "Blogs Management", href: "/blogs", icon: FileText },
-  { name: "Referral Fees", href: "/referral-fees", icon: DollarSign },
+  { name: "Payments", href: "/payments", icon: CircleDollarSign },
+  { name: "Subscription", href: "/subscriptions", icon: Crown},
 ];
 
 export function Sidebar() {

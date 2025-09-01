@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const navigation = [
   {
@@ -69,31 +70,35 @@ export function Header() {
 
   const pathname = usePathname();
 
-  const isActivePath = pathname;
-
+   
+   const isPathName = pathname.split('/');
+   const activePage = navigation.find((nav) => nav.href === pathname);;
   return (
-    <div className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
+    <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>
-        <h1 className="text-2xl font-semibold text-green-primary">
-          {navigation.find((nav) => nav.href === isActivePath)?.name ||
-            "Unknown"}
+        <h1 className="text-2xl font-semibold text-[#28A745]">
+          {isPathName}
+            
         </h1>
         <p className="text-sm text-gray-600">
-          {navigation.find((nav) => nav.href === isActivePath)?.description}
+          {activePage?.description || "Welcome to your dashboard."}
         </p>
       </div>
 
       <div className="flex items-center gap-4">
         {/* Notifications */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          
+              <Link href={`/notifications`}>
             <Button variant="ghost" size="icon" className="relative">
+              
               <Bell className="h-5 w-5" />
               <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full bg-red-500 p-0 text-xs text-white">
                 1
               </Badge>
             </Button>
-          </DropdownMenuTrigger>
+              </Link>
+          
           <DropdownMenuContent align="end" className="w-80">
             <DropdownMenuItem>
               <div className="flex flex-col gap-1">

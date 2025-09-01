@@ -62,7 +62,7 @@ export default function ServiceProvidersPage() {
           
           <ServiceProvidersTable
             providers ={data || []}
-            // total={data?.total || 0}
+            total={data?.total || 0}
             currentPage={currentPage}
             onPageChange={handlePageChange}
             onSearch={handleSearch}

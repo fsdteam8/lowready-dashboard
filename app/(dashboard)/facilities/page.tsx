@@ -43,8 +43,6 @@ export default function FacilitiesPage() {
         <main className="flex-1 overflow-y-auto p-6">
           <FacilitiesTable
             facilities={data?.data || []}
-           
-            
             onPageChange={setCurrentPage}
           />
         </main>
