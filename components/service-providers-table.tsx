@@ -15,7 +15,7 @@ import type { ServiceProvider } from "@/lib/types"
 import { projectOnExit } from "next/dist/build/swc/generated-native"
 
 interface ServiceProvidersTableProps {
-  providers: ServiceProvider[]
+  providers: ServiceProvider[] 
   total: number
   currentPage: number
   onPageChange: (page: number) => void
