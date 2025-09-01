@@ -61,9 +61,9 @@ export function ServiceProvidersTable({
           <Button
             size="sm"
             onClick={handleSearch}
-            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 bg-green-primary hover:bg-green-secondary"
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 cursor-pointer bg-green-primary hover:bg-green-secondary"
           >
-            <Search className="h-4 w-4 mr-1" />
+            <Search className="h-4 w-4 mr-1 " />
             Search
           </Button>
         </div>
@@ -134,7 +134,7 @@ export function ServiceProvidersTable({
                 </TableCell>
                 <TableCell>
                   <Link href={`/service-providers/${provider._id}`}>
-                    <Button variant="ghost" className="bg-green-200 text-green-500 hover:bg-green-400 hover:text-white ">
+                    <Button variant="ghost" className="bg-green-200 text-green-500 hover:bg-green-400 cursor-pointer hover:text-white ">
                       <Eye /> Details
                     </Button>
                   </Link>

@@ -851,8 +851,12 @@ export async function createBlogs(
 //     throw error;
 //   }
 // }
+<<<<<<< HEAD
+ 
+=======
 
 // Notification
+>>>>>>> 0cc80ce9b54b54ba4ae2087b9ab02594c5e2340b
 
 export async function getNotifications(
   userId: string
@@ -957,6 +961,8 @@ export async function DeleteReview(id: string) {
   }
 }
 
+<<<<<<< HEAD
+=======
 // get all booking payment
 export async function getAllPayment(type: string, page: number, limit: number) {
   try {
@@ -990,3 +996,4 @@ export async function deleteSubscriptionPlan(id: string) {
     }
   }
 }
+>>>>>>> 0cc80ce9b54b54ba4ae2087b9ab02594c5e2340b

@@ -90,7 +90,7 @@ export function Sidebar() {
           <DialogTrigger asChild>
             <Button
               variant="ghost"
-              className="w-full justify-start gap-3 h-12 px-4 rounded-lg font-medium text-[#e5102e] hover:bg-[#feecee] hover:text-[#e5102e] transition-all duration-200"
+              className="w-full justify-start gap-3 h-12 px-4 cursor-pointer rounded-lg font-medium text-[#e5102e] hover:bg-[#feecee] hover:text-[#e5102e] transition-all duration-200"
             >
               <LogOut className="h-5 w-5" />
               Log Out
@@ -104,10 +104,10 @@ export function Sidebar() {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>
+              <Button className="cursor-pointer" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button variant="destructive" onClick={handleLogout}>
+              <Button className="cursor-pointer" variant="destructive" onClick={handleLogout}>
                 Log Out
               </Button>
             </DialogFooter>

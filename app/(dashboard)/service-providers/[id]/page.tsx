@@ -50,7 +50,7 @@ export default function ServiceProviderDetailsPage({
           {/* Back button */}
           <div className="mb-6">
             <Link href="/service-providers">
-              <Button variant="ghost" className="flex items-center gap-2">
+              <Button variant="ghost" className="flex items-center cursor-pointer gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back to Service Providers
               </Button>
@@ -87,6 +87,7 @@ export default function ServiceProviderDetailsPage({
                       </div>
                       <Button
                         variant="ghost"
+                        className="cursor-pointer"
                         size="icon"
                         onClick={() => handleViewDocument(document)}
                       >
