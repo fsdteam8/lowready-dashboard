@@ -5,26 +5,24 @@ import { Card } from "@/components/ui/card";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useSession } from "next-auth/react";
 
-interface userIdProps{
-    userId?: string
+interface userIdProps {
+  userId?: string;
 }
 
 export function ProfileCard(userId: userIdProps) {
-
   const session = useSession();
-  console.log(session);
-    const user = userId !== null ? userId.userId : session.data?.user.id 
-    console.log(user)
+  // console.log(session);
+  const user = userId !== null ? userId.userId : session.data?.user.id;
+  // console.log(user)
   const {
     data: userProfile,
     isLoading,
     error,
   } = useUserProfile(user as string);
 
-//   } = useUserProfile(session.data?.user.id as string);
+  //   } = useUserProfile(session.data?.user.id as string);
 
-
-console.log("Received id:", userId)
+  // console.log("Received id:", userId)
 
   if (isLoading) {
     return (
@@ -87,9 +85,10 @@ console.log("Received id:", userId)
       : userData.street || "Not specified";
 
   return (
-    <Card className=" w-[410px] mx-auto rounded-2xl overflow-hidden shadow-md border border-gray-200">
+    <Card className=" w-[410px] h-[670px]   rounded-2xl py-0 overflow-hidden shadow-md border border-gray-200">
       {/* Gradient Header */}
-      <div className="h-28 bg-gradient-to-r from-green-400 to-green-500"></div>
+      {/* <div className="h-28 bg-gradient-to-r from-green-400 to-green-500"></div> */}
+      <div className="h-[140px] rounded-t-lg opacity-80 bg-[linear-gradient(282deg,rgba(40,167,69,0.80)_-0.29%,#51B8A0_48.99%,#6DBC8B_101.56%)]"></div>
 
       {/* Avatar with Edit Button */}
       <div className="relative flex justify-center -mt-16">
@@ -100,42 +99,49 @@ console.log("Received id:", userId)
             {userData.lastName[0]?.toUpperCase() || ""}
           </AvatarFallback>
         </Avatar>
-         
       </div>
 
       {/* User Info */}
-      <div className="text-center mt-4">
-        <h2 className="text-2xl font-semibold text-gray-900">{fullName}</h2>
-        <p className="text-sm text-gray-500">{userData.email}</p>
+      <div className="text-center mt-1">
+        <h2 className="text-2xl font-semibold text-[#28A745]">{fullName}</h2>
+        <p className="text-sm text-[#68706A]">{userData.email}</p>
       </div>
 
       {/* Details Section */}
-      <div className="px-6 py-6 space-y-3 text-sm text-gray-700">
+      <div className="px-6 py-6 space-y-4 text-sm text-gray-700 ">
         <div>
-          <span className="font-semibold">Name:</span> {fullName}
+          <span className="font-semibold">Name:</span>{" "}
+          <span className="text-[#68706A]">{fullName}</span>
         </div>
         <div>
           <span className="font-semibold">Bio:</span>{" "}
-          {userData.bio || "No bio available"}
+          <span className="text-[#68706A]">
+            {userData.bio || "No bio available"}
+          </span>
         </div>
         <div>
-          <span className="font-semibold">Email:</span> {userData.email}
+          <span className="font-semibold">Email:</span>{" "}
+          <span className="text-[#68706A]">{userData.email}</span>
         </div>
         <div>
           <span className="font-semibold">Phone:</span>{" "}
-          {userData.phoneNum || "Not specified"}
+          <span className="text-[#68706A]">
+            {" "}
+            {userData.phoneNum || "Not specified"}
+          </span>
         </div>
         <div>
-          <span className="font-semibold">Location:</span> {location}
+          <span className="font-semibold">Location:</span>{" "}
+          <span className="text-[#68706A]">{location}</span>
         </div>
-        <div>
+        {/* <div>
           <span className="font-semibold">Role:</span>{" "}
           <span className="capitalize">{userData.role}</span>
-        </div>
+        </div> */}
         <div>
           <span className="font-semibold">Since:</span> {joinDate}
         </div>
-        <div>
+        {/* <div>
           <span className="font-semibold">Verified:</span>{" "}
           <span
             className={`text-xs px-2 py-1 rounded-full ${
@@ -146,7 +152,7 @@ console.log("Received id:", userId)
           >
             {userData.verificationInfo?.verified ? "Verified" : "Pending"}
           </span>
-        </div>
+        </div> */}
       </div>
     </Card>
   );
