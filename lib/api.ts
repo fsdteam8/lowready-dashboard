@@ -892,7 +892,7 @@ export async function updateBlog(
     formData.append("image", image);
   }
 
-  // ✅ API call
+  // Update Blog  API
   const response = await apiBase.put(`/blog/update/${blogId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -943,5 +943,29 @@ export async function deleteSubscriptionPlan(id: string) {
     if (error instanceof Error) {
       throw new Error(`Error Deleted Subscription: ${error.message}`);
     }
+  }
+}
+
+// Create Subscription Plan
+export async function createSubscriptionPlan(data: {
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  billingCycle: "monthly";
+  isActive: boolean;
+  features: string[];
+}) {
+  try {
+    const response = await apiBase.post("/subscription/create", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in createSubscriptionPlan API:", error);
+    throw error;
   }
 }
