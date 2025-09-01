@@ -95,8 +95,6 @@ export default function NotificationsPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-start mx-auto">
-           
-
             {/* Notifications List */}
             <div className="space-y-4 w-[70%]">
               {filteredNotifications.length === 0 ? (
@@ -141,7 +139,7 @@ export default function NotificationsPage() {
                 ))
               )}
             </div>
-            
+
             {/* notification side list  */}
             <div className="flex flex-col gap-10 justify-between items-center mb-6 w-[25%]">
               <div className="flex items-center gap-4">
@@ -178,7 +176,7 @@ export default function NotificationsPage() {
                   {clearAllMutation.isPending ? "Clearing..." : "Clear All"}
                 </Button>
                 <Button
-                  className="bg-green-primary hover:bg-green-secondary"
+                  className="bg-[#179649] hover:bg-green-secondary"
                   disabled={notifications.length === 0}
                 >
                   Mark as Read

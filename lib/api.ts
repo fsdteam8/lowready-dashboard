@@ -323,10 +323,14 @@ export const api = {
     const result = (await response).data;
 
     return result.data;
+
+    return result.data;
   },
 
   getServiceProvider: async (id: string): Promise<ServiceProvider> => {
     const response = await apiBase.get(`/user/organizations}`);
+
+    // const response = await apiBase.get(`/user/organizations}`);
 
     const result = await response;
 
