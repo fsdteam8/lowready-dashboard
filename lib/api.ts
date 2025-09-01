@@ -652,8 +652,8 @@ export async function getBookingHistory(
 
 export async function getRecentBooking(page: number, limit: number) {
   try {
-    console.log('hellos');
-    
+    console.log("hellos");
+
     const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
     return res.data.data;
   } catch (error) {
@@ -727,26 +727,16 @@ export async function getreviewFacility(id: string) {
   }
 }
 
-
-
-
-
-// all pending dataTagErrorSymbol 
+// all pending dataTagErrorSymbol
 export async function getpendingallFacilityData() {
   try {
-    const res = await apiBase.get(
-      `/facility/all?status=pending`
-    );
+    const res = await apiBase.get(`/facility/all?status=pending`);
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
     return { data: [], totalPages: 1 };
   }
 }
-
-
-
-
 
 export async function getFacilitys() {
   try {
@@ -967,5 +957,29 @@ export async function createSubscriptionPlan(data: {
   } catch (error) {
     console.error("Error in createSubscriptionPlan API:", error);
     throw error;
+  }
+}
+
+// Get Bookings for All
+export async function getRecentAllBooking(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/bookings/recent-home-bookings?page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch  {
+    throw new Error(`Failed to fetch recent bookings`);
+  }
+}
+
+// Get All Recent Bookings
+export async function getRecentAllTours(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/visit-booking/recent-bookings?page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch  {
+    throw new Error(`Failed to fetch recent bookings`);
   }
 }
