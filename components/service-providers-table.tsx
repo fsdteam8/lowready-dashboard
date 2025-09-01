@@ -35,7 +35,7 @@ export function ServiceProvidersTable({
   const [searchQuery, setSearchQuery] = useState("")
   const itemsPerPage = 10
   const totalPages = Math.ceil(total / itemsPerPage)
-  console.log(providers)
+  // console.log(providers)
   const handleSearch = () => {
     onSearch(searchQuery)
   }

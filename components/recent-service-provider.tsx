@@ -53,7 +53,7 @@ export function RecentServiceProvider({
           <Button
             variant="ghost"
             size="sm"
-            className="text-green-primary hover:text-green-secondary"
+            className="text-green-primary text-[#28A745] cursor-pointer"
           >
             See all
           </Button>

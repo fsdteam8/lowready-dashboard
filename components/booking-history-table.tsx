@@ -10,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Inbox } from "lucide-react";
+
 
 interface BookingHistoryTableProps {
   bookings: Booking[];
@@ -31,12 +33,12 @@ export interface Facility {
 export type BookingStatus = "upcoming" | "completed" | "cancelled";
 
 export interface Booking {
-  id?: string; 
-  _id: string;  
+  id?: string;
+  _id: string;
   facility?: Facility;
-  placeName?: string;  
-  visitDate?: string;  
-  duration?: string;  
+  placeName?: string;
+  visitDate?: string;
+  visitTime?: string;
   status: BookingStatus;
   createdAt?: string;
   updatedAt?: string;
@@ -68,49 +70,65 @@ export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bookings.slice(0, 5).map((booking) => (
-            <TableRow key={booking.id || booking._id}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="relative h-10 w-10 rounded-lg overflow-hidden">
-                    <Image
-                      src={
-                        booking.facility?.images?.[0]?.url ||
-                        "/assisted-living-facility.png"
-                      }
-                      alt={booking.facility?.name || "Facility"}
-                      fill
-                      className="object-cover"
-                    />
+          {bookings.length > 0 ? (
+            bookings.slice(0, 5).map((booking) => (
+              <TableRow key={booking.id || booking._id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-10 w-10 rounded-lg overflow-hidden">
+                      <Image
+                        src={
+                          booking.facility?.images?.[0]?.url ||
+                          "/assisted-living-facility.png"
+                        }
+                        alt={booking.facility?.name || "Facility"}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-medium">{booking.facility?.name}</p>
+                      <p className="text-sm text-[#68706A]">
+                        {booking.facility?.location}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">{booking.facility?.name}</p>
-                    <p className="text-sm text-gray-600">
-                      {booking.facility?.location}
-                    </p>
-                  </div>
+                </TableCell>
+
+                <TableCell className="text-[#68706A]">
+                  {booking.visitDate
+                    ? new Date(booking.visitDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })
+                    : "N/A"}
+                </TableCell>
+
+                <TableCell className="text-[#68706A]">
+                  {booking.visitTime || "N/A"}
+                </TableCell>
+
+                <TableCell>
+                  <Badge className={getStatusColor(booking.status)}>
+                    {booking.status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} className="py-8">
+                <div className="flex flex-col items-center justify-center gap-3 text-gray-500">
+                  <Inbox className="text-4xl" />
+                  <p className="text-lg font-medium">No bookings History found</p>
+                  <p className="text-sm text-gray-400">
+                    You haven’t made any bookings yet.
+                  </p>
                 </div>
               </TableCell>
-
-              <TableCell>
-                {booking.visitDate
-                  ? new Date(booking.visitDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "2-digit",
-                      year: "numeric",
-                    })
-                  : "N/A"}
-              </TableCell>
-
-              <TableCell>{booking.duration || "N/A"}</TableCell>
-
-              <TableCell>
-                <Badge className={getStatusColor(booking.status)}>
-                  {booking.status}
-                </Badge>
-              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>
