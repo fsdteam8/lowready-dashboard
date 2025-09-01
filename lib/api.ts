@@ -1,5 +1,4 @@
 // API service layer with mock data
-import { dataTagErrorSymbol } from "@tanstack/react-query";
 import type {
   User,
   Facility,
@@ -16,7 +15,6 @@ import type {
   PlacementStats,
   ReferralFee,
   ReferralStats,
-  NewDocument,
   NotificationsResponse,
   INotification,
 } from "./types";
@@ -96,6 +94,21 @@ const mockFacility: Facility = {
     url: "/assisted-living-villa-tour-video-thumbnail.png",
   },
 };
+
+// const mockChartData: ChartData[] = [
+//   { month: "Jan", value: 100 },
+//   { month: "Feb", value: 120 },
+//   { month: "Mar", value: 140 },
+//   { month: "Apr", value: 110 },
+//   { month: "May", value: 160 },
+//   { month: "Jun", value: 180 },
+//   { month: "Jul", value: 150 },
+//   { month: "Aug", value: 170 },
+//   { month: "Sep", value: 190 },
+//   { month: "Oct", value: 200 },
+//   { month: "Nov", value: 180 },
+//   { month: "Dec", value: 220 },
+// ];
 
 const mockBlogCategories: BlogCategory[] = [
   {
@@ -269,17 +282,31 @@ export const api = {
   },
 
   getChartData: async (): Promise<ChartData[]> => {
-    // try {
-    //   const res = await apiBase.get(`dashboard/admin-dashboard/total/earnings`);
-    //   return res.data.data;
-    // } catch (error) {
-    //   console.error("Error fetching facilities:", error);
-    //   return { data: [], totalPages: 1 };
-    // }
-    const res = await apiBase.get(`dashboard/admin-dashboard/total/earnings`);
-    return res.data.data;
+    try {
+      const res = await apiBase.get(`dashboard/admin-dashboard/total/earnings`);
+      return res.data.data;
+    } catch (error) {
+      console.error("Error fetching facilities:", error);
+      return { data: [], totalPages: 1 };
+    }
   },
 
+  // Facilities
+  getFacilities: async (
+    page = 1,
+    limit = 10
+  ): Promise<{ facilities: Facility[]; total: number }> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const facilities = Array.from({ length: 12 }, (_, i) => ({
+      ...mockFacility,
+      id: `facility-${i + 1}`,
+      status: i % 4 === 3 ? ("Unavailable" as const) : ("Available" as const),
+    }));
+    return {
+      facilities: facilities.slice((page - 1) * limit, page * limit),
+      total: facilities.length,
+    };
+  },
 
   // Service Providers
   getServiceProviders: async (
@@ -296,23 +323,19 @@ export const api = {
     const result = (await response).data;
 
     return result.data;
+
+    return result.data;
   },
 
   getServiceProvider: async (id: string): Promise<ServiceProvider> => {
     const response = await apiBase.get(`/user/organizations}`);
 
+    // const response = await apiBase.get(`/user/organizations}`);
+
     const result = await response;
 
     return result.data;
   },
-
- getDocumentByID: async (id: string): Promise<NewDocument[]> => {
-  const response = await apiBase.get(`/document/uploader/${id}`);
-  
-  return Array.isArray(response.data.data) ? response.data.data : [];
-},
-
-
 
   getCustomer: async (id: string): Promise<Customer> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -367,8 +390,6 @@ export const api = {
     }));
   },
 
-
-
   declineListing: async (id: string): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
   },
@@ -377,7 +398,7 @@ export const api = {
     await new Promise((resolve) => setTimeout(resolve, 500));
     return mockUser;
   },
- 
+
   // Placements
   getPlacements: async (
     page = 1,
@@ -469,9 +490,6 @@ export const api = {
       updatedDate: new Date().toISOString().split("T")[0],
     } as Placement;
   },
-
- 
- 
 
   // Placement Stats
   getPlacementStats: async (): Promise<PlacementStats> => {
@@ -722,21 +740,6 @@ export async function getpendingFacilityData(page: number, limit: number) {
   }
 }
 
-
-// all pending dataTagErrorSymbol 
-export async function getpendingallFacilityData() {
-  try {
-    const res = await apiBase.get(
-      `/facility/all?status=pending`
-    );
-    return res.data;
-  } catch (error) {
-    console.error("Error fetching facilities:", error);
-    return { data: [], totalPages: 1 };
-  }
-}
-
-
 export async function approveListing(id: string, status: string) {
   try {
     const res = await apiBase.put(`/facility/update-status/${id}`, { status });
@@ -759,10 +762,6 @@ export async function getSingleFacility(id: string) {
   }
 }
 
-
-
-  
-
 export async function getreviewFacility(id: string) {
   try {
     const res = await apiBase.get(`/facility/summary/${id}`);
@@ -779,7 +778,7 @@ export async function getFacilitys() {
     return res.data.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
-    return { data: []};
+    return { data: [] };
   }
 }
 
@@ -824,7 +823,7 @@ export async function createBlogs(
     return response.data;
   } catch (error) {
     console.error("Error in createBlogs API:", error);
-        throw error;
+    throw error;
   }
 }
 //     return response.data;
@@ -833,37 +832,42 @@ export async function createBlogs(
 //   }
 // }
 
+// Notification
 
-// Notification 
-
-
-
-export async function getNotifications(userId: string): Promise<INotification[]> {
+export async function getNotifications(
+  userId: string
+): Promise<INotification[]> {
   try {
-    const res = await apiBase.get<NotificationsResponse>(`/notifications/${userId}`);
+    const res = await apiBase.get<NotificationsResponse>(
+      `/notifications/${userId}`
+    );
     if (res.data.success) {
       return res.data.data;
     }
-    throw new Error(res.data.message || 'Failed to fetch notifications');
+    throw new Error(res.data.message || "Failed to fetch notifications");
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error fetching notifications: ${error.message}`);
     }
-    throw new Error('Unknown error occurred while fetching notifications');
+    throw new Error("Unknown error occurred while fetching notifications");
   }
 }
 // lib/api.ts
-export async function markNotificationAsRead(notificationId: string): Promise<void> {
+export async function markNotificationAsRead(
+  notificationId: string
+): Promise<void> {
   try {
     const res = await apiBase.patch(`/notifications/${notificationId}/read`);
     if (!res.data.success) {
-      throw new Error(res.data.message || 'Failed to mark notification as read');
+      throw new Error(
+        res.data.message || "Failed to mark notification as read"
+      );
     }
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error marking notification as read: ${error.message}`);
     }
-    throw new Error('Unknown error occurred');
+    throw new Error("Unknown error occurred");
   }
 }
 
@@ -871,13 +875,13 @@ export async function clearAllNotifications(userId: string): Promise<void> {
   try {
     const res = await apiBase.delete(`/notifications/${userId}/clear`);
     if (!res.data.success) {
-      throw new Error(res.data.message || 'Failed to clear notifications');
+      throw new Error(res.data.message || "Failed to clear notifications");
     }
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error clearing notifications: ${error.message}`);
     }
-    throw new Error('Unknown error occurred');
+    throw new Error("Unknown error occurred");
   }
 }
 
@@ -924,8 +928,6 @@ export async function updateBlog(
 }
 export async function DeleteReview(id: string) {
   try {
-    console.log('id check',id);
-    
     const res = await apiBase.delete(`/review-rating/${id}`);
     return res.data;
   } catch (error) {
@@ -935,4 +937,36 @@ export async function DeleteReview(id: string) {
   }
 }
 
+// get all booking payment
+export async function getAllPayment(type: string, page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/payment/all?type=${type}&page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch {
+    throw new Error(`Failed All Booking Data`);
+  }
+}
 
+// Get All Subscription plan
+export async function getAllSubscriptionPlan() {
+  try {
+    const res = await apiBase.get(`/subscription/get`);
+    return res.data;
+  } catch {
+    throw new Error(`Failed All Subscription Data`);
+  }
+}
+
+// Delete subscription Plan
+export async function deleteSubscriptionPlan(id: string) {
+  try {
+    const res = await apiBase.delete(`/subscription/delete/${id}`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error Deleted Subscription: ${error.message}`);
+    }
+  }
+}

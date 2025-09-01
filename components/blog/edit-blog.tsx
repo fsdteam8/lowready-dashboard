@@ -19,7 +19,7 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
   const router = useRouter();
   const resolvedParams = use(params);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [ , setIsDeleting] = useState(false);
 
   // Mock blog data
   const blog = {
@@ -93,7 +93,7 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Blog deleted successfully");
       router.push("/blogs");
-    } catch (error) {
+    } catch   {
       toast.error("Failed to delete blog");
     } finally {
       setIsDeleting(false);
