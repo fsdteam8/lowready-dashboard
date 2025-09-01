@@ -18,8 +18,9 @@ export default function SingleCustomer() {
     error,
   } = useSingleCustomer(params.id as string);
   const { data: visitBooking } = useVisitBooking(params.id as string);
- 
+
   const customerData = customer?.data;
+  const userId = customerData?._id;
 
   if (isLoading) {
     return (
@@ -63,7 +64,7 @@ export default function SingleCustomer() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Profile */}
             <div className="lg:col-span-1">
-            <ProfileCard />
+              <ProfileCard userId={userId}/>
             </div>
 
             {/* Right Column - History */}
@@ -71,7 +72,7 @@ export default function SingleCustomer() {
               {/* Tour History */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Tour History</CardTitle>
+                  <CardTitle className="text-xl text-[#343A40]">Tour History</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TourHistoryTable tours={visitBooking?.data || []} />
@@ -81,12 +82,10 @@ export default function SingleCustomer() {
               {/* Booking History */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Booking History</CardTitle>
+                  <CardTitle className="text-xl text-[#343A40]">Booking History</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <BookingHistoryTable
-                    bookings={visitBooking?.data || []}
-                  />
+                  <BookingHistoryTable bookings={visitBooking?.data || []} />
                 </CardContent>
               </Card>
             </div>

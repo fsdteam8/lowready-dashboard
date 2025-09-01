@@ -34,7 +34,6 @@ export default function AddSubscriptions() {
   const [amenity, setAmenity] = useState("");
   const [features, setFeatures] = useState<string[]>([]);
 
-  // ✅ useCreateSubscriptionPlan hook এখানে টপ-লেভেলে থাকতে হবে
   const createPlan = useCreateSubscriptionPlan();
 
   const {
