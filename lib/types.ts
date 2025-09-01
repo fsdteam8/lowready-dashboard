@@ -142,6 +142,11 @@ export interface Booking {
 }
 
 export interface Review {
+  facility: any;
+  userId: any;
+  userId: any;
+  userId: any;
+  userId: any;
   id: string;
   customerName: string;
   customerAvatar: string;

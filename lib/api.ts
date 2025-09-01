@@ -18,6 +18,7 @@ import type {
 
 import axios from "axios";
 import { getSession } from "next-auth/react";
+import page from "../../lowready-frontend/src/app/(website)/about-us/page";
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -272,11 +273,10 @@ export const api = {
   },
 
   getDocumentByID: async (id: string): Promise<NewDocument[]> => {
-  const response = await apiBase.get(`/document/uploader/${id}`);
-  // API response structure: { success: true, data: [...] }
-  return Array.isArray(response.data.data) ? response.data.data : [];
-},
-
+    const response = await apiBase.get(`/document/uploader/${id}`);
+    // API response structure: { success: true, data: [...] }
+    return Array.isArray(response.data.data) ? response.data.data : [];
+  },
 
   getCustomer: async (id: string): Promise<Customer> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -660,8 +660,8 @@ export async function getBookingHistory(
 
 export async function getRecentBooking(page: number, limit: number) {
   try {
-    console.log('hellos');
-    
+    console.log("hellos");
+
     const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
     return res.data.data;
   } catch (error) {
@@ -735,26 +735,16 @@ export async function getreviewFacility(id: string) {
   }
 }
 
-
-
-
-
-// all pending dataTagErrorSymbol 
+// all pending dataTagErrorSymbol
 export async function getpendingallFacilityData() {
   try {
-    const res = await apiBase.get(
-      `/facility/all?status=pending`
-    );
+    const res = await apiBase.get(`/facility/all?status=pending`);
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
     return { data: [], totalPages: 1 };
   }
 }
-
-
-
-
 
 export async function getFacilitys() {
   try {
@@ -870,9 +860,9 @@ export async function clearAllNotifications(userId: string): Promise<void> {
 
 //review rating deleter
 
-export async function reviewReting() {
+export async function reviewReting(page: number, limit: number) {
   try {
-    const res = await apiBase.get(`/review-rating`);
+    const res = await apiBase.get(`/review-rating?page=${page}&limit=${limit}`);
     return res.data;
   } catch (error) {
     if (error instanceof Error) {

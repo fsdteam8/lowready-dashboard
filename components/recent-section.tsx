@@ -8,15 +8,31 @@ import { Badge } from "@/components/ui/badge";
 interface RecentSectionProps {
   title: string;
   items: Array<{
-    onboardingStatus: any;
-    verificationInfo: any;
-    avatar: any;
-    residentialInfo: any;
-    facility: any;
-    userId: any;
-    subscriptionStatus: string;
-    totalPlacement: string | number;
-    street: string;
+    onboardingStatus?: boolean;
+    verificationInfo?: {
+      verified: boolean | string;
+    };
+    avatar?: {
+      url: string;
+    };
+    residentialInfo?: Array<{
+      requirements: string;
+    }>;
+    facility?: {
+      price: number;
+      status: "approved" | "pending" | "declined" | "canceled";
+    };
+    userId?: {
+      avatar?: {
+        url: string;
+      };
+      firstName: string;
+      email: string;
+      street: string;
+    };
+    subscriptionStatus?: string;
+    totalPlacement?: string | number;
+    street?: string;
     _id: string;
     firstName: string;
     lastName: string;
@@ -29,6 +45,50 @@ interface RecentSectionProps {
   }>;
   seeAllHref: string;
 }
+
+// Helper function to get badge variant and styling
+const getBadgeConfig = (
+  status: string | boolean,
+  type: "onboarding" | "verification" | "facility"
+) => {
+  const configs = {
+    onboarding: {
+      variant: "default" as const,
+      className:
+        status === true
+          ? "bg-green-500 text-white"
+          : "bg-gray-200 text-gray-600",
+      text: status === true ? "Onboarded" : "Pending",
+    },
+    verification: {
+      variant:
+        status === "active" || status === "expired" || status === "canceled"
+          ? ("default" as const)
+          : ("secondary" as const),
+      className:
+        status === true
+          ? "bg-green-500 text-white"
+          : "bg-gray-200 text-gray-600",
+      text: status === true ? "Verified" : "Unverified",
+    },
+    facility: {
+      variant:
+        status === "approved" || status === "canceled" || status === "declined"
+          ? ("default" as const)
+          : ("secondary" as const),
+      className:
+        status === "approved" || status === "pending" || status === "declined"
+          ? "bg-green-500 text-white"
+          : "bg-gray-200 text-gray-600",
+      text:
+        typeof status === "string"
+          ? status.charAt(0).toUpperCase() + status.slice(1)
+          : "",
+    },
+  };
+
+  return configs[type];
+};
 
 export function RecentSection({
   title,
@@ -49,146 +109,121 @@ export function RecentSection({
           </Button>
         </Link>
       </CardHeader>
+
       <CardContent className="space-y-4">
-        {items?.map((item) => (
-          <div key={item._id} className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center justify-center gap-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage
-                    src={item.userId?.avatar?.url || "/placeholder.svg"}
-                    alt={item.firstName}
-                  />
-                  <AvatarFallback>
-                    {item.userId?.firstName?.charAt(0)}
-                  </AvatarFallback>
+        {items?.map((item) => {
+          // Determine which data to use (prioritize userId data if available)
+          const avatarUrl =
+            item.userId?.avatar?.url || item.avatar?.url || "/placeholder.svg";
+          const displayName = item.userId?.firstName || item.firstName;
+          const email = item.userId?.email || item.email;
+          const street = item.userId?.street || item.street;
+          const avatarFallback = displayName?.charAt(0) || "";
 
-                  <AvatarImage
-                    src={item.avatar?.url || "/placeholder.svg"}
-                    alt={item.firstName}
-                  />
-                  <AvatarFallback>{item.firstName?.charAt(0)}</AvatarFallback>
-                </Avatar>
+          return (
+            <div key={item._id} className="flex items-center justify-between">
+              {/* Left side - Avatar and user info */}
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={avatarUrl} alt={displayName} />
+                    <AvatarFallback>{avatarFallback}</AvatarFallback>
+                  </Avatar>
 
-                <div className="flex flex-col justify-between">
-                  <p className="font-medium text-gray-900">{item.firstName}</p>
-                  <p className="font-medium text-gray-900">
-                    {item.userId?.firstName}
-                  </p>
+                  <div className="flex flex-col">
+                    <p className="font-medium text-gray-900">{displayName}</p>
+                    {email && <p className="text-xs text-gray-600">{email}</p>}
+                    {street && (
+                      <p className="text-xs text-gray-600">{street}</p>
+                    )}
+                  </div>
+                </div>
 
-                  {item?.userId?.email && (
-                    <p className="text-xs text-gray-600">
-                      {item.userId?.email}
-                    </p>
+                {/* Middle section - Requirements and status badges */}
+                <div className="flex items-center gap-2">
+                  {item.residentialInfo?.[0]?.requirements && (
+                    <span className="text-xs">
+                      {item.residentialInfo[0].requirements}
+                    </span>
                   )}
-                  {item?.email && (
-                    <p className="text-xs text-gray-600">{item.email}</p>
-                  )}
 
-                  {item?.userId?.street && (
-                    <p className="text-xs text-gray-600">
-                      {item.userId?.street}
-                    </p>
-                  )}
-                  {item?.street && (
-                    <p className="text-xs text-gray-600">{item.street}</p>
+                  {item.onboardingStatus !== undefined && (
+                    <Badge
+                      variant={
+                        getBadgeConfig(item.onboardingStatus, "onboarding")
+                          .variant
+                      }
+                      className={
+                        getBadgeConfig(item.onboardingStatus, "onboarding")
+                          .className
+                      }
+                    >
+                      {getBadgeConfig(item.onboardingStatus, "onboarding").text}
+                    </Badge>
                   )}
                 </div>
               </div>
-              <div className="">
-                {item.residentialInfo?.[0]?.requirements && (
-                  <span className="text-xs">
-                    {item.residentialInfo?.[0]?.requirements}
-                  </span>
-                )}
-                {item.onboardingStatus && (
-                  <span className="text-xs text-blue-500"></span>
-                )}
+
+              {/* Right side - Price, placement count, and action buttons */}
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium">
+                  ${item?.facility?.price || 0}
+                </span>
+
+                <span className="text-sm font-medium">
+                  {item?.totalPlacement || 0}
+                </span>
+
                 {item.verificationInfo && (
                   <Badge
                     variant={
-                      item.onboardingStatus === true ||
-                      item.onboardingStatus === false
-                        ? "default"
-                        : "secondary"
+                      getBadgeConfig(
+                        item.verificationInfo.verified,
+                        "verification"
+                      ).variant
                     }
                     className={
-                      item.onboardingStatus === true
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-200 text-gray-600"
+                      getBadgeConfig(
+                        item.verificationInfo.verified,
+                        "verification"
+                      ).className
                     }
                   >
-                    {item?.onboardingStatus == true ? "Onboreded" : "Pending"}
+                    {
+                      getBadgeConfig(
+                        item.verificationInfo.verified,
+                        "verification"
+                      ).text
+                    }
                   </Badge>
+                )}
+
+                {item.facility?.status && (
+                  <Badge
+                    variant={
+                      getBadgeConfig(item.facility.status, "facility").variant
+                    }
+                    className={
+                      getBadgeConfig(item.facility.status, "facility").className
+                    }
+                  >
+                    {getBadgeConfig(item.facility.status, "facility").text}
+                  </Badge>
+                )}
+
+                {item.action && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-green-primary hover:text-green-secondary"
+                  >
+                    {item.action}
+                  </Button>
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {item?.facility?.price && (
-                <span className="text-sm font-medium">
-                  ${item?.facility?.price}
-                </span>
-              )}
-
-              {item.totalPlacement && (
-                <span className="text-sm font-medium">
-                  {item.totalPlacement}
-                </span>
-              )}
-              {item.verificationInfo && (
-                <Badge
-                  variant={
-                    item.verificationInfo?.verified === "active" ||
-                    item.verificationInfo?.verified === "expired" ||
-                    item.verificationInfo?.verified === "canceled"
-                      ? "default"
-                      : "secondary"
-                  }
-                  className={
-                    item.verificationInfo?.verified === true
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-600"
-                  }
-                >
-                  {item?.verificationInfo?.verified == true
-                    ? "Verified"
-                    : "Unverified"}
-                </Badge>
-              )}
-              {item.facility?.status && (
-                <Badge
-                  variant={
-                    item.facility?.status === "approved" ||
-                    item.facility?.status === "canceled" ||
-                    item.facility?.status === "declined"
-                      ? "default"
-                      : "secondary"
-                  }
-                  className={
-                    item.facility?.status === "approved" ||
-                    item.facility?.status === "pending" ||
-                    item.facility?.status === "declined"
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-600"
-                  }
-                >
-                  {item.facility?.status.charAt(0).toUpperCase() +
-                    item.facility?.status.slice(1)}
-                </Badge>
-              )}
-
-              {item.action && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-green-primary hover:text-green-secondary"
-                >
-                  {item.action}
-                </Button>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </CardContent>
     </Card>
   );
