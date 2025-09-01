@@ -1,5 +1,5 @@
 "use client";
-
+import { getRecentBooking } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 
@@ -21,5 +21,12 @@ export function useRecentReviews() {
   return useQuery({
     queryKey: ["recent-reviews"],
     queryFn: api.getRecentReviews,
+  });
+}
+
+export function useRecentBookings(page: number, limit: number) {
+  return useQuery({
+    queryKey: ["recent-bookings", page, limit],
+    queryFn: () => getRecentBooking(page, limit),
   });
 }

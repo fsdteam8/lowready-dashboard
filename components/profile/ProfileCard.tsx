@@ -29,7 +29,7 @@ console.log("Received id:", userId)
   if (isLoading) {
     return (
       <Card className="overflow-hidden">
-        <div className="h-24 bg-gradient-to-r from-green-400 to-green-500"></div>
+        <div className="h-fit bg-gradient-to-r from-[#28A745CC] to-[#6DBC8B]"></div>
         <div className="relative px-6 pb-6">
           <div className="relative -mt-12 mb-4">
             <div className="h-24 w-24 border-4 border-white shadow-lg rounded-full bg-gray-200 animate-pulse"></div>
