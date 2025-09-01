@@ -10,8 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Inbox } from "lucide-react"; // Lucide React icon
 
-// Define a fully typed Tour interface
 export interface Tour {
   _id: string;
   visitDate?: string;
@@ -62,51 +62,65 @@ export function TourHistoryTable({ tours }: TourHistoryTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tours.slice(0, 5).map((tour) => (
-            <TableRow key={tour._id}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="relative h-10 w-10 rounded-lg overflow-hidden">
-                    <Image
-                      src={
-                        tour.userId?.avatar?.url ||
-                        "/assisted-living-facility.png"
-                      }
-                      alt={`${tour.userId?.firstName ?? ""} ${
-                        tour.userId?.lastName ?? ""
-                      }`}
-                      fill
-                      className="object-cover"
-                    />
+          {tours.length > 0 ? (
+            tours.slice(0, 5).map((tour) => (
+              <TableRow key={tour._id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-10 w-10 rounded-lg overflow-hidden">
+                      <Image
+                        src={
+                          tour.userId?.avatar?.url ||
+                          "/assisted-living-facility.png"
+                        }
+                        alt={`${tour.userId?.firstName ?? ""} ${
+                          tour.userId?.lastName ?? ""
+                        }`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-medium text-black">
+                        {tour.facility?.name ?? "N/A"}
+                      </p>
+                      <p className="text-sm text-[#68706A]">
+                        {tour.facility?.location ?? "N/A"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-black">
-                      {tour.facility?.name ?? "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {tour.facility?.location ?? "N/A"}
-                    </p>
-                  </div>
+                </TableCell>
+                <TableCell className="text-[#68706A]">{tour.userId?.street ?? "N/A"}</TableCell>
+                <TableCell className="text-[#68706A]">
+                  {tour.visitDate
+                    ? new Date(tour.visitDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })
+                    : "N/A"}
+                </TableCell>
+                <TableCell className="text-[#68706A]">{tour.visitTime ?? "N/A"}</TableCell>
+                <TableCell>
+                  <Badge className={getStatusColor(tour.status)}>
+                    {tour.status.charAt(0).toUpperCase() + tour.status.slice(1)}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} className="py-8">
+                <div className="flex flex-col items-center justify-center gap-3 text-gray-500">
+                  <Inbox className="w-12 h-12" />
+                  <p className="text-lg font-medium">No tours found</p>
+                  <p className="text-sm text-gray-400">
+                    You haven’t scheduled any tours yet.
+                  </p>
                 </div>
               </TableCell>
-              <TableCell>{tour.userId?.street ?? "N/A"}</TableCell>
-              <TableCell>
-                {tour.visitDate
-                  ? new Date(tour.visitDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "2-digit",
-                      year: "numeric",
-                    })
-                  : "N/A"}
-              </TableCell>
-              <TableCell>{tour.visitTime ?? "N/A"}</TableCell>
-              <TableCell>
-                <Badge className={getStatusColor(tour.status)}>
-                  {tour.status.charAt(0).toUpperCase() + tour.status.slice(1)}
-                </Badge>
-              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>
