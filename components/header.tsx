@@ -69,10 +69,10 @@ export function Header() {
   });
 
   const pathname = usePathname();
-  const parentPath = `/${pathname.split("/")[1] || ""}`;
 
-  const activePage = navigation.find((nav) => nav.href === parentPath);
-
+   
+   const isPathName = pathname.split('/');
+   const activePage = navigation.find((nav) => nav.href === pathname);;
   return (
     <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>
