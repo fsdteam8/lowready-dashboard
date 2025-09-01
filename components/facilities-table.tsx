@@ -56,11 +56,11 @@ export function FacilitiesTable({
 
   // pending fetch
   const { data: pendingListings } = useQuery({
-    queryKey:['pending-listings'],
-    queryFn:getpendingallFacilityData
+    queryKey: ["pending-listings"],
+    queryFn: getpendingallFacilityData,
   });
   // console.log(pendingListings.meta.total,'pending');
-  
+
   // Pagination logic
   const totalItems = filteredFacilities.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -88,19 +88,25 @@ export function FacilitiesTable({
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">Filter by</span>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-48 cursor-pointer">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="available">Available</SelectItem>
-                <SelectItem value="unavailable">Unavailable</SelectItem>
+              <SelectContent className="cursor-pointer">
+                <SelectItem className="cursor-pointer" value="all">
+                  All Statuses
+                </SelectItem>
+                <SelectItem className="cursor-pointer" value="available">
+                  Available
+                </SelectItem>
+                <SelectItem className="cursor-pointer" value="unavailable">
+                  Unavailable
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
-        <Link href="/facilities/pending">
-          <Button className="bg-green-primary hover:bg-green-secondary">
+        <Link className="cursor-pointer" href="/facilities/pending">
+          <Button className="bg-green-primary cursor-pointer hover:bg-green-secondary">
             Pending Listings ({pendingListings?.meta?.total || 0})
           </Button>
         </Link>
@@ -123,11 +129,9 @@ export function FacilitiesTable({
             {paginatedFacilities.length > 0 ? (
               paginatedFacilities.map((facility) => {
                 const isAvailable = getAvailabilityStatus(facility);
-              
-                 
+
                 return (
                   <TableRow key={facility?.facility?._id}>
-                    
                     {/* Facility Info */}
                     <TableCell>
                       <div className="flex items-center gap-3">
