@@ -44,6 +44,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
 
     return pages
   }
+  
 
   return (
     <div className="flex items-center justify-between">
@@ -64,13 +65,14 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             size="sm"
             onClick={() => typeof page === "number" && onPageChange(page)}
             disabled={page === "..."}
-            className={page === currentPage ? "bg-green-primary hover:bg-green-secondary" : ""}
+            className={page === currentPage ? "bg-green-primary cursor-pointer hover:bg-green-secondary" : " cursor-pointer"}
           >
             {page}
           </Button>
         ))}
 
         <Button
+        className="cursor-pointer"
           variant="outline"
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
