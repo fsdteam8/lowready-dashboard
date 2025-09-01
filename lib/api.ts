@@ -6,10 +6,6 @@ import type {
   Customer,
   ChartData,
   Review,
-  Notification,
-  BlogPost,
-  BlogCategory,
-  BlogStats,
   Placement,
   TourBooking,
   PlacementStats,
@@ -109,69 +105,6 @@ const mockFacility: Facility = {
 //   { month: "Nov", value: 180 },
 //   { month: "Dec", value: 220 },
 // ];
-
-const mockBlogCategories: BlogCategory[] = [
-  {
-    id: "1",
-    name: "Senior Care Tips",
-    slug: "senior-care-tips",
-    description: "Helpful tips and advice for senior care",
-    color: "#10B981",
-    postCount: 8,
-  },
-  {
-    id: "2",
-    name: "Health & Wellness",
-    slug: "health-wellness",
-    description: "Health and wellness information for seniors",
-    color: "#3B82F6",
-    postCount: 6,
-  },
-  {
-    id: "3",
-    name: "Family Resources",
-    slug: "family-resources",
-    description: "Resources and guides for families",
-    color: "#8B5CF6",
-    postCount: 4,
-  },
-  {
-    id: "4",
-    name: "Industry News",
-    slug: "industry-news",
-    description: "Latest news in senior care industry",
-    color: "#F59E0B",
-    postCount: 3,
-  },
-];
-
-const mockBlogPost: BlogPost = {
-  id: "1",
-  title: "Essential Guide to Choosing the Right Senior Care Facility",
-  slug: "essential-guide-choosing-senior-care-facility",
-  excerpt:
-    "Learn the key factors to consider when selecting a senior care facility for your loved one, including location, services, and cost considerations.",
-  content:
-    "When it comes to choosing the right senior care facility for your loved one, there are many important factors to consider...",
-  featuredImage: "/blog-senior-care-guide.png",
-  author: {
-    id: "1",
-    name: "Dr. Sarah Johnson",
-    avatar: "/professional-woman-diverse.png",
-    email: "sarah.johnson@example.com",
-  },
-  category: mockBlogCategories[0],
-  tags: ["senior care", "family guidance", "healthcare"],
-  status: "Published",
-  publishDate: "2024-01-15",
-  createdDate: "2024-01-10",
-  updatedDate: "2024-01-15",
-  views: 1250,
-  readTime: 8,
-  seoTitle: "How to Choose the Right Senior Care Facility - Complete Guide",
-  seoDescription:
-    "Comprehensive guide to selecting the perfect senior care facility. Learn about costs, services, and key factors to consider.",
-};
 
 const mockPlacement: Placement = {
   id: "1",
@@ -716,6 +649,26 @@ export async function getBookingHistory(
     return { data: [], totalPages: 1 };
   }
 }
+
+export async function getRecentBooking(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching recent bookings:", error);
+    throw error;
+  }
+}
+export async function getRecentCustomer(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching recent bookings:", error);
+    throw error;
+  }
+}
+
 // facilities api intigration
 
 export async function getAllFacilityData() {
@@ -831,13 +784,8 @@ export async function createBlogs(
 //     throw error;
 //   }
 // }
-<<<<<<< HEAD
- 
-=======
 
 // Notification
->>>>>>> 0cc80ce9b54b54ba4ae2087b9ab02594c5e2340b
-
 export async function getNotifications(
   userId: string
 ): Promise<INotification[]> {
@@ -941,8 +889,6 @@ export async function DeleteReview(id: string) {
   }
 }
 
-<<<<<<< HEAD
-=======
 // get all booking payment
 export async function getAllPayment(type: string, page: number, limit: number) {
   try {
@@ -976,4 +922,3 @@ export async function deleteSubscriptionPlan(id: string) {
     }
   }
 }
->>>>>>> 0cc80ce9b54b54ba4ae2087b9ab02594c5e2340b
