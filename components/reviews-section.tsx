@@ -18,7 +18,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="text-green-primary hover:text-green-secondary"
+            className="text-green-primary hover: cursor-pointer text-[#28A745]"
           >
             See all
           </Button>
@@ -26,7 +26,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {reviews.map((review) => (
-          <div key={review.id} className="space-y-3 border-b pb-3">
+          <div key={review._id} className="space-y-3 border-b pb-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -52,7 +52,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
                   <Star
                     key={i}
                     className={`h-4 w-4 ${
-                      i < review.rating
+                      i < review.star
                         ? "fill-yellow-400 text-yellow-400"
                         : "text-gray-300"
                     }`}
@@ -60,7 +60,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
                 ))}
               </div>
             </div>
-            <p className="text-sm text-gray-600">{review.comment}</p>
+            <p className="text-sm text-gray-600 pl-2">{review.comment}</p>
           </div>
         ))}
       </CardContent>

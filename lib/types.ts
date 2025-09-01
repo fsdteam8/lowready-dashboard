@@ -41,12 +41,12 @@ export interface Facility {
 export interface ServiceProvider {
   _id: string;
   firstName: string;
-  lastName: string
+  lastName: string;
   name: string;
   email: string;
   phoneNum: string;
   avatar?: {
-    url:string,
+    url: string;
   };
   facility: {
     id: string;
@@ -54,7 +54,7 @@ export interface ServiceProvider {
     location: string;
     image: string;
   };
-  stree:string,
+  stree: string;
   onboardingStatus: boolean;
   subscriptionStatus: SubscriptionStatus;
   documents: Document[];
@@ -106,7 +106,6 @@ export interface NewDocument {
   __v: number;
 }
 
-
 export interface Customer {
   bio: string;
   id: string;
@@ -142,12 +141,19 @@ export interface Booking {
 }
 
 export interface Review {
-  facility: any;
-  userId: any;
-  userId: any;
-  userId: any;
-  userId: any;
-  id: string;
+  star: number;
+  facility: {
+    _id: string;
+    name: string;
+    address: string;
+  };
+  userId: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  _id: string;
   customerName: string;
   customerAvatar: string;
   rating: number;
@@ -391,9 +397,6 @@ export enum SubscriptionStatus {
   SUBSCRIBED = "Subscribed",
   UNSUBSCRIBED = "Unsubscribed",
 }
-
-
-
 
 export enum TourStatus {
   UPCOMING = "Upcoming",
