@@ -2,17 +2,20 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Phone, Mail } from "lucide-react";
 import { useAllBPayments } from "@/hooks/usePayments";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import AllSubscriberSkeleton from "./AllSubscriberSkeleton";
 
 interface Facility {
   name: string;
   images?: { url: string }[];
+    base: string;
 }
 
 interface Payment {
   amount: number;
+  
 }
 
 interface PaymentItem {
@@ -45,8 +48,13 @@ export default function Payments() {
     isLoading: boolean;
     isError: boolean;
   };
-
-  if (isLoading) return <p>Loading...</p>;
+ 
+  if (isLoading)
+    return (
+      <div>
+        <AllSubscriberSkeleton />
+      </div>
+    );
   if (isError) return <p>Something went wrong</p>;
 
   const payments: PaymentItem[] = data?.data || [];
@@ -55,8 +63,8 @@ export default function Payments() {
   return (
     <div className="p-6 space-y-6">
       {/* Search & Filter */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
+      <div className="flex justify-end items-center">
+        {/* <div className="flex items-center gap-2">
           <input
             type="text"
             placeholder="Search by name..."
@@ -65,25 +73,32 @@ export default function Payments() {
           <button className="bg-green-500 text-white px-4 py-2 rounded">
             Search
           </button>
-        </div>
+        </div> */}
 
-        <Button
-          asChild
-          className="bg-green-primary hover:bg-green-secondary cursor-pointer"
-        >
-          See All Subscriptions
-        </Button>
+        <Link href={"/all-subscriber"}>
+          <Button className="bg-green-primary hover:bg-green-secondary cursor-pointer">
+            See All Subscriptions
+          </Button>
+        </Link>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto border border-[#E6E7E6] bg-[#FFF] rounded-xl">
         <table className="w-full border-collapse rounded-lg overflow-hidden shadow">
           <thead>
-            <tr className="bg-green-100 text-left">
-              <th className="px-4 py-3">Service Providers</th>
-              <th className="px-4 py-3">Total Revenue</th>
-              <th className="px-4 py-3">Commissions (18%)</th>
-              <th className="px-4 py-3">Action</th>
+            <tr className="bg-green-100 text-left ">
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">
+                Service Providers
+              </th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">
+                Total Revenue
+              </th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">
+                Commissions (18%)
+              </th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">
+                Subscription Type
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -103,14 +118,7 @@ export default function Payments() {
                 </td>
                 <td className="px-4 py-3">${item.payments[0]?.amount}</td>
                 <td className="px-4 py-3">${item.totalAdminShare}</td>
-                <td className="px-4 py-3 flex gap-3">
-                  <button className="text-green-600 hover:text-green-800 cursor-pointer">
-                    <Phone size={18} />
-                  </button>
-                  <button className="text-green-600 hover:text-green-800 cursor-pointer">
-                    <Mail size={18} />
-                  </button>
-                </td>
+                <td className="px-4 py-3 flex gap-3">{item?.facility?.base}</td>
               </tr>
             ))}
           </tbody>

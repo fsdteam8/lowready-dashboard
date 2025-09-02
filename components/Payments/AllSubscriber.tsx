@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useAllBPayments } from "@/hooks/usePayments";
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import AllSubscriberSkeleton from "./AllSubscriberSkeleton";
 
 interface User {
   firstName: string;
@@ -38,6 +41,7 @@ interface PaymentsResponse {
 export default function AllSubscriber() {
   const [paymentType] = useState<"subscription">("subscription");
   const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
 
   const { data, isLoading, isError } = useAllBPayments(
     paymentType,
@@ -49,7 +53,7 @@ export default function AllSubscriber() {
     isError: boolean;
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <div><AllSubscriberSkeleton /></div>;
   if (isError) return <p>Something went wrong</p>;
 
   const payments: PaymentItem[] = data?.data || [];
@@ -65,21 +69,25 @@ export default function AllSubscriber() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <p className="text-2xl font-bold text-[#28A745]">
+        <p className="flex gap-2 text-2xl font-bold text-[#28A745]">
+          <ChevronLeft
+            className="mt-1 cursor-pointer hover:text-black"
+            onClick={() => router.back()}  
+          />
           Total Income (${totalIncome.toFixed(2)})
         </p>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto clear-both bg-[#F8F9FA]">
+      <div className="overflow-x-auto border border-[#E6F9EB] bg-[#FFF]">
         <table className="w-full border-collapse rounded-lg overflow-hidden shadow">
           <thead>
             <tr className="bg-green-100 text-[#343A40] text-left">
-              <th className="px-4 py-3">Subscriber</th>
-              <th className="px-4 py-3">Billing Month</th>
-              <th className="px-4 py-3">Subscription Type</th>
-              <th className="px-4 py-3">Amount</th>
-              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">Subscriber</th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">Billing Month</th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">Subscription Type</th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">Amount</th>
+              <th className="px-4 py-3 text-[#343A40] text-base font-normal">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -130,7 +138,8 @@ export default function AllSubscriber() {
       {meta && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-600">
-            Page {meta.page} of {meta.totalPages} | Total {meta.total} subscribers
+            Page {meta.page} of {meta.totalPages} | Total {meta.total}{" "}
+            subscribers
           </p>
           <div className="flex items-center gap-1">
             <button

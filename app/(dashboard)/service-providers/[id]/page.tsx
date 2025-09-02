@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DocumentModal } from "@/components/document-modal";
-import {
-  useDocumentByID,
-} from "@/hooks/use-service-providers";
+import { useDocumentByID } from "@/hooks/use-service-providers";
 import type { NewDocument } from "@/lib/types";
 import ProfileCard from "@/components/profile/ProfileCard";
 
@@ -41,6 +39,8 @@ export default function ServiceProviderDetailsPage({
   };
 
   const docs: NewDocument[] = documents ?? [];
+
+  console.log(docs);
 
   // Profile skeleton component
   const ProfileSkeleton = () => (
@@ -159,6 +159,12 @@ export default function ServiceProviderDetailsPage({
                         <div className="flex-1 min-w-0">
                           <h4 className="font-medium truncate">
                             {document.type}
+                          </h4>
+                          <h4 className="text-base text-[#68706A] mt-1">
+                            Uploaded:{" "}
+                            {new Date(document.createdAt).toLocaleDateString(
+                              "en-GB"
+                            )}
                           </h4>
                         </div>
                         <Button

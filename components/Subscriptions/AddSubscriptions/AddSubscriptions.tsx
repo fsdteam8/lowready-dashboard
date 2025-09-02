@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCreateSubscriptionPlan } from "@/hooks/useAlltSubscription";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(2, "Title is required"),
@@ -92,9 +93,8 @@ export default function AddSubscriptions() {
 
     try {
       await createPlan.mutateAsync(subscription);
-
-      console.log("Subscription created:", subscription);
-
+      toast.success("Subscription created Successfully!")
+    
       // Clear localStorage & reset form after save
       localStorage.removeItem("features");
       setFeatures([]);
@@ -162,7 +162,7 @@ export default function AddSubscriptions() {
                 step="0.01"
                 placeholder="$0.00"
                 {...register("price", { valueAsNumber: true })}
-                className="mt-2 h-12"
+                className="mt-2 h-10"
               />
               {errors.price && (
                 <p className="text-red-500 text-sm">{errors.price.message}</p>
@@ -200,7 +200,7 @@ export default function AddSubscriptions() {
                 type="button"
                 onClick={addAmenity}
                 variant="outline"
-                className="mt-2 h-11 bg-green-200 cursor-pointer"
+                className="mt-2 h-11  cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
               </Button>
@@ -230,7 +230,7 @@ export default function AddSubscriptions() {
             <Button
               type="submit"
               disabled={createPlan.isPending}
-              className="bg-green-500 hover:bg-green-600 cursor-pointer"
+              className="bg-[#28A745] hover:bg-[#28A745] py-5 px-6 rounded-sm cursor-pointer"
             >
               {createPlan.isPending ? "Saving..." : "Save"}
             </Button>

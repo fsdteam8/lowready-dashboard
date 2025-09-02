@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Plus, Eye, Edit, Trash2 } from "lucide-react";
+import {   Plus, Eye, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { DeleteConfirmModal } from "@/components/delete-confirm-modal";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -33,7 +33,7 @@ interface BlogsResponse {
 }
 
 export default function BlogsPage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
@@ -52,10 +52,10 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
 
   const deleteBlogMutation = useDeleteBlog();
 
-  const handleSearch = () => {
-    console.log("Searching for:", searchTerm);
-    // চাইলে search API query param এ পাঠাতে পারো
-  };
+  // const handleSearch = () => {
+  //   console.log("Searching for:", searchTerm);
+  //   // চাইলে search API query param এ পাঠাতে পারো
+  // };
 
   const handleDelete = async () => {
     if (!deleteModal.blogId) return;
@@ -78,8 +78,8 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
   return (
     <div className="p-6 space-y-6">
       {/* Search + Add Blog */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2 flex-1 max-w-md">
+      <div className="flex justify-end gap-4">
+        {/* <div className="flex items-center gap-2 flex-1 max-w-md">
           <Input
             placeholder="Search by name..."
             value={searchTerm}
@@ -93,7 +93,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
             <Search className="h-4 w-4 mr-2" />
             Search
           </Button>
-        </div>
+        </div> */}
         <Link href="/blogs/add">
           <Button className="bg-green-600 hover:bg-green-700 text-white cursor-pointer">
             <Plus className="h-4 w-4 mr-2" />
@@ -149,7 +149,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-green-600 hover:text-green-700 hover:bg-green-50 cursor-pointer"
+                    className="  hover:bg-green-50 cursor-pointer"
                   >
                     <Eye className="h-4 w-4" />
                   </Button>

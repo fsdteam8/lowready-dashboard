@@ -66,7 +66,7 @@ export function CustomersTable({
             {customers?.map((customer) => (
               <TableRow key={customer._id}>
                 <TableCell>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 text-left">
                     <div className="relative h-10 w-10 rounded-full overflow-hidden">
                       <Image
                         src={customer.avatar?.url || "/diverse-group.png"}
@@ -75,8 +75,8 @@ export function CustomersTable({
                         className="object-cover"
                       />
                     </div>
-                    <div>
-                      <p className="font-medium">
+                    <div className="">
+                      <p className="font-medium ">
                         {`${customer.firstName} ${customer.lastName}`}
                       </p>
                       <p className="text-sm text-gray-600">{customer.email}</p>
@@ -84,9 +84,9 @@ export function CustomersTable({
                   </div>
                 </TableCell>
                 <TableCell className="text-[#68706A]">
-                  {customer.phoneNum ?? "-"}
+                  {customer.phoneNum || "-"}
                 </TableCell>
-                <TableCell>{customer.street ?? "-"}</TableCell>
+                <TableCell>{customer.street || "-"}</TableCell>
                 <TableCell>{customer.totalTour ?? 0}</TableCell>
                 <TableCell>{customer.totalPlacement ?? 0}</TableCell>
                 <TableCell>
