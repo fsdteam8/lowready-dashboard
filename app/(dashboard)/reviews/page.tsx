@@ -36,12 +36,6 @@ interface ReviewApiData {
   createdAt: string;
 }
 
-interface ReviewApiResponse {
-  data: ReviewApiData[];
-  message: string;
-  success: boolean;
-}
-
 // -------- ReviewData for Table --------
 interface ReviewData {
   id: string;

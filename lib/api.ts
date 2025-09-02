@@ -332,7 +332,7 @@ export async function clearAllNotifications(userId: string): Promise<void> {
 
 //review rating deleter
 
-export async function reviewReting(page: number, limit: number) {
+export async function reviewRating(page: number, limit: number) {
   try {
     const res = await apiBase.get(`/review-rating?page=${page}&limit=${limit}`);
     return res.data;
@@ -437,5 +437,29 @@ export async function createSubscriptionPlan(data: {
   } catch (error) {
     console.error("Error in createSubscriptionPlan API:", error);
     throw error;
+  }
+}
+
+// Get Bookings for All
+export async function getRecentAllBooking(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/bookings/recent-home-bookings?page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch  {
+    throw new Error(`Failed to fetch recent bookings`);
+  }
+}
+
+// Get All Recent Bookings
+export async function getRecentAllTours(page: number, limit: number) {
+  try {
+    const res = await apiBase.get(
+      `/visit-booking/recent-bookings?page=${page}&limit=${limit}`
+    );
+    return res.data;
+  } catch  {
+    throw new Error(`Failed to fetch recent bookings`);
   }
 }

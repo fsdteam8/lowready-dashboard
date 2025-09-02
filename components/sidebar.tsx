@@ -33,7 +33,7 @@ const navigation = [
   { name: "Facilities Management", href: "/facilities", icon: Building2 },
   { name: "Service Providers", href: "/service-providers", icon: UserCheck },
   { name: "Customers", href: "/customers", icon: Users },
-  { name: "Placements & Tours", href: "/placements", icon: MapPin },
+  { name: "Bookings & Tours", href: "/bookings-tours", icon: MapPin },
   { name: "Reviews & Ratings", href: "/reviews", icon: MessageSquare },
   { name: "Blogs Management", href: "/blogs", icon: FileText },
   { name: "Payments", href: "/payments", icon: CircleDollarSign },

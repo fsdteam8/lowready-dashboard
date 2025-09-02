@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { api, approveListing, getAllFacilityData, getpendingFacilityData, getSingleFacility } from "@/lib/api"
+import { approveListing, getAllFacilityData, getpendingFacilityData, getSingleFacility } from "@/lib/api"
 import { toast } from "sonner"
 
 export function useFacilities(page = 1, limit = 10) {

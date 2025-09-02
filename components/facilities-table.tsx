@@ -28,12 +28,12 @@ import { getpendingallFacilityData } from "@/lib/api";
 
 interface FacilitiesTableProps {
   facilities: FacilityResponse[];
-  onPageChange: (page: number) => void;
+  // onPageChange: (page: number) => void;
 }
 
 export function FacilitiesTable({
   facilities,
-  onPageChange,
+  // onPageChange,
 }: FacilitiesTableProps) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,7 +72,7 @@ export function FacilitiesTable({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    onPageChange(page);
+    // onPageChange(page);
   };
 
   // Get availability status for display

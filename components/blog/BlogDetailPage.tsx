@@ -21,7 +21,7 @@ export default function BlogDetailPage() {
   const deleteBlogMutation = useDeleteBlog();  
 
   const [deleteModal, setDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
     if (!blog?._id) return;
@@ -121,8 +121,8 @@ export default function BlogDetailPage() {
         onClose={() => setDeleteModal(false)}
         onConfirm={handleDelete}
         title="Are You Sure?"
-        description="Are you sure you want to delete this blog?"
-        isLoading={isDeleting}
+        message="Are you sure you want to delete this blog?"
+        // isLoading={isDeleting}
       />
     </div>
   );
