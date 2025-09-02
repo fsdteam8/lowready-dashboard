@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,42 +13,29 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
- 
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 // ✅ Zod Schema for Validation
 const profileSchema = z.object({
-  gender: z.enum(["male", "female"]),
+  gender: z.enum(["male", "female"]).optional(),
   firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),
   email: z.string().email("Invalid email address"),
   bio: z.string().optional(),
-  address: z.string().min(5, "Address is required"),
-  location: z.string().min(2, "Location is required"),
-  postCode: z.string().min(3, "Postal code is required"),
-  phoneNum: z.string().min(10, "Phone number is required"),
+  address: z.string().optional(),
+  postCode: z.union([z.string(), z.number()]).optional(),
+  phoneNum: z.string().optional(),
   dateOfBirth: z.string().optional(),
   photo: z.any().optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
-// ✅ Initial Values
-const initialValues: ProfileFormData = {
-  gender: "female",
-  firstName: "Olivia",
-  lastName: "Rhye",
-  email: "bessieedwards@gmail.com",
-  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et ante sed sem feugiat tristique at sed mauris.",
-  address: "1234 Oak Avenue, San Francisco, CA 94102A",
-  location: "Florida, USA",
-  postCode: "30301",
-  phoneNum: "+1 (555) 123-4567",
-  dateOfBirth: "1995-02-01",
-  photo: null,
-};
-
 // ✅ API call
-const updateUserProfile = async (userData: ProfileFormData, accessToken: string) => {
+const updateUserProfile = async (
+  userData: ProfileFormData,
+  accessToken: string
+) => {
   if (!accessToken) throw new Error("Session expired. Please login again.");
 
   const formData = new FormData();
@@ -60,13 +47,16 @@ const updateUserProfile = async (userData: ProfileFormData, accessToken: string)
     }
   });
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/update`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: formData,
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/update`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: formData,
+    }
+  );
 
   if (!response.ok) throw new Error("Failed to update profile");
   return response.json();
@@ -77,6 +67,9 @@ export function PersonalInformationForm() {
   const queryClient = useQueryClient();
   const [hasChanges, setHasChanges] = useState(false);
 
+  const userId = session?.user.id;
+  const { data: userProfile, isLoading } = useUserProfile(userId as string);
+
   const {
     register,
     handleSubmit,
@@ -86,8 +79,24 @@ export function PersonalInformationForm() {
     formState: { errors },
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
-    defaultValues: initialValues,
   });
+
+  useEffect(() => {
+    if (userProfile?.data) {
+      reset({
+        gender: "male", 
+        firstName: userProfile.data.firstName || "",
+        lastName: userProfile.data.lastName || "",
+        email: userProfile.data.email || "",
+        bio: userProfile.data.bio || "",
+        address: userProfile.data.street || "",
+        postCode: userProfile.data.postCode?.toString() || "",
+        phoneNum: userProfile.data.phoneNum || "",
+        dateOfBirth: "",  
+        photo: null,
+      });
+    }
+  }, [userProfile, reset]);
 
   const mutation = useMutation({
     mutationFn: (data: ProfileFormData) =>
@@ -98,31 +107,40 @@ export function PersonalInformationForm() {
       setHasChanges(false);
     },
     onError: (error: unknown) => {
-      const msg = error instanceof Error ? error.message : "Failed to update profile";
+      const msg =
+        error instanceof Error ? error.message : "Failed to update profile";
       toast.error(msg);
     },
   });
 
   const onSubmit = (data: ProfileFormData) => mutation.mutate(data);
+
   const handleDiscard = () => {
-    reset(initialValues);
-    setHasChanges(false);
+    if (userProfile?.data) {
+      // reset(userProfile.data);
+      setHasChanges(false);
+    }
   };
 
   // Watch for changes
   watch(() => setHasChanges(true));
+
+  if (isLoading) {
+    return <p>Loading profile...</p>;
+  }
 
   return (
     <div className="overflow-hidden w-full">
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Personal Information
+            </h3>
             <p className="text-sm text-gray-600">
               Manage your personal information and profile details.
             </p>
           </div>
-          
         </CardHeader>
 
         <CardContent className="space-y-2">
@@ -130,7 +148,9 @@ export function PersonalInformationForm() {
             {/* Gender */}
             <RadioGroup
               value={watch("gender")}
-              onValueChange={(val) => setValue("gender", val as "male" | "female")}
+              onValueChange={(val) =>
+                setValue("gender", val as "male" | "female")
+              }
               className="flex gap-6"
             >
               <div className="flex items-center space-x-2">
@@ -149,14 +169,18 @@ export function PersonalInformationForm() {
                 <Label>First Name</Label>
                 <Input {...register("firstName")} />
                 {errors.firstName && (
-                  <p className="text-red-500 text-xs">{errors.firstName.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.firstName.message}
+                  </p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label>Last Name</Label>
                 <Input {...register("lastName")} />
                 {errors.lastName && (
-                  <p className="text-red-500 text-xs">{errors.lastName.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.lastName.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -179,16 +203,10 @@ export function PersonalInformationForm() {
               <Input {...register("address")} />
             </div>
 
-            {/* Location & Postal Code */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* <div>
-                <Label>Location</Label>
-                <Input {...register("location")} />
-              </div> */}
-              <div className="space-y-2">
-                <Label>Postal Code</Label>
-                <Input {...register("postCode")} />
-              </div>
+            {/* Postal Code */}
+            <div className="space-y-2">
+              <Label>Postal Code</Label>
+              <Input {...register("postCode")} />
             </div>
 
             {/* Phone & DOB */}
@@ -209,9 +227,7 @@ export function PersonalInformationForm() {
               <Input
                 type="file"
                 accept="image/*"
-                onChange={(e) =>
-                  setValue("photo", e.target.files?.[0] || null)
-                }
+                onChange={(e) => setValue("photo", e.target.files?.[0] || null)}
               />
             </div>
 
@@ -220,7 +236,7 @@ export function PersonalInformationForm() {
               <Button
                 type="button"
                 variant="outline"
-                className="text-red-500 border-red-500 hover:bg-red-50"
+                className="text-red-500 border-red-500 hover:bg-red-50 cursor-pointer"
                 onClick={handleDiscard}
                 disabled={!hasChanges}
               >
@@ -228,7 +244,7 @@ export function PersonalInformationForm() {
               </Button>
               <Button
                 type="submit"
-                className="bg-green-600 hover:bg-green-700 text-white"
+                className="bg-green-600 hover:bg-green-700 text-white cursor-pointer"
                 disabled={!hasChanges || mutation.isPending}
               >
                 {mutation.isPending ? "Saving..." : "Save Changes"}
