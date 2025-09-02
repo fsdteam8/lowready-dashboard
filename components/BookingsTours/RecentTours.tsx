@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Pagination } from "../pagination";
+import BookingsToursSkeleton from "./BookingsToursSkeleton";
 
 // ---------- Types ----------
 interface User {
@@ -53,7 +54,7 @@ export default function RecentTours() {
 
   const { data, isLoading, isError } = useAllRecentTours(page, limit);
 
-  if (isLoading) return <div>Loading recent tours...</div>;
+  if (isLoading) return <div><BookingsToursSkeleton/></div>;
   if (isError) return <div>Failed to load tours 😢</div>;
 
   const tours: Tour[] = data?.data || [];

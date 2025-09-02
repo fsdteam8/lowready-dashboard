@@ -65,7 +65,7 @@ export function DocumentModal({
             </p>
             <p>
               <span className="font-medium">Uploaded:</span>{" "}
-              {document.createdAt}
+              {new Date(document.createdAt).toLocaleDateString("en-GB")}
             </p>
           </div>
         </div>

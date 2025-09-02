@@ -71,6 +71,16 @@ export function Header() {
   const pathname = usePathname();
 
   const activePage = navigation.find((nav) => nav.href === pathname);
+
+  //   const activePage = navigation.find((nav) => {
+  //   if (nav.href === "/") return pathname === "/";
+
+  //   // Debug: কোন nav আর path name check হচ্ছে
+  //   console.log("Checking nav:", nav.href, "with pathname:", pathname);
+
+  //   return pathname?.startsWith(nav.href);
+  // });
+  
   return (
     <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>

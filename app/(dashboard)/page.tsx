@@ -16,6 +16,7 @@ import ChartBarInteractive from "@/components/chart-bar-interactive";
 import { useServiceProviders } from "@/hooks/use-service-providers";
 import { RecentServiceProvider } from "@/components/recent-service-provider";
 import { useCustomers, useReviewRatings } from "@/hooks/use-customers";
+import DashboardSkeleton from "@/components/DashboardSkeleton/DashboardSkeleton";
 
 export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
@@ -35,14 +36,7 @@ export default function DashboardPage() {
 
   if (statsLoading || reviewsLoading || bookingsLoading) {
     return (
-      <div className="flex h-screen">
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-primary mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading dashboard...</p>
-          </div>
-        </div>
-      </div>
+      <DashboardSkeleton />
     );
   }
 
@@ -59,31 +53,31 @@ export default function DashboardPage() {
           title="Total Facilities"
           value={stats?.totalFacilities || 0}
           growth={stats?.facilitiesGrowth || 0}
-          icon={<Building2 className="h-6 w-6" />}
+          // icon={<Building2 className="h-6 w-6" />}
         />
         <StatsCard
           title="Total Service Providers"
           value={stats?.totalServiceProviders || 0}
           growth={stats?.serviceProvidersGrowth || 0}
-          icon={<UserCheck className="h-6 w-6" />}
+          // icon={<UserCheck className="h-6 w-6" />}
         />
         <StatsCard
           title="Total Customers"
           value={stats?.totalCustomers || 0}
           growth={stats?.customersGrowth || 0}
-          icon={<Users className="h-6 w-6" />}
+          // icon={<Users className="h-6 w-6" />}
         />
         <StatsCard
           title="Total Placements"
           value={stats?.totalBookings || 0}
           growth={stats?.bookingsGrowth || 0}
-          icon={<MapPin className="h-6 w-6" />}
+          // icon={<MapPin className="h-6 w-6" />}
         />
         <StatsCard
           title="Earnings"
           value={`$${stats?.totalEarnings?.toLocaleString() || 0}`}
           growth={stats?.earningsGrowth || 0}
-          icon={<DollarSign className="h-6 w-6" />}
+          // icon={<DollarSign className="h-6 w-6" />}
         />
       </div>
 

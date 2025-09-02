@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Pagination } from "../pagination";
+import BookingsToursSkeleton from "./BookingsToursSkeleton";
 
 // ---------- Types ----------
 interface User {
@@ -47,7 +48,7 @@ export default function RecentBookings() {
 
   const { data, isLoading, isError } = useAllRecentBooking(page, limit);
 
-  if (isLoading) return <div>Loading recent bookings...</div>;
+  if (isLoading) return <div><BookingsToursSkeleton /></div>;
   if (isError) return <div>Failed to load bookings 😢</div>;
 
   const bookings: Booking[] = data?.data || [];

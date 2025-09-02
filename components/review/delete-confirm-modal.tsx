@@ -30,7 +30,7 @@ export function DeleteConfirmModal({
       <DialogContent className="max-w-md p-6">
         <DialogHeader className="text-center">
           <div className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-red-100">
-            <AlertTriangle className="h-6 w-6 text-red-600" />
+            <AlertTriangle className="h-6 w-6 text-red-600 cursor-pointer" />
           </div>
 
           <DialogTitle className="text-lg font-semibold text-gray-900">
@@ -45,13 +45,13 @@ export function DeleteConfirmModal({
           <Button
             variant="outline"
             onClick={onClose}
-            className="px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50 bg-transparent"
+            className="px-6 py-2 text-gray-700 border-gray-300 hover:bg-gray-50 bg-transparent cursor-pointer"
           >
             Cancel
           </Button>
           <Button
             onClick={()=>onConfirm()}
-            className="px-6 py-2 bg-red-600 text-white hover:bg-red-700"
+            className="px-6 py-2 bg-red-600 text-white hover:bg-red-700 cursor-pointer"
           >
             Delete
           </Button>
