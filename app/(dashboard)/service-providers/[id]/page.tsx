@@ -5,10 +5,10 @@ import { ArrowLeft, Eye } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { DocumentModal } from "@/components/document-modal";
 import {
   useDocumentByID,
-  useServiceProvider,
 } from "@/hooks/use-service-providers";
 import type { NewDocument } from "@/lib/types";
 import ProfileCard from "@/components/profile/ProfileCard";
@@ -22,9 +22,8 @@ export default function ServiceProviderDetailsPage({
 }: ServiceProviderDetailsPageProps) {
   const { id } = use(params); // <-- unwrap the promise
 
-  const { data: provider, isLoading: isProviderLoading } =
-    useServiceProvider(id);
-  const { data: documents } = useDocumentByID(id);
+  const { data: documents, isLoading: isDocumentsLoading } =
+    useDocumentByID(id);
 
   const [selectedDocument, setSelectedDocument] = useState<NewDocument | null>(
     null
@@ -43,6 +42,75 @@ export default function ServiceProviderDetailsPage({
 
   const docs: NewDocument[] = documents ?? [];
 
+  // Profile skeleton component
+  const ProfileSkeleton = () => (
+    <Card className="w-full">
+      <CardContent className="p-6">
+        <div className="flex flex-col items-center space-y-4">
+          {/* Avatar skeleton */}
+          <Skeleton className="h-24 w-24 rounded-full" />
+
+          {/* Name skeleton */}
+          <div className="text-center space-y-2">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-4 w-24" />
+          </div>
+
+          {/* Details skeleton */}
+          <div className="w-full space-y-3">
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-12" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-14" />
+              <Skeleton className="h-4 w-28" />
+            </div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex space-x-2 w-full">
+            <Skeleton className="h-10 flex-1" />
+            <Skeleton className="h-10 flex-1" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  // Documents skeleton component
+  const DocumentsSkeleton = () => (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>
+          <Skeleton className="h-6 w-24" />
+        </CardTitle>
+        <Skeleton className="h-4 w-48" />
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {[...Array(5)].map((_, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between p-4 border rounded-lg min-w-0"
+          >
+            <div className="flex-1 min-w-0">
+              <Skeleton className="h-5 w-32" />
+            </div>
+            <Skeleton className="h-8 w-8 flex-shrink-0 ml-2" />
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="flex h-screen bg-gray-50">
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -50,53 +118,62 @@ export default function ServiceProviderDetailsPage({
           {/* Back button */}
           <div className="mb-6">
             <Link href="/service-providers">
-              <Button variant="ghost" className="flex items-center cursor-pointer gap-2">
+              <Button
+                variant="ghost"
+                className="flex items-center cursor-pointer gap-2"
+              >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Service Providers
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 2xl:grid-cols-3 gap-6">
             {/* Left Column - Profile */}
-            <div className="lg:col-span-1">
-              {isProviderLoading ? (
-                <div className="w-96 mx-auto h-[400px] rounded-lg bg-gray-300 animate-pulse"></div>
+            <div className="2xl:col-span-1">
+              {isDocumentsLoading ? (
+                <ProfileSkeleton />
               ) : (
                 <ProfileCard userId={id} />
               )}
             </div>
 
             {/* Right Column - Documents */}
-            <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Documents</CardTitle>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Manage uploaded documents.
-                  </p>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {docs.map((document) => (
-                    <div
-                      key={document._id}
-                      className="flex items-center justify-between p-4 border rounded-lg"
-                    >
-                      <div>
-                        <h4 className="font-medium">{document.type}</h4>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        className="cursor-pointer"
-                        size="icon"
-                        onClick={() => handleViewDocument(document)}
+            <div className="2xl:col-span-2 min-w-0">
+              {isDocumentsLoading ? (
+                <DocumentsSkeleton />
+              ) : (
+                <Card className="w-full ">
+                  <CardHeader>
+                    <CardTitle>Documents</CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Manage uploaded documents.
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {docs.map((document) => (
+                      <div
+                        key={document._id}
+                        className="flex items-center justify-between p-4 border rounded-lg min-w-0"
                       >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium truncate">
+                            {document.type}
+                          </h4>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          className="cursor-pointer flex-shrink-0 ml-2"
+                          size="icon"
+                          onClick={() => handleViewDocument(document)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
         </main>

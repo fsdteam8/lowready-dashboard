@@ -46,8 +46,8 @@ export function RecentServiceProvider({
   seeAllHref,
 }: RecentSectionProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+    <Card className="bg-[#FFF] border border-[#E6E7E6] px- py-3">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
         <Link href={seeAllHref}>
           <Button
@@ -61,7 +61,10 @@ export function RecentServiceProvider({
       </CardHeader>
       <CardContent className="space-y-4">
         {items.map((item) => (
-          <div key={item._id} className="flex items-center justify-between">
+          <div
+            key={item._id}
+            className="flex items-center justify-between border-b pb-3"
+          >
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
                 <AvatarImage
@@ -83,11 +86,9 @@ export function RecentServiceProvider({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {item?.totalPlacement && (
-                <span className="text-sm font-medium">
-                  {item?.totalPlacement}
-                </span>
-              )}
+              <span className="text-sm font-medium">
+                {item?.totalPlacement || "0"}
+              </span>
               {item?.subscriptionStatus && (
                 <Badge
                   variant={

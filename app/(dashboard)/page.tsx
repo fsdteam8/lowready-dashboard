@@ -54,7 +54,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex-col h-screen bg-gray-50 pt-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8 rounded-md">
         <StatsCard
           title="Total Facilities"
           value={stats?.totalFacilities || 0}

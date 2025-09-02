@@ -11,7 +11,7 @@ interface ReviewsSectionProps {
 
 export function ReviewsSection({ reviews }: ReviewsSectionProps) {
   return (
-    <Card>
+    <Card className="bg-[#FFF] border border-[#E6E7E6]  py-3">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="text-lg font-semibold">Recent Reviews</CardTitle>
         <Link href="/reviews">

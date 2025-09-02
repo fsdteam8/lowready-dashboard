@@ -1,10 +1,12 @@
 import VerifyOTPForm from "@/components/auth/verify-otp";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function page() {
   return (
     <div>
-      <VerifyOTPForm />
+      <Suspense fallback={<div>loading...</div>}>
+      <VerifyOTPForm />   
+      </Suspense>
     </div>
   );
 }

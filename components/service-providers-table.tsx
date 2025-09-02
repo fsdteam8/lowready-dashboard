@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import type React from "react"
@@ -11,11 +12,10 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Pagination } from "@/components/pagination"
-import type { ServiceProvider } from "@/lib/types"
-import { projectOnExit } from "next/dist/build/swc/generated-native"
+// import type { ServiceProvider } from "@/lib/types"
 
 interface ServiceProvidersTableProps {
-  providers: ServiceProvider[] 
+  providers: any 
   total: number
   currentPage: number
   onPageChange: (page: number) => void
@@ -24,6 +24,38 @@ interface ServiceProvidersTableProps {
 
 
 
+// Avatar component for fallback
+const Avatar = ({ src, alt, firstName, size = "h-10 w-10", shape = "rounded-full" }: {
+  src?: string
+  alt: string
+  firstName: string
+  size?: string
+  shape?: string
+}) => {
+  if (src) {
+    return (
+      <div className={`relative ${size} ${shape} overflow-hidden`}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+        />
+      </div>
+    );
+  }
+  
+  // Fallback to first letter
+  const initial = firstName?.charAt(0)?.toUpperCase() || '?';
+  
+  return (
+    <div className={`${size} ${shape} bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center`}>
+      <span className="text-white font-semibold text-sm">
+        {initial}
+      </span>
+    </div>
+  );
+};
 
 export function ServiceProvidersTable({
   providers,
@@ -35,7 +67,9 @@ export function ServiceProvidersTable({
   const [searchQuery, setSearchQuery] = useState("")
   const itemsPerPage = 10
   const totalPages = Math.ceil(total / itemsPerPage)
-  // console.log(providers)
+  
+
+  // console.log("this is providers", providers)
   const handleSearch = () => {
     onSearch(searchQuery)
   }
@@ -83,19 +117,17 @@ export function ServiceProvidersTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            
-            {providers.map((provider) => (
+            {providers.map((provider: any) => (
               <TableRow key={provider._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="relative h-10 w-10 rounded-full overflow-hidden">
-                      <Image
-                        src={provider.avatar?.url || "/professional-person.png"}
-                        alt={provider.firstName + provider.lastName || "user image"}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                    <Avatar
+                      src={provider.avatar?.url}
+                      alt={provider.firstName + provider.lastName || "user image"}
+                      firstName={provider.firstName}
+                      size="h-10 w-10"
+                      shape="rounded-full"
+                    />
                     <div>
                       <p className="font-medium">{provider.firstName +" "+ provider.lastName}</p>
                       <p className="text-sm text-gray-600">{provider.email}</p>
@@ -105,17 +137,16 @@ export function ServiceProvidersTable({
                 <TableCell>{provider.phoneNum || "-"}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="relative h-10 w-10 rounded-lg overflow-hidden">
-                      <Image
-                        src={provider.avatar?.url || "/assisted-living-facility.png"}
-                        alt={provider.firstName +" "+ provider.lastName}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                    <Avatar
+                      src={provider.avatar?.url}
+                      alt={provider.firstName +" "+ provider.lastName}
+                      firstName={provider.firstName}
+                      size="h-10 w-10"
+                      shape="rounded-lg"
+                    />
                     <div>
                       <p className="font-medium">{provider.firstName + provider.lastName}</p>
-                      <p className="text-sm text-gray-600">{provider.stree}</p>
+                      {/* <p className="text-sm text-gray-600">{provider.street}</p> */}
                     </div>
                   </div>
                 </TableCell>
@@ -134,7 +165,7 @@ export function ServiceProvidersTable({
                 </TableCell>
                 <TableCell>
                   <Link href={`/service-providers/${provider._id}`}>
-                    <Button variant="ghost" className="bg-green-200 text-green-500 hover:bg-green-400 cursor-pointer hover:text-white ">
+                    <Button variant="ghost" className="bg-green-200 text-green-700 hover:bg-green-400 cursor-pointer hover:text-white ">
                       <Eye /> Details
                     </Button>
                   </Link>
