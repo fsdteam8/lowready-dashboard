@@ -165,7 +165,7 @@ export function ServiceProvidersTable({
                 </TableCell>
                 <TableCell>
                   <Link href={`/service-providers/${provider._id}`}>
-                    <Button variant="ghost" className="bg-green-200 text-green-700 hover:bg-green-400 cursor-pointer hover:text-white ">
+                    <Button variant="ghost" className="bg-[#E6F9EB] text-[#28A745] cursor-pointer hover:bg-none ">
                       <Eye /> Details
                     </Button>
                   </Link>
