@@ -9,7 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DocumentModal } from "@/components/document-modal";
 import {
   useDocumentByID,
-  useServiceProvider,
 } from "@/hooks/use-service-providers";
 import type { NewDocument } from "@/lib/types";
 import ProfileCard from "@/components/profile/ProfileCard";
@@ -23,8 +22,6 @@ export default function ServiceProviderDetailsPage({
 }: ServiceProviderDetailsPageProps) {
   const { id } = use(params); // <-- unwrap the promise
 
-  const { data: provider, isLoading: isProviderLoading } =
-    useServiceProvider(id);
   const { data: documents, isLoading: isDocumentsLoading } =
     useDocumentByID(id);
 
@@ -134,7 +131,7 @@ export default function ServiceProviderDetailsPage({
           <div className="grid grid-cols-1 2xl:grid-cols-3 gap-6">
             {/* Left Column - Profile */}
             <div className="2xl:col-span-1">
-              {isProviderLoading ? (
+              {isDocumentsLoading ? (
                 <ProfileSkeleton />
               ) : (
                 <ProfileCard userId={id} />

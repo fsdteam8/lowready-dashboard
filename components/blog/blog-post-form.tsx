@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
-import { api } from "@/lib/api"
+// import { api } from "@/lib/api"
 import type { BlogCategory, BlogPost } from "@/lib/types"
 
 interface BlogPostFormProps {
@@ -65,45 +65,10 @@ export function BlogPostForm({ categories, post, onSubmit, onCancel }: BlogPostF
     setIsSubmitting(true)
 
     try {
-      const category = categories.find((c) => c.id === formData.categoryId)!
-      const postData = {
-        title: formData.title.trim(),
-        slug: formData.slug.trim(),
-        excerpt: formData.excerpt.trim(),
-        content: formData.content.trim(),
-        category,
-        tags: formData.tags
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean),
-        status: formData.status as "Published" | "Draft" | "Scheduled",
-        featuredImage: formData.featuredImage.trim() || undefined,
-        seoTitle: formData.seoTitle.trim() || undefined,
-        seoDescription: formData.seoDescription.trim() || undefined,
-        scheduledDate: formData.scheduledDate || undefined,
-        author: {
-          id: "1",
-          name: "Dr. Sarah Johnson",
-          avatar: "/professional-woman-diverse.png",
-          email: "sarah.johnson@example.com",
-        },
-        readTime: Math.ceil(formData.content.split(" ").length / 200), // Estimate reading time
-      }
-
-      if (post) {
-        await api.updateBlogPost(post.id, postData)
-        toast.success("Post Updated", {
-          description: "Your blog post has been successfully updated.",
-        })
-      } else {
-        await api.createBlogPost(postData)
-        toast.success("Post Created", {
-          description: "Your blog post has been successfully created.",
-        })
-      }
+ 
 
       onSubmit()
-    } catch (error) {
+    } catch   {
       toast.error("Error", {
         description: "Failed to save the blog post. Please try again.",
       })

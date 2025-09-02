@@ -6,7 +6,7 @@ import {
   getCustomers,
   getSingleCustomer,
   getVisitBooking,
-  reviewReting,
+  reviewRating,
 } from "@/lib/api";
 
 export function useCustomers(page = 1, limit = 10) {
@@ -45,6 +45,6 @@ export function useBookingHistory(id: string, page = 1, limit = 10) {
 export function useReviewRatings(page = 1, limit = 10) {
   return useQuery({
     queryKey: ["reviewRatings"],
-    queryFn: () => reviewReting(page, limit),
+    queryFn: () => reviewRating(page, limit),
   });
 }

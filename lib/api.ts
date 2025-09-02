@@ -332,7 +332,7 @@ export async function clearAllNotifications(userId: string): Promise<void> {
 
 //review rating deleter
 
-export async function reviewReting(page: number, limit: number) {
+export async function reviewRating(page: number, limit: number) {
   try {
     const res = await apiBase.get(`/review-rating?page=${page}&limit=${limit}`);
     return res.data;

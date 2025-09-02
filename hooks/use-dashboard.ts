@@ -1,5 +1,5 @@
 "use client";
-import { getRecentBooking } from "@/lib/api";
+import { getRecentBooking, reviewRating } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 
@@ -20,7 +20,7 @@ export function useChartData() {
 export function useRecentReviews() {
   return useQuery({
     queryKey: ["recent-reviews"],
-    queryFn: api.getRecentReviews,
+    queryFn: () => reviewRating,
   });
 }
 

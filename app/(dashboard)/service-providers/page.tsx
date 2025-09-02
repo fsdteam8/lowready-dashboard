@@ -15,7 +15,7 @@ export default function ServiceProvidersPage() {
     searchQuery
   );
 
-  console.log(data)
+  // console.log(data)
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -94,7 +94,7 @@ export default function ServiceProvidersPage() {
             </div>
           ) : (
             <ServiceProvidersTable
-              providers={data || []}
+              providers={data}
               total={data?.total || 0}
               currentPage={currentPage}
               onPageChange={handlePageChange}
