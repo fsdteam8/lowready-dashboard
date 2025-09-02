@@ -109,15 +109,18 @@ export function Header() {
         {/* User Profile */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-3 px-3">
-              <Avatar className="h-8 w-8">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-3 px-3 cursor-pointer"
+            >
+              <Avatar className="h-8 w-8 cursor-pointer">
                 <AvatarImage src={user?.avatar?.url} alt="Olivia Rhye" />
-                <AvatarFallback>
+                <AvatarFallback className="cursor-pointer">
                   {user?.firstName?.charAt(0)}
                   {user?.lastName?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-left">
+              <div className="text-left cursor-pointer">
                 <p className="text-sm font-medium">
                   {user?.firstName} {user?.lastName}
                 </p>
@@ -125,10 +128,26 @@ export function Header() {
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Sign out</DropdownMenuItem>
+
+          <DropdownMenuContent align="end" className="cursor-pointer">
+            <Link href="/profile">
+              <DropdownMenuItem className="cursor-pointer">
+                Profile
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/settings">
+              <DropdownMenuItem className="cursor-pointer">
+                Settings
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem
+              onClick={() => {
+                import("next-auth/react").then(({ signOut }) => signOut());
+              }}
+              className="cursor-pointer"
+            >
+              Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

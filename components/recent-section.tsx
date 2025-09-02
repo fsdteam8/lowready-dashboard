@@ -1,9 +1,9 @@
-
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { MapPin } from "lucide-react";
 
 interface RecentSectionProps {
   title: string;
@@ -20,6 +20,7 @@ interface RecentSectionProps {
     }>;
     facility?: {
       price: number;
+      location?: string;
       status: "approved" | "pending" | "declined" | "canceled";
     };
     userId?: {
@@ -96,7 +97,7 @@ export function RecentSection({
   seeAllHref,
 }: RecentSectionProps) {
   return (
-    <Card>
+    <Card className="bg-[#FFF] border border-[#E6E7E6]  py-3">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
         <Link href={seeAllHref}>
@@ -117,7 +118,8 @@ export function RecentSection({
             item.userId?.avatar?.url || item.avatar?.url || "/placeholder.svg";
           const displayName = item.userId?.firstName || item.firstName;
           const email = item.userId?.email || item.email;
-          const street = item.userId?.street || item.street;
+          const street =
+            item.userId?.street || item.street || item.facility?.location;
           const avatarFallback = displayName?.charAt(0) || "";
 
           return (
@@ -133,10 +135,14 @@ export function RecentSection({
                   <div className="flex flex-col">
                     <p className="font-medium text-gray-900">{displayName}</p>
                     {email && <p className="text-xs text-gray-600">{email}</p>}
-                    {street && (
-                      <p className="text-xs text-gray-600">{street}</p>
-                    )}
                   </div>
+                </div>
+                <div>
+                  {street && (
+                    <p className="text-xs text-gray-600 flex ">
+                      <MapPin className="h-4" /> {street}
+                    </p>
+                  )}
                 </div>
 
                 {/* Middle section - Requirements and status badges */}
@@ -170,7 +176,7 @@ export function RecentSection({
                   ${item?.facility?.price || 0}
                 </span>
 
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium text-[#68706A]">
                   {item?.totalPlacement || 0}
                 </span>
 
