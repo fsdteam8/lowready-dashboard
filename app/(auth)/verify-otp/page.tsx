@@ -6,7 +6,6 @@ export default function page() {
     <div>
       <Suspense fallback={<div>loading...</div>}>
       <VerifyOTPForm />   
-
       </Suspense>
     </div>
   );

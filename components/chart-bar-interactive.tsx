@@ -27,7 +27,7 @@ const EarningsBarChart = () => {
     maxEarnings > 0 ? Math.ceil(maxEarnings / 1000) * 1000 : 4000;
 
   return (
-    <div className="w-full bg-white" style={{ height: "400px" }}>
+    <div className="w-full bg-[#FFF] border border-[#E6E7E6] rounded-xl" style={{ height: "400px" }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
