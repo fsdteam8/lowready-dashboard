@@ -48,14 +48,24 @@ const navigation = [
     description: "Manage reviews and ratings.",
   },
   {
+    name: "Bookings & Tours",
+    href: "/bookings-tours",
+    description: "Welcome back! Here's what's happening with your app today.",
+  },
+  {
     name: "Blogs Management",
     href: "/blogs",
     description: "Manage your blog posts and their details.",
   },
   {
-    name: "Referral Fees",
-    href: "/referral-fees",
-    description: "Manage referral fees and their details.",
+    name: "Payments",
+    href: "/payments",
+    description: "Track your facility growth and community engagement easily.",
+  },
+  {
+    name: "Subscriptions",
+    href: "/subscriptions",
+    description: "Keep track of all your facilities, update details, and stay organized..",
   },
 ];
 
@@ -145,9 +155,9 @@ export function Header() {
                 Profile
               </DropdownMenuItem>
             </Link>
-            <Link href="/settings">
+            <Link href="/change-password">
               <DropdownMenuItem className="cursor-pointer">
-                Settings
+                Change Password
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
