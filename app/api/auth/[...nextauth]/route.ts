@@ -25,7 +25,7 @@ const handler = NextAuth({
 
           const data = await res.json();
 
-          console.log(data)
+          // console.log(data)
 
           if (!res.ok || !data.success || !data.data?.accessToken) {
             throw new Error(data.message || "Invalid credentials");
@@ -57,8 +57,35 @@ const handler = NextAuth({
         token.role = user.role;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+        token.accessTokenExpires = Date.now() + 60 * 60 * 1000; // 1h
       }
-      return token;
+
+      // If token not expired, return it
+      if (Date.now() < (token.accessTokenExpires as number)) {
+        return token;
+      }
+
+      // Otherwise, refresh
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/user/refresh`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken: token.refreshToken }),
+          }
+        );
+        const refreshed = await res.json();
+
+        if (!res.ok) throw refreshed;
+
+        token.accessToken = refreshed.accessToken;
+        token.accessTokenExpires = Date.now() + 60 * 60 * 1000;
+        return token;
+      } catch (e) {
+        console.error("Refresh token failed", e);
+        return { ...token, error: "RefreshAccessTokenError" };
+      }
     },
     async session({ session, token }) {
       if (session.user) {
