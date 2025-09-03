@@ -1,7 +1,8 @@
-export { default } from "next-auth/middleware"
+export { default } from "next-auth/middleware";
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+    // Protect everything except API, Next.js internals, favicon, and login page
+    "/((?!api|_next/|favicon.ico|login).*)",
   ],
 };
