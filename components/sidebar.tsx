@@ -108,7 +108,7 @@ export function Sidebar() {
               Log Out
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Confirm Logout</DialogTitle>
               <DialogDescription>
