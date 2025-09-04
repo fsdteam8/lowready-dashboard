@@ -22,7 +22,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {reviews.map((review) => (
-          <div key={review.id} className="space-y-3">
+          <div key={review._id} className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
