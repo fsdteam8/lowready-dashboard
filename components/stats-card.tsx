@@ -14,7 +14,7 @@ export function StatsCard({ title, value, growth, icon }: StatsCardProps) {
   const formattedValue = typeof value === "number" ? value.toLocaleString() : value
 
   return (
-    <Card>
+    <Card className="bg-[#FFF] border border-[#E6E7E6]">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>

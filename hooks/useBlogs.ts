@@ -19,8 +19,14 @@ export function useAllBlogs(page = 1, limit = 10) {
 
 // Delete Blog Hook
 export function useDeleteBlog() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (id: string) => deleteSingleBlog(id),
+    onSuccess: () => {
+      // 🔥 Blogs cache invalidate করলে auto reload হবে
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+    },
     onError: (error) => {
       console.error("Blog delete failed:", error);
     },
@@ -30,7 +36,7 @@ export function useDeleteBlog() {
 // Get Single Blog
 export function useSingleBlog(id: string) {
   return useQuery({
-    queryKey: ["singleBlog", id],
+    queryKey: ["blogs", id],
     queryFn: () => getSingleBlog(id),
     enabled: !!id,
   });
@@ -74,9 +80,7 @@ export function useUpdateBlog() {
     }) => updateBlog(blogId, data, image),
 
     onSuccess: () => {
-      // ✅ update হবার পরে সব blogs refetch হবে
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      queryClient.invalidateQueries({ queryKey: ["singleBlog"] });
     },
 
     onError: (error) => {

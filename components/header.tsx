@@ -48,14 +48,24 @@ const navigation = [
     description: "Manage reviews and ratings.",
   },
   {
+    name: "Bookings & Tours",
+    href: "/bookings-tours",
+    description: "Welcome back! Here's what's happening with your app today.",
+  },
+  {
     name: "Blogs Management",
     href: "/blogs",
     description: "Manage your blog posts and their details.",
   },
   {
-    name: "Referral Fees",
-    href: "/referral-fees",
-    description: "Manage referral fees and their details.",
+    name: "Payments",
+    href: "/payments",
+    description: "Track your facility growth and community engagement easily.",
+  },
+  {
+    name: "Subscriptions",
+    href: "/subscriptions",
+    description: "Keep track of all your facilities, update details, and stay organized..",
   },
 ];
 
@@ -70,9 +80,17 @@ export function Header() {
 
   const pathname = usePathname();
 
-   
-   const isPathName = pathname.split('/');
-   const activePage = navigation.find((nav) => nav.href === pathname);;
+  const activePage = navigation.find((nav) => nav.href === pathname);
+
+  //   const activePage = navigation.find((nav) => {
+  //   if (nav.href === "/") return pathname === "/";
+
+  //   // Debug: কোন nav আর path name check হচ্ছে
+  //   console.log("Checking nav:", nav.href, "with pathname:", pathname);
+
+  //   return pathname?.startsWith(nav.href);
+  // });
+  
   return (
     <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>
@@ -111,15 +129,18 @@ export function Header() {
         {/* User Profile */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-3 px-3">
-              <Avatar className="h-8 w-8">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-3 px-3 cursor-pointer"
+            >
+              <Avatar className="h-8 w-8 cursor-pointer">
                 <AvatarImage src={user?.avatar?.url} alt="Olivia Rhye" />
-                <AvatarFallback>
+                <AvatarFallback className="cursor-pointer">
                   {user?.firstName?.charAt(0)}
                   {user?.lastName?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-left">
+              <div className="text-left cursor-pointer">
                 <p className="text-sm font-medium">
                   {user?.firstName} {user?.lastName}
                 </p>
@@ -127,10 +148,26 @@ export function Header() {
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Sign out</DropdownMenuItem>
+
+          <DropdownMenuContent align="end" className="cursor-pointer">
+            <Link href="/profile">
+              <DropdownMenuItem className="cursor-pointer">
+                Profile
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/change-password">
+              <DropdownMenuItem className="cursor-pointer">
+                Change Password
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem
+              onClick={() => {
+                import("next-auth/react").then(({ signOut }) => signOut());
+              }}
+              className="cursor-pointer"
+            >
+              Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

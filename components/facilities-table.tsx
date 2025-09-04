@@ -28,13 +28,13 @@ import { getpendingallFacilityData } from "@/lib/api";
 
 interface FacilitiesTableProps {
   facilities: FacilityResponse[];
-  onPageChange: (page: number) => void;
+  // onPageChange: (page: number) => void;
 }
 
 export function FacilitiesTable({
   facilities,
-  onPageChange,
-}: FacilitiesTableProps) {
+}: // onPageChange,
+FacilitiesTableProps) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -72,7 +72,7 @@ export function FacilitiesTable({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    onPageChange(page);
+    // onPageChange(page);
   };
 
   // Get availability status for display
@@ -146,8 +146,10 @@ export function FacilitiesTable({
                             className="object-cover"
                           />
                         </div>
-                        <div>
-                          <p className="font-medium">{facility.name}</p>
+                        <div className="text-left">
+                          <p className="font-medium">
+                            {facility?.facility?.name}
+                          </p>
                           <p className="text-sm text-gray-600">
                             {facility.facility?.location ?? "No address"}
                           </p>

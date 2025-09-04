@@ -36,12 +36,6 @@ interface ReviewApiData {
   createdAt: string;
 }
 
-interface ReviewApiResponse {
-  data: ReviewApiData[];
-  message: string;
-  success: boolean;
-}
-
 // -------- ReviewData for Table --------
 interface ReviewData {
   id: string;
@@ -137,7 +131,7 @@ const StatsCards: React.FC<StatsCardsProps> = ({ reviews }) => (
     {[1, 2, 3, 4, 5].map((star) => {
       const count = reviews.filter((r) => r.rating === star).length;
       return (
-        <Card key={star} className="h-full p-4 border">
+        <Card key={star} className="h-full p-4   bg-[#FFF] border border-[#E6E7E6]">
           <CardHeader>
             <CardTitle className="text-sm lg:text-[20px] text-[#343A40] font-semibold">
               {star} Star Ratings

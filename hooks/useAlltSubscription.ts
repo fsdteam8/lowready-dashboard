@@ -1,9 +1,5 @@
 "use client";
-import {
-  createSubscriptionPlan,
-  deleteSubscriptionPlan,
-  getAllSubscriptionPlan,
-} from "@/lib/api";
+import { createSubscriptionPlan, deleteSubscriptionPlan, getAllSubscriptionPlan } from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Get All SubscriptionPlan
@@ -31,6 +27,7 @@ export function useDeleteSubscriptionPlan() {
     },
   });
 }
+
 
 // Create Subscription Plan with auto-refresh
 export function useCreateSubscriptionPlan() {

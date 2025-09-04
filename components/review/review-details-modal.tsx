@@ -1,7 +1,6 @@
 "use client"
 
-import { X, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Star } from "lucide-react"
 import {
   Dialog,
   DialogContent,

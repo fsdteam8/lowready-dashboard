@@ -89,7 +89,7 @@ export default function EditBlogComponent({ blogId }: EditBlogComponentProps) {
       <div className="flex items-center gap-3">
         <Link href={`/blogs/${blogId}`}>
           <Button variant="ghost" size="sm" className="p-1">
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-5 w-5 cursor-pointer" />
           </Button>
         </Link>
         <div>
@@ -169,7 +169,7 @@ export default function EditBlogComponent({ blogId }: EditBlogComponentProps) {
                   <button
                     type="button"
                     onClick={removeImage}
-                    className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1"
+                    className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 cursor-pointer"
                   >
                     <X className="h-4 w-4" />
                   </button>

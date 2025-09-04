@@ -27,17 +27,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Facilities Management", href: "/facilities", icon: Building2 },
   { name: "Service Providers", href: "/service-providers", icon: UserCheck },
   { name: "Customers", href: "/customers", icon: Users },
-  { name: "Placements & Tours", href: "/placements", icon: MapPin },
+  { name: "Bookings & Tours", href: "/bookings-tours", icon: MapPin },
   { name: "Reviews & Ratings", href: "/reviews", icon: MessageSquare },
   { name: "Blogs Management", href: "/blogs", icon: FileText },
   { name: "Payments", href: "/payments", icon: CircleDollarSign },
-  { name: "Subscription", href: "/subscriptions", icon: Crown},
+  { name: "Subscription", href: "/subscriptions", icon: Crown },
 ];
 
 export function Sidebar() {
@@ -54,18 +55,29 @@ export function Sidebar() {
     <div className="flex h-screen w-64 flex-col bg-white border-r border-gray-200">
       {/* Logo */}
       <div className="flex h-16 items-center px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="text-2xl font-bold">
+        <Link href="/" className="flex items-center ml-5">
+          {/* <div className="text-2xl font-bold">
             <span className="text-green-primary">Aln</span>
             <span className="text-gray-600">Hub</span>
-          </div>
+          </div> */}
+          <Image
+            src={"/alhub-logo.svg"}
+            alt="This is Alhub Logo"
+            width={150}
+            height={150}
+          />
         </Link>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-6 px-3 py-4">
         {navigation.map((item) => {
-          const isActive = pathname === item.href;
+          // Active logic
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname?.startsWith(item.href);
+
           return (
             <Link
               key={item.name}
@@ -104,10 +116,18 @@ export function Sidebar() {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="flex justify-end gap-2">
-              <Button className="cursor-pointer" variant="outline" onClick={() => setOpen(false)}>
+              <Button
+                className="cursor-pointer"
+                variant="outline"
+                onClick={() => setOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button className="cursor-pointer" variant="destructive" onClick={handleLogout}>
+              <Button
+                className="cursor-pointer"
+                variant="destructive"
+                onClick={handleLogout}
+              >
                 Log Out
               </Button>
             </DialogFooter>

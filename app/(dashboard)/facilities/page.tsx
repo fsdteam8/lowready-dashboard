@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { FacilitiesTable } from "@/components/facilities-table";
 import { useFacilities } from "@/hooks/use-facilities";
 
 export default function FacilitiesPage() {
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, error } = useFacilities();
 
   if (isLoading) {
@@ -43,7 +42,7 @@ export default function FacilitiesPage() {
         <main className="flex-1 overflow-y-auto p-6">
           <FacilitiesTable
             facilities={data?.data || []}
-            onPageChange={setCurrentPage}
+            // onPageChange={setCurrentPage}
           />
         </main>
       </div>
