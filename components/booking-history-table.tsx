@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -11,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Inbox } from "lucide-react";
-
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface BookingHistoryTableProps {
   bookings: Booking[];
@@ -42,6 +41,29 @@ export interface Booking {
   status: BookingStatus;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface User {
+  _id: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: {
+    url?: string;
+    public_id?: string;
+  };
+}
+
+export interface Booking {
+  id?: string;
+  _id: string;
+  facility?: Facility;
+  placeName?: string;
+  visitDate?: string;
+  visitTime?: string;
+  status: BookingStatus;
+  createdAt?: string;
+  updatedAt?: string;
+  userId?: User; // <-- এখানে যোগ করলাম
 }
 
 export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
@@ -75,16 +97,21 @@ export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
               <TableRow key={booking.id || booking._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="relative h-10 w-10 rounded-lg overflow-hidden">
-                      <Image
-                        src={
-                          booking.facility?.images?.[0]?.url ||
-                          "/assisted-living-facility.png"
-                        }
-                        alt={booking.facility?.name || "Facility"}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="relative h-10 w-10 rounded-full overflow-hidden">
+                      <Avatar className="h-full w-full border-2 border-white shadow-lg rounded-full">
+                        <AvatarImage
+                          src={
+                            booking.userId?.avatar?.url || "/diverse-group.png"
+                          }
+                          alt={`${booking.userId?.firstName ?? ""} ${
+                            booking.userId?.lastName ?? ""
+                          }`}
+                        />
+                        <AvatarFallback className="text-sm font-semibold">
+                          {booking.userId?.firstName?.[0]?.toUpperCase() || ""}
+                          {booking.userId?.lastName?.[0]?.toUpperCase() || ""}
+                        </AvatarFallback>
+                      </Avatar>
                     </div>
                     <div className="text-left">
                       <p className="font-medium">{booking.facility?.name}</p>
@@ -121,7 +148,9 @@ export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
               <TableCell colSpan={4} className="py-8">
                 <div className="flex flex-col items-center justify-center gap-3 text-gray-500">
                   <Inbox className="text-4xl" />
-                  <p className="text-lg font-medium">No bookings History found</p>
+                  <p className="text-lg font-medium">
+                    No bookings History found
+                  </p>
                   <p className="text-sm text-gray-400">
                     You haven’t made any bookings yet.
                   </p>

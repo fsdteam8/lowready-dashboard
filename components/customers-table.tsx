@@ -1,6 +1,4 @@
 "use client";
-
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,10 +11,11 @@ import {
 } from "@/components/ui/table";
 import { Pagination } from "@/components/pagination";
 import { Eye } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 // ---- Define Customer type ----
 export interface Customer {
-  _id: string; // using _id consistently
+  _id: string; 
   firstName: string;
   lastName: string;
   email: string;
@@ -45,7 +44,7 @@ export function CustomersTable({
 }: CustomersTableProps) {
   const itemsPerPage = 10;
   const totalPages = Math.ceil(total / itemsPerPage);
-
+  console.log(customers);
   return (
     <div className="space-y-6">
       {/* Table */}
@@ -67,13 +66,17 @@ export function CustomersTable({
               <TableRow key={customer._id}>
                 <TableCell>
                   <div className="flex items-center gap-3 text-left">
-                    <div className="relative h-10 w-10 rounded-full overflow-hidden">
-                      <Image
-                        src={customer.avatar?.url || "/diverse-group.png"}
-                        alt={`${customer.firstName} ${customer.lastName}`}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="relative h-12 w-12 rounded-full overflow-hidden">
+                      <Avatar className="h-12 w-12 border-4 border-white shadow-lg rounded-full">
+                        <AvatarImage
+                          src={customer.avatar?.url || "/diverse-group.png"}
+                          alt={`${customer.firstName} ${customer.lastName}`}
+                        />
+                        <AvatarFallback className="text-sm font-semibold">
+                          {customer.firstName?.[0]?.toUpperCase() || ""}
+                          {customer.lastName?.[0]?.toUpperCase() || ""}
+                        </AvatarFallback>
+                      </Avatar>
                     </div>
                     <div className="">
                       <p className="font-medium ">
