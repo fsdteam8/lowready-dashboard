@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, use } from "react";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft, Eye, FilePlus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -149,6 +149,18 @@ export default function ServiceProviderDetailsPage({
                     <p className="text-sm text-gray-600 mt-1">
                       Manage uploaded documents.
                     </p>
+
+                    {docs.length === 0 && (
+                      <div className="flex flex-col items-center justify-center text-center py-6 text-gray-500">
+                        <FilePlus className="h-20 w-20"/>
+                        <p className="text-xl font-medium mt-6">
+                          No documents available
+                        </p>
+                        <p className="text-xl text-gray-400">
+                          You haven’t uploaded any documents yet.
+                        </p>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {docs.map((document) => (

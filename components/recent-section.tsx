@@ -1,8 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@/components/ui/table";
 import { MapPin } from "lucide-react";
 
 interface RecentSectionProps {
@@ -47,7 +55,6 @@ interface RecentSectionProps {
   seeAllHref: string;
 }
 
-// Helper function to get badge variant and styling
 const getBadgeConfig = (
   status: string | boolean,
   type: "onboarding" | "verification" | "facility"
@@ -97,139 +104,98 @@ export function RecentSection({
   seeAllHref,
 }: RecentSectionProps) {
   return (
-    <Card className="bg-[#FFF] border border-[#E6E7E6]  py-3">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+    <Card className="bg-[#FFF] border border-[#E6E7E6]">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
         <Link href={seeAllHref}>
           <Button
             variant="ghost"
             size="sm"
-            className="text-green-primary text-[#28A745] cursor-pointer"
+            className="text-green-primary text-[#28A745] cursor-pointer mt-3"
           >
             See all
           </Button>
         </Link>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        {items?.map((item) => {
-          // Determine which data to use (prioritize userId data if available)
-          const avatarUrl =
-            item.userId?.avatar?.url || item.avatar?.url || "/placeholder.svg";
-          const displayName = item.userId?.firstName || item.firstName;
-          const email = item.userId?.email || item.email;
-          const street =
-            item.userId?.street || item.street || item.facility?.location;
-          const avatarFallback = displayName?.charAt(0) || "";
+      <CardContent>
+        <Table>
+          <TableBody>
+            {items?.map((item) => {
+              const avatarUrl =
+                item.userId?.avatar?.url || item.avatar?.url || "/placeholder.svg";
+              const displayName = item.userId?.firstName || item.firstName;
+              const email = item.userId?.email || item.email;
+              const street =
+                item.userId?.street || item.street || item.facility?.location;
+              const avatarFallback = displayName?.charAt(0) || "";
 
-          return (
-            <div key={item._id} className="flex items-center justify-between">
-              {/* Left side - Avatar and user info */}
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={avatarUrl} alt={displayName} />
-                    <AvatarFallback>{avatarFallback}</AvatarFallback>
-                  </Avatar>
+              return (
+                <TableRow key={item._id}>
+                  {/* User */}
+                  <TableCell className="flex text-left gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={avatarUrl} alt={displayName} />
+                      <AvatarFallback>{avatarFallback}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium text-gray-900">{displayName}</p>
+                      {email && <p className="text-xs text-gray-600">{email}</p>}
+                    </div>
+                  </TableCell>
 
-                  <div className="flex flex-col">
-                    <p className="font-medium text-gray-900">{displayName}</p>
-                    {email && <p className="text-xs text-gray-600">{email}</p>}
-                  </div>
-                </div>
-                <div>
-                  {street && (
-                    <p className="text-xs text-gray-600 flex ">
-                      <MapPin className="h-4" /> {street}
+                  {/* Location */}
+                  <TableCell>
+                    <p className="flex items-center text-xs text-gray-600">
+                      <MapPin className="h-4 w-4 mr-1" />
+                      {street || "N/A"}
                     </p>
-                  )}
-                </div>
+                  </TableCell>
 
-                {/* Middle section - Requirements and status badges */}
-                <div className="flex items-center gap-2">
-                  {item.residentialInfo?.[0]?.requirements && (
-                    <span className="text-xs">
-                      {item.residentialInfo[0].requirements}
-                    </span>
-                  )}
-
-                  {item.onboardingStatus !== undefined && (
-                    <Badge
-                      variant={
-                        getBadgeConfig(item.onboardingStatus, "onboarding")
-                          .variant
-                      }
-                      className={
-                        getBadgeConfig(item.onboardingStatus, "onboarding")
-                          .className
-                      }
-                    >
-                      {getBadgeConfig(item.onboardingStatus, "onboarding").text}
-                    </Badge>
-                  )}
-                </div>
-              </div>
-
-              {/* Right side - Price, placement count, and action buttons */}
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-medium">
-                  ${item?.facility?.price || 0}
-                </span>
-
-                <span className="text-sm font-medium text-[#68706A]">
-                  {item?.totalPlacement || 0}
-                </span>
-
-                {item.verificationInfo && (
-                  <Badge
-                    variant={
-                      getBadgeConfig(
-                        item.verificationInfo.verified,
-                        "verification"
-                      ).variant
-                    }
-                    className={
-                      getBadgeConfig(
-                        item.verificationInfo.verified,
-                        "verification"
-                      ).className
-                    }
-                  >
-                    {
-                      getBadgeConfig(
-                        item.verificationInfo.verified,
-                        "verification"
-                      ).text
-                    }
-                  </Badge>
-                )}
-
-                {item.facility?.status && (
-                  <Badge
-                    variant={
-                      getBadgeConfig(item.facility.status, "facility").variant
-                    }
-                    className={
-                      getBadgeConfig(item.facility.status, "facility").className
-                    }
-                  >
-                    {getBadgeConfig(item.facility.status, "facility").text}
-                  </Badge>
-                )}
-
-                {item.action && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-green-primary hover:text-green-secondary"
-                  >
-                    {item.action}
-                  </Button>
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  {/* Onboarding */}
+                  <TableCell>
+                    {item.onboardingStatus !== undefined && (
+                      <Badge
+                        variant={
+                          getBadgeConfig(item.onboardingStatus, "onboarding")
+                            .variant
+                        }
+                        className={
+                          getBadgeConfig(item.onboardingStatus, "onboarding")
+                            .className
+                        }
+                      >
+                        {
+                          getBadgeConfig(item.onboardingStatus, "onboarding")
+                            .text
+                        }
+                      </Badge>
+                    )}
+                  </TableCell>
+ 
+                  {/* Facility Status */}
+                  <TableCell>
+                    {item.facility?.status && (
+                      <Badge
+                        variant={
+                          getBadgeConfig(item.facility.status, "facility")
+                            .variant
+                        }
+                        className={
+                          getBadgeConfig(item.facility.status, "facility")
+                            .className
+                        }
+                      >
+                        {getBadgeConfig(item.facility.status, "facility").text}
+                      </Badge>
+                    )}
+                  </TableCell>
+ 
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );
