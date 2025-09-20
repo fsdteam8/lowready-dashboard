@@ -65,7 +65,8 @@ const navigation = [
   {
     name: "Subscriptions",
     href: "/subscriptions",
-    description: "Keep track of all your facilities, update details, and stay organized..",
+    description:
+      "Keep track of all your facilities, update details, and stay organized..",
   },
 ];
 
@@ -74,8 +75,9 @@ export function Header() {
 
   const { data: user } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getUserProfile(session?.user.id as string),
-    select: (data) => data.data,
+    queryFn: () => getUserProfile(session?.user?.id as string),
+    select: (data) => data?.data,
+    enabled: !!session?.user?.id,
   });
 
   const pathname = usePathname();
@@ -90,7 +92,7 @@ export function Header() {
 
   //   return pathname?.startsWith(nav.href);
   // });
-  
+
   return (
     <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>
