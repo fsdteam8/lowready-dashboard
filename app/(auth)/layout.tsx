@@ -1,5 +1,6 @@
 import Image from "next/image";
 import "../globals.css";
+import logo from "@/public/logo.png"
 
 export default function RootLayout({
   children,
@@ -10,7 +11,7 @@ export default function RootLayout({
     <div className="bg-gray-50">
       <div className="container mx-auto">
         <Image
-          src="/logo.png"
+          src={logo}
           alt="Login background"
           width={800}
           height={800}
