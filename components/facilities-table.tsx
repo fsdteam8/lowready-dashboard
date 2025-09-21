@@ -80,8 +80,6 @@ FacilitiesTableProps) {
   //   return facility?.facility?.availability ?? facility?.availability;
   // };
 
-  
-
   return (
     <div className="space-y-4">
       {/* Header */}
@@ -124,14 +122,13 @@ FacilitiesTableProps) {
               <TableHead>Total Booking</TableHead>
               <TableHead>Total Tours</TableHead>
               <TableHead>Total Earnings</TableHead>
+              <TableHead>View Details</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedFacilities?.length > 0 ? (
               paginatedFacilities?.map((facility) => {
-                const isAvailable = facility.availability; // এখন সরাসরি availability আসছে
-
                 return (
                   <TableRow key={facility?._id}>
                     {/* Facility Info */}
@@ -149,7 +146,12 @@ FacilitiesTableProps) {
                           />
                         </div>
                         <div className="text-left">
-                          <p className="font-medium">{facility?.name}</p>
+                          <Link href={`/facilities/${facility._id}`}>
+                            <p className="font-medium hover:underline hover:text-[#27BE69]">
+                              {facility?.name}
+                            </p>
+                          </Link>
+
                           <p className="text-sm text-gray-600">
                             {facility?.location ?? "No address"}
                           </p>
@@ -175,18 +177,30 @@ FacilitiesTableProps) {
                       {/* ${facility?.totalAdminShare ?? 0} */}$
                       {(facility?.totalPlacement ?? 0) * (facility?.price ?? 0)}
                     </TableCell>
+                    {/* Total Earnings */}
+                    <TableCell className="text-[#68706A] text-[16px] leading-[150%] cursor-pointer">
+                      <Link href={`/facilities/${facility._id}`} className="font-medium  underline hover:text-[#27BE69]">
+                        Details
+                      </Link>
+                    </TableCell>
 
                     {/* Status */}
                     <TableCell>
                       <Badge
-                        variant={isAvailable ? "default" : "secondary"}
+                        variant={
+                          facility?.status === "available"
+                            ? "default"
+                            : "secondary"
+                        }
                         className={
-                          isAvailable
+                          facility?.status === "approved"
                             ? "bg-[#E6FAEE] text-[#27BE69] px-6 py-2"
                             : "bg-[#FEECEE] text-[#E5102E] px-6 py-2"
                         }
                       >
-                        {isAvailable ? "Available" : "Unavailable"}
+                        {facility?.status === "approved"
+                          ? "approved"
+                          : "pending"}
                       </Badge>
                     </TableCell>
                   </TableRow>
