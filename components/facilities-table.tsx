@@ -76,9 +76,9 @@ FacilitiesTableProps) {
   };
 
   // Get availability status for display
-  const getAvailabilityStatus = (facility: FacilityResponse) => {
-    return facility?.facility?.availability ?? facility?.availability;
-  };
+  // const getAvailabilityStatus = (facility: FacilityResponse) => {
+  //   return facility?.facility?.availability ?? facility?.availability;
+  // };
 
   return (
     <div className="space-y-4">
@@ -126,32 +126,30 @@ FacilitiesTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedFacilities.length > 0 ? (
-              paginatedFacilities.map((facility) => {
-                const isAvailable = getAvailabilityStatus(facility);
+            {paginatedFacilities?.length > 0 ? (
+              paginatedFacilities?.map((facility) => {
+                const isAvailable = facility.availability; // এখন সরাসরি availability আসছে
 
                 return (
-                  <TableRow key={facility?.facility?._id}>
+                  <TableRow key={facility?._id}>
                     {/* Facility Info */}
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="relative h-12 w-12 rounded-lg overflow-hidden">
                           <Image
                             src={
-                              facility.facility?.images?.[0]?.url ||
+                              facility?.images?.[0]?.url ||
                               "/assisted-living-facility.png"
                             }
-                            alt={facility.name || "Facility"}
+                            alt={facility?.name || "Facility"}
                             fill
                             className="object-cover"
                           />
                         </div>
                         <div className="text-left">
-                          <p className="font-medium">
-                            {facility?.facility?.name}
-                          </p>
+                          <p className="font-medium">{facility?.name}</p>
                           <p className="text-sm text-gray-600">
-                            {facility.facility?.location ?? "No address"}
+                            {facility?.location ?? "No address"}
                           </p>
                         </div>
                       </div>
@@ -159,24 +157,21 @@ FacilitiesTableProps) {
 
                     {/* Created On */}
                     <TableCell className="text-[#68706A] text-[16px] font-normal">
-                      {facility.facility?.createdAt
-                        ? new Date(
-                            facility.facility.createdAt
-                          ).toLocaleDateString()
+                      {facility?.createdAt
+                        ? new Date(facility.createdAt).toLocaleDateString()
                         : "—"}
                     </TableCell>
 
                     {/* Total Booking */}
-                    <TableCell>
-                      {facility.facility?.totalPlacement ?? 0}
-                    </TableCell>
+                    <TableCell>{facility?.totalPlacement ?? 0}</TableCell>
 
                     {/* Total Tours */}
-                    <TableCell>{facility.facility?.totalTour ?? 0}</TableCell>
+                    <TableCell>{facility?.totalTour ?? 0}</TableCell>
 
                     {/* Total Earnings */}
                     <TableCell className="text-[#68706A] text-[16px] leading-[150%]">
-                      ${facility.totalAdminShare ?? 0}
+                      {/* ${facility?.totalAdminShare ?? 0} */}$
+                      {(facility?.totalPlacement ?? 0) * (facility?.price ?? 0)}
                     </TableCell>
 
                     {/* Status */}

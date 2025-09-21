@@ -155,7 +155,7 @@ export async function getRecentCustomer(page: number, limit: number) {
 
 export async function getAllFacilityData() {
   try {
-    const res = await apiBase.get(`/payment/all?type=booking`);
+    const res = await apiBase.get(`/facility/all`);
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
