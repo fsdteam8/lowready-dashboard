@@ -5,12 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { MapPin } from "lucide-react";
 
 interface RecentSectionProps {
@@ -122,8 +117,7 @@ export function RecentSection({
         <Table>
           <TableBody>
             {items?.map((item) => {
-              const avatarUrl =
-                item.userId?.avatar?.url || item.avatar?.url || "/placeholder.svg";
+              const avatarUrl = item.userId?.avatar?.url || item.avatar?.url;
               const displayName = item.userId?.firstName || item?.firstName;
               const email = item.userId?.email || item.email;
               const street =
@@ -140,7 +134,9 @@ export function RecentSection({
                     </Avatar>
                     <div>
                       <p className="font-medium text-gray-900">{displayName}</p>
-                      {email && <p className="text-xs text-gray-600">{email}</p>}
+                      {email && (
+                        <p className="text-xs text-gray-600">{email}</p>
+                      )}
                     </div>
                   </TableCell>
 
@@ -172,7 +168,7 @@ export function RecentSection({
                       </Badge>
                     )}
                   </TableCell>
- 
+
                   {/* Facility Status */}
                   <TableCell>
                     {item.facility?.status && (
@@ -190,7 +186,6 @@ export function RecentSection({
                       </Badge>
                     )}
                   </TableCell>
- 
                 </TableRow>
               );
             })}
