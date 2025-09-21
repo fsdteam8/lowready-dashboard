@@ -482,6 +482,8 @@ export interface FacilityResponse {
   ratingCount?: number;
   address?: string;
   status?: string;
+  totalTour: string;
+  totalPlacement: number;
 }
 
 export interface FacilityAllData {
