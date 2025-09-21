@@ -124,7 +124,7 @@ export function RecentSection({
             {items?.map((item) => {
               const avatarUrl =
                 item.userId?.avatar?.url || item.avatar?.url || "/placeholder.svg";
-              const displayName = item.userId?.firstName || item.firstName;
+              const displayName = item.userId?.firstName || item?.firstName;
               const email = item.userId?.email || item.email;
               const street =
                 item.userId?.street || item.street || item.facility?.location;
