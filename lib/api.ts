@@ -132,8 +132,6 @@ export async function getBookingHistory(
 
 export async function getRecentBooking(page: number, limit: number) {
   try {
-    console.log("hellos");
-
     const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
     return res.data.data;
   } catch (error) {
@@ -447,7 +445,7 @@ export async function getRecentAllBooking(page: number, limit: number) {
       `/bookings/recent-home-bookings?page=${page}&limit=${limit}`
     );
     return res.data;
-  } catch  {
+  } catch {
     throw new Error(`Failed to fetch recent bookings`);
   }
 }
@@ -459,7 +457,7 @@ export async function getRecentAllTours(page: number, limit: number) {
       `/visit-booking/recent-bookings?page=${page}&limit=${limit}`
     );
     return res.data;
-  } catch  {
+  } catch {
     throw new Error(`Failed to fetch recent bookings`);
   }
 }

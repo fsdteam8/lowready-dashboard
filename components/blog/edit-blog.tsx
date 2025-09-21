@@ -145,7 +145,7 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
           <Image
             width={800}
             height={600}
-            src={blog.image || "/placeholder.svg"}
+            src={blog.image }
             alt={blog.title}
             className="w-full h-full object-cover"
           />

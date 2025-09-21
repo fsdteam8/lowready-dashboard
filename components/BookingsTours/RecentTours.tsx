@@ -83,7 +83,7 @@ export default function RecentTours() {
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
                       <AvatarImage
-                        src={tour.userId?.avatars || "/placeholder.svg"}
+                        src={tour.userId?.avatars }
                         alt={tour.name || "Visitor"}
                       />
                       <AvatarFallback>
