@@ -122,14 +122,14 @@ export function ServiceProvidersTable({
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar
-                      src={provider.avatar?.url}
-                      alt={provider.firstName + provider.lastName || "user image"}
-                      firstName={provider.firstName}
+                      src={provider?.avatar?.url}
+                      alt={provider?.firstName + provider?.lastName || "user image"}
+                      firstName={provider?.firstName}
                       size="h-10 w-10"
                       shape="rounded-full"
                     />
                     <div>
-                      <p className="font-medium">{provider.firstName +" "+ provider.lastName}</p>
+                      <p className="font-medium">{provider?.firstName +" "+ provider?.lastName}</p>
                       <p className="text-sm text-gray-600">{provider.email}</p>
                     </div>
                   </div>
@@ -139,13 +139,13 @@ export function ServiceProvidersTable({
                   <div className="flex items-center gap-3">
                     <Avatar
                       src={provider.avatar?.url}
-                      alt={provider.firstName +" "+ provider.lastName}
-                      firstName={provider.firstName}
+                      alt={provider?.firstName +" "+ provider.lastName}
+                      firstName={provider?.firstName}
                       size="h-10 w-10"
                       shape="rounded-lg"
                     />
                     <div>
-                      <p className="font-medium">{provider.firstName + provider.lastName}</p>
+                      <p className="font-medium">{provider?.firstName + provider.lastName}</p>
                       {/* <p className="text-sm text-gray-600">{provider.street}</p> */}
                     </div>
                   </div>
@@ -160,11 +160,11 @@ export function ServiceProvidersTable({
                         : "bg-gray-100 text-gray-600"
                     }
                   >
-                    {provider.subscriptionStatus}
+                    {provider?.subscriptionStatus}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/service-providers/${provider._id}`}>
+                  <Link href={`/service-providers/${provider?._id}`}>
                     <Button variant="ghost" className="bg-[#E6F9EB] text-[#28A745] cursor-pointer hover:bg-none ">
                       <Eye /> Details
                     </Button>

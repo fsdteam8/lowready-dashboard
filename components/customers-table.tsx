@@ -70,24 +70,24 @@ export function CustomersTable({
                       <Avatar className="h-12 w-12 border-4 border-white shadow-lg rounded-full">
                         <AvatarImage
                           src={customer.avatar?.url || "/diverse-group.png"}
-                          alt={`${customer.firstName} ${customer.lastName}`}
+                          alt={`${customer?.firstName} ${customer?.lastName}`}
                         />
                         <AvatarFallback className="text-sm font-semibold">
-                          {customer.firstName?.[0]?.toUpperCase() || ""}
-                          {customer.lastName?.[0]?.toUpperCase() || ""}
+                          {customer?.firstName?.[0]?.toUpperCase() || ""}
+                          {customer?.lastName?.[0]?.toUpperCase() || ""}
                         </AvatarFallback>
                       </Avatar>
                     </div>
                     <div className="">
                       <p className="font-medium ">
-                        {`${customer.firstName} ${customer.lastName}`}
+                        {`${customer?.firstName} ${customer?.lastName}`}
                       </p>
-                      <p className="text-sm text-gray-600">{customer.email}</p>
+                      <p className="text-sm text-gray-600">{customer?.email}</p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell className="text-[#68706A]">
-                  {customer.phoneNum || "-"}
+                  {customer?.phoneNum || "-"}
                 </TableCell>
                 <TableCell>{customer.street || "-"}</TableCell>
                 <TableCell>{customer.totalTour ?? 0}</TableCell>
@@ -102,7 +102,7 @@ export function CustomersTable({
                     : "-"}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/customers/${customer._id}`}>
+                  <Link href={`/customers/${customer?._id}`}>
                     <Button
                       variant="ghost"
                       className="bg-[#E6F9EB] text-[#28A745] hover:text-[#28A745] hover:bg-[#E6F9EB] cursor-pointer"
