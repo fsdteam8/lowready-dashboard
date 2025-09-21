@@ -80,6 +80,8 @@ FacilitiesTableProps) {
   //   return facility?.facility?.availability ?? facility?.availability;
   // };
 
+  
+
   return (
     <div className="space-y-4">
       {/* Header */}
