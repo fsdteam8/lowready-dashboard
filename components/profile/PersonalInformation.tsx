@@ -85,9 +85,9 @@ export function PersonalInformationForm() {
     if (userProfile?.data) {
       reset({
         gender: "male", 
-        firstName: userProfile.data.firstName || "",
-        lastName: userProfile.data.lastName || "",
-        email: userProfile.data.email || "",
+        firstName: userProfile?.data?.firstName || "",
+        lastName: userProfile?.data?.lastName || "",
+        email: userProfile?.data?.email || "",
         bio: userProfile.data.bio || "",
         address: userProfile.data.street || "",
         postCode: userProfile.data.postCode?.toString() || "",
@@ -168,9 +168,9 @@ export function PersonalInformationForm() {
               <div className="space-y-2">
                 <Label>First Name</Label>
                 <Input {...register("firstName")} />
-                {errors.firstName && (
+                {errors?.firstName && (
                   <p className="text-red-500 text-xs">
-                    {errors.firstName.message}
+                    {errors?.firstName?.message}
                   </p>
                 )}
               </div>

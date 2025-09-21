@@ -68,8 +68,8 @@ export function RecentServiceProvider({
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
                 <AvatarImage
-                  src={item.avatar?.url || "/placeholder.svg"}
-                  alt={item.firstName}
+                  src={item?.avatar?.url || "/placeholder.svg"}
+                  alt={item?.firstName}
                 />
                 <AvatarFallback>{item?.firstName?.charAt(0)}</AvatarFallback>
               </Avatar>

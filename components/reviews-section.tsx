@@ -32,15 +32,15 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
                 <Avatar className="h-10 w-10">
                   <AvatarImage
                     src={review.customerAvatar || "/placeholder.svg"}
-                    alt={review.userId.firstName}
+                    alt={review?.userId?.firstName}
                   />
                   <AvatarFallback>
-                    {review.userId.firstName.charAt(0)}
+                    {review?.userId?.firstName?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium text-gray-900">
-                    {review.userId.firstName} {review.userId.lastName}
+                    {review?.userId?.firstName} {review?.userId?.lastName}
                   </p>
                   <p className="text-sm text-gray-600">
                     {review.facility.address}

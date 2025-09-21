@@ -95,8 +95,8 @@ export function ProfileCard(userId: userIdProps) {
         <Avatar className="h-28 w-28 border-4 border-white shadow-lg rounded-full">
           <AvatarImage src={avatarUrl} alt={fullName} />
           <AvatarFallback className="text-xl font-semibold">
-            {userData.firstName[0]?.toUpperCase() || ""}
-            {userData.lastName[0]?.toUpperCase() || ""}
+            {userData?.firstName[0]?.toUpperCase() || ""}
+            {userData?.lastName[0]?.toUpperCase() || ""}
           </AvatarFallback>
         </Avatar>
       </div>
