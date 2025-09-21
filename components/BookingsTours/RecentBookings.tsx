@@ -78,7 +78,7 @@ export default function RecentBookings() {
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
                       <AvatarImage
-                        src={booking.userId?.avatar?.url || "/placeholder.svg"}
+                        src={booking.userId?.avatar?.url }
                         alt={booking.userId?.firstName || "User"}
                       />
                       <AvatarFallback>

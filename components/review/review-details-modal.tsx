@@ -41,7 +41,7 @@ export function ReviewDetailsModal({
         <DialogHeader className="p-6 pb-4 flex flex-row items-center gap-3">
           <Avatar className="h-12 w-12">
             <AvatarImage
-              src={review.customerAvatar || "/placeholder.svg"}
+              src={review.customerAvatar }
               alt={review.customerName}
             />
             <AvatarFallback>{review.customerName.charAt(0)}</AvatarFallback>

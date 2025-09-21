@@ -30,6 +30,8 @@ export default function PendingListingsPage() {
     currentPage,
     itemsPerPage
   );
+
+  console.log(pendingListings)
   const approveMutation = useApproveListing();
   const declineMutation = useDeclineListing();
 
