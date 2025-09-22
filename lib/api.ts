@@ -151,9 +151,9 @@ export async function getRecentCustomer(page: number, limit: number) {
 
 // facilities api intigration
 
-export async function getAllFacilityData() {
+export async function getAllFacilityData(page: number, limit: number) {
   try {
-    const res = await apiBase.get(`/facility/all`);
+    const res = await apiBase.get(`/facility/all?page=${page}&limit=${limit}&status=approved`);
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);

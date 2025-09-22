@@ -51,7 +51,7 @@ export default function FacilityDetailsPage({
   const selectedImage = facility.images?.[selectedImageIndex]?.url;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 pt-10 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 pt-10 gap-6 relative">
       {/* Left Column → All Text */}
       <div className="space-y-6">
         {/* Availability + Title */}
@@ -129,7 +129,7 @@ export default function FacilityDetailsPage({
         </div>
 
         {/* About Section */}
-        <div className="rounded-2xl shadow-md">
+        <div className="rounded-2xl shadow-md p-4">
           <h2 className="text-xl  font-semibold">
             About{" "}
             <span className="text-green-300">Sunny Hills Assisted Living</span>
@@ -161,7 +161,7 @@ export default function FacilityDetailsPage({
 
         {/* Video Section */}
         {facility.uploadVideo && (
-          <div className="rounded-2xl shadow-md">
+          <div className="rounded-2xl shadow-md p-4">
             <div>
               <h2 className="text-xl text-[32px] py-5 font-semibold">
                 {facility?.videoTitle}{" "}
@@ -196,7 +196,7 @@ export default function FacilityDetailsPage({
       </div>
 
       {/* Right Column → All Images */}
-      <div className="space-y-4">
+      <div className="space-y-4 sticky top-0 self-start">
         {/* Main Image */}
         <div className="relative h-96 rounded-2xl overflow-hidden shadow-md">
           <Image
