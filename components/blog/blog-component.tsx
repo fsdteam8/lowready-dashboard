@@ -121,7 +121,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
                 <Image
                   width={48}
                   height={48}
-                  src={blog.image?.url }
+                  src={blog.image?.url || "/no-image.jpg"}
                   alt={blog.title}
                   className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                 />
