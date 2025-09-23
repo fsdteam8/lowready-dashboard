@@ -14,6 +14,7 @@ import {
   LogOut,
   CircleDollarSign,
   Crown,
+  MessageCircleQuestionMark,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
@@ -39,6 +40,7 @@ const navigation = [
   { name: "Blogs Management", href: "/blogs", icon: FileText },
   { name: "Payments", href: "/payments", icon: CircleDollarSign },
   { name: "Subscription", href: "/subscriptions", icon: Crown },
+  { name: "FAQ", href: "/faq", icon: MessageCircleQuestionMark },
 ];
 
 export function Sidebar() {
