@@ -2,10 +2,11 @@
 
 import { FacilitiesTable } from "@/components/facilities-table";
 import { useFacilities } from "@/hooks/use-facilities";
+import { useState } from "react";
 
 export default function FacilitiesPage() {
-  // const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, error } = useFacilities();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, error } = useFacilities(currentPage, 10);
 
   if (isLoading) {
     return (
@@ -42,7 +43,9 @@ export default function FacilitiesPage() {
         <main className="flex-1 overflow-y-auto p-6">
           <FacilitiesTable
             facilities={data?.data || []}
-            // onPageChange={setCurrentPage}
+            totalPages={data?.meta?.totalPages || 1}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
           />
         </main>
       </div>

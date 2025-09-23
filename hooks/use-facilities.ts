@@ -7,7 +7,7 @@ import { toast } from "sonner"
 export function useFacilities(page = 1, limit = 10) {
   return useQuery({
     queryKey: ["facilities", page, limit],
-    queryFn: () => getAllFacilityData(),
+    queryFn: () => getAllFacilityData(page, limit),
   })
 }
 
