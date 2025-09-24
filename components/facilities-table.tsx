@@ -16,6 +16,9 @@ import { FacilityResponse } from "@/lib/types";
 import { Pagination } from "./pagination";
 import { useQuery } from "@tanstack/react-query";
 import { getpendingallFacilityData } from "@/lib/api";
+import { Switch } from "@/components/ui/switch";
+import { useUpdateFacilityFeatured } from "@/hooks/use-facilities";
+import { toast } from "sonner";
 
 interface FacilitiesTableProps {
   facilities: FacilityResponse[];
@@ -35,11 +38,29 @@ export function FacilitiesTable({
     queryFn: getpendingallFacilityData,
   });
 
+  const { mutate: updateFeatured, isPending } = useUpdateFacilityFeatured();
+
+  // Facilities Management Featured True / False Update
+  const handleFeaturedToggle = (facilityId: string) => {
+    updateFeatured(
+      { id: facilityId },
+      {
+        onSuccess: () => {
+          toast.success("Facility featured status updated ✅");
+        },
+        onError: () => {
+          toast.error("Something went wrong while updating ❌");
+        },
+      }
+    );
+  };
   return (
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Approved Facilities</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Approved Facilities
+        </h1>
         <Link href="/facilities/pending" className="cursor-pointer">
           <Button className="bg-green-primary hover:bg-green-secondary cursor-pointer">
             Pending Listings ({pendingListings?.meta?.total || 0})
@@ -59,6 +80,7 @@ export function FacilitiesTable({
               <TableHead>Total Earnings</TableHead>
               <TableHead>View Details</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Facilities Featured</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -107,7 +129,7 @@ export function FacilitiesTable({
 
                   {/* Total Earnings */}
                   <TableCell className="text-[#68706A] text-[16px] leading-[150%]">
-                    ${ (facility?.totalPlacement ?? 0) * (facility?.price ?? 0) }
+                    ${(facility?.totalPlacement ?? 0) * (facility?.price ?? 0)}
                   </TableCell>
 
                   {/* View Details */}
@@ -126,14 +148,21 @@ export function FacilitiesTable({
                       Approved
                     </Badge>
                   </TableCell>
+
+                  {/* Facilities Featured (Switch) */}
+                  <TableCell>
+                    <Switch
+                      checked={facility?.isFeatured}
+                      disabled={isPending}
+                      className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500 cursor-pointer"
+                      onCheckedChange={() => handleFeaturedToggle(facility._id)}
+                    />
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center py-10 text-gray-500"
-                >
+                <TableCell colSpan={8} className="text-center py-10 ">
                   No approved facilities found.
                 </TableCell>
               </TableRow>
