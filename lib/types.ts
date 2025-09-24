@@ -484,6 +484,7 @@ export interface FacilityResponse {
   status?: string;
   totalTour: string;
   totalPlacement: number;
+  isFeatured: boolean; 
 }
 
 export interface FacilityAllData {

@@ -228,6 +228,17 @@ export async function getFacilitys() {
   }
 }
 
+// Facilities Management Featured True / False Update
+export async function updateFacilitiesFeatured(facilitiesId: string) {
+  try {
+    const res = await apiBase.put(`/facility/update-type/${facilitiesId}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error updating facility featured status:", error);
+    throw error;
+  }
+}
+
 // get all blogs
 export async function getAllBlogs(page: number, limit: number) {
   const response = await apiBase.get(`/blog/all?page=${page}&limit=${limit}`);
