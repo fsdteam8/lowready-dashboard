@@ -1,6 +1,12 @@
 // hooks/useAllFaq.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllFaq, createFaq, deleteFaq, updateFaq } from "@/lib/api";
+import {
+  getAllFaq,
+  createFaq,
+  deleteFaq,
+  updateFaq,
+  updateFaqAction,
+} from "@/lib/api";
 
 // get all faq
 export function useAllFaq() {
@@ -52,3 +58,23 @@ export function useUpdateFaq() {
     },
   });
 }
+
+// Update FAQ for home or faq hook
+type UpdateFaqParams = {
+  id: string;
+  type: "home" | "faq";
+};
+
+export const useUpdateFaqToggle = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, type }: UpdateFaqParams) => updateFaqAction(id, type),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["faq"] });
+    },
+    onError: (error) => {
+      console.error("Failed to update FAQ:", error);
+    },
+  });
+};

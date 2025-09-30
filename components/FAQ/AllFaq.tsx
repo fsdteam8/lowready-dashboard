@@ -13,12 +13,14 @@ import { Button } from "@/components/ui/button";
 import { Eye, Pencil, Trash, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import {
   useAllFaq,
   useCreateFaq,
   useDeleteFaq,
   useUpdateFaq,
+  useUpdateFaqToggle,
 } from "@/hooks/useAllFaq";
 
 interface FaqItem {
@@ -26,6 +28,8 @@ interface FaqItem {
   question: string;
   answer: string;
   createdAt: string;
+  home: boolean;
+  faq: boolean;
 }
 
 export default function AllFaqTable() {
@@ -38,9 +42,14 @@ export default function AllFaqTable() {
   const [deleteFaqItem, setDeleteFaqItem] = useState<FaqItem | null>(null);
   const [editFaqItem, setEditFaqItem] = useState<FaqItem | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [toggleLoading, setToggleLoading] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+
+  const { mutate: updateFaqToggle } = useUpdateFaqToggle();
 
   const truncateText = (text: string, wordCount: number) => {
     const words = text.split(" ");
@@ -160,6 +169,8 @@ export default function AllFaqTable() {
             <TableHead>Question</TableHead>
             <TableHead>Answer</TableHead>
             <TableHead>Created At</TableHead>
+            <TableHead>Home</TableHead>
+            <TableHead>FAQ</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -171,6 +182,75 @@ export default function AllFaqTable() {
               <TableCell>{truncateText(faqItem.answer, 10)}</TableCell>
               <TableCell>
                 {new Date(faqItem.createdAt).toLocaleDateString()}
+              </TableCell>
+              <TableCell>
+                <Switch
+                  checked={faqItem.home}
+                  disabled={!!toggleLoading[faqItem._id]}
+                  onCheckedChange={() => {
+                    setToggleLoading((prev) => ({
+                      ...prev,
+                      [faqItem._id]: true,
+                    }));
+                    updateFaqToggle(
+                      { id: faqItem._id, type: "home" },
+                      {
+                        onSuccess: () => {
+                          toast.success("Home status updated successfully!");
+                          setToggleLoading((prev) => ({
+                            ...prev,
+                            [faqItem._id]: false,
+                          }));
+                        },
+                        onError: (error) => {
+                          toast.error(
+                            error?.message || "❌ Failed to update Home status"
+                          );
+                          setToggleLoading((prev) => ({
+                            ...prev,
+                            [faqItem._id]: false,
+                          }));
+                        },
+                      }
+                    );
+                  }}
+                  className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                />
+              </TableCell>
+
+              <TableCell>
+                <Switch
+                  checked={faqItem.faq}
+                  disabled={!!toggleLoading[faqItem._id]}
+                  onCheckedChange={() => {
+                    setToggleLoading((prev) => ({
+                      ...prev,
+                      [faqItem._id]: true,
+                    }));
+                    updateFaqToggle(
+                      { id: faqItem._id, type: "faq" },
+                      {
+                        onSuccess: () => {
+                          toast.success("FAQ status updated successfully!");
+                          setToggleLoading((prev) => ({
+                            ...prev,
+                            [faqItem._id]: false,
+                          }));
+                        },
+                        onError: (error) => {
+                          toast.error(
+                            error?.message || "❌ Failed to update FAQ status"
+                          );
+                          setToggleLoading((prev) => ({
+                            ...prev,
+                            [faqItem._id]: false,
+                          }));
+                        },
+                      }
+                    );
+                  }}
+                  className="cursor-pointer data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                />
               </TableCell>
               <TableCell className="flex gap-3">
                 {/* View */}
@@ -213,7 +293,7 @@ export default function AllFaqTable() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-lg shadow-lg sm:max-w-md w-full p-4">
             <h3 className="text-[22px] font-medium">{selectedFaq.question}</h3>
-            <p className="mt-2 text-[16px]">{selectedFaq.answer}</p>
+            <p className="mt-2 text-[15px] text-black/70">{selectedFaq.answer}</p>
             <div className="flex justify-end mt-4">
               <Button
                 variant="secondary"
@@ -258,7 +338,6 @@ export default function AllFaqTable() {
         </div>
       )}
 
-      {/* Edit Modal */}
       {/* Edit / Add Modal */}
       {(editFaqItem || isAddModalOpen) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
