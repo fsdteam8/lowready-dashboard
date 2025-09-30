@@ -83,9 +83,9 @@ export function RecentServiceProvider({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">
+              {/* <span className="text-sm font-medium">
                 {item?.totalPlacement || "0"}
-              </span>
+              </span> */}
               {item?.subscriptionStatus && (
                 <Badge
                   variant={
