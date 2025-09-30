@@ -523,3 +523,20 @@ export async function updateFaq(
     }
   }
 }
+
+// Update FAQ for home or faq
+export async function updateFaqAction(
+  id: string,
+  type: "home" | "faq"
+) {
+  try {
+    const res = await apiBase.put(`/faq/update-${type}/${id}`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to update FAQ: ${error.message}`);
+    } else {
+      throw new Error("Failed to update FAQ");
+    }
+  }
+}
