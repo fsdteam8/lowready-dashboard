@@ -48,7 +48,7 @@ export default function FacilityDetailsPage({
       <div className="flex h-screen items-center justify-center">Not found</div>
     );
 
-  const selectedImage = facility.images?.[selectedImageIndex]?.url;
+  const selectedImage = facility?.images?.[selectedImageIndex]?.url;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 pt-10 gap-6 relative">
@@ -93,7 +93,7 @@ export default function FacilityDetailsPage({
         <div>
           <h4 className="text-[16px] font-semibold pt-[24px]">Amenities</h4>
           <div className=" flex items-center gap-2 text-sm flex-wrap">
-            {facility.amenities?.map((amenity: string, i: number) => (
+            {facility?.amenities?.map((amenity: string, i: number) => (
               <div key={i}>
                 <p className="text-[#68706A] bg-[#E6E7E6] border-1 px-4 py-1">
                   {amenity}
@@ -115,7 +115,7 @@ export default function FacilityDetailsPage({
               <div>
                 <h4 className="font-medium mb-2 pt-[24px]">Care Services</h4>
                 <div className="flex items-center gap-2 text-sm flex-wrap">
-                  {facility.careServices?.map((service: string, i: number) => (
+                  {facility?.careServices?.map((service: string, i: number) => (
                     <div key={i} className="">
                       <p className="flex items-center gap-2 text-[#68706A] bg-[#E6E7E6] border-1 px-4 py-1">
                         <Check className="w-4 h-4 text-green-400" /> {service}
@@ -186,7 +186,7 @@ export default function FacilityDetailsPage({
         )}
         <div>
           <ul className="flex flex-wrap gap-4">
-            {facility.availableTime.map((item: string, id: number) => (
+            {facility.availableTime?.map((item: string, id: number) => (
               <li className="bg-[#E6E7E6] px-4 py-2 shadow-2xs hover:bg-green-300 hover:text-white cursor-pointer" key={id}>
                 {item}
               </li>
