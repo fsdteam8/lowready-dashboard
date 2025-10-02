@@ -90,7 +90,7 @@ export default function PendingListingsPage() {
               </TableHeader>
               <TableBody>
                 {currentItems.length > 0 ? (
-                  currentItems.map((listing: FacilityResponse) => (
+                  currentItems?.map((listing: FacilityResponse) => (
                     <TableRow key={listing._id}>
                       {/* Facility Info */}
                       <TableCell>

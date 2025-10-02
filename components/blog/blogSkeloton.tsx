@@ -21,7 +21,7 @@ export default function BlogSkeleton() {
         </div>
 
         <div className="divide-y">
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: 5 })?.map((_, index) => (
             <div
               key={index}
               className="grid grid-cols-12 gap-4 p-4 items-center"
@@ -56,7 +56,7 @@ export default function BlogSkeleton() {
       <div className="flex items-center justify-between mt-4">
         <div className="h-4 bg-gray-200 rounded w-48 animate-pulse"></div>
         <div className="flex items-center gap-2">
-          {Array.from({ length: 3 }).map((_, i) => (
+          {Array.from({ length: 3 })?.map((_, i) => (
             <div
               key={i}
               className="w-8 h-8 bg-gray-200 rounded animate-pulse"

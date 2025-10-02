@@ -81,7 +81,7 @@ const Pagination: React.FC<PaginationProps> = ({
       >
         ‹
       </Button>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+      {Array.from({ length: totalPages }, (_, i) => i + 1)?.map((page) => (
         <Button
           key={page}
           variant={currentPage === page ? "default" : "outline"}
@@ -112,7 +112,7 @@ const Pagination: React.FC<PaginationProps> = ({
 // -------- Stars Component --------
 const Stars: React.FC<{ rating: number }> = ({ rating }) => (
   <div className="flex items-center gap-1">
-    {Array.from({ length: 5 }).map((_, i) => (
+    {Array.from({ length: 5 })?.map((_, i) => (
       <Star
         key={i}
         className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "fill-[#8E938F] text-[#8E938F]"}`}
@@ -128,8 +128,8 @@ interface StatsCardsProps {
 
 const StatsCards: React.FC<StatsCardsProps> = ({ reviews }) => (
   <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-    {[1, 2, 3, 4, 5].map((star) => {
-      const count = reviews.filter((r) => r.rating === star).length;
+    {[1, 2, 3, 4, 5]?.map((star) => {
+      const count = reviews?.filter((r) => r.rating === star).length;
       return (
         <Card key={star} className="h-full p-4   bg-[#FFF] border border-[#E6E7E6]">
           <CardHeader>
@@ -173,7 +173,7 @@ const ReviewsTable: React.FC<ReviewsTableProps> = ({ reviews, onViewReview, onDe
           </tr>
         </thead>
         <tbody>
-          {reviews.map((review, index) => (
+          {reviews?.map((review, index) => (
             <tr key={review.id} className={index !== reviews.length - 1 ? "border-b" : ""}>
               <td className="py-4 px-6">
                 <div className="flex items-center gap-3">
@@ -235,7 +235,7 @@ export default function ReviewsPage() {
 
   const reviews: ReviewData[] = useMemo(() => {
     if (!reviewApi?.data) return [];
-    return reviewApi.data.map((r: ReviewApiData) => ({
+    return reviewApi.data?.map((r: ReviewApiData) => ({
       id: r._id,
       customerName: `${r.userId?.firstName || ""} ${r.userId?.lastName || ""}`.trim(),
       customerEmail: r.userId?.email || "",
@@ -275,7 +275,7 @@ export default function ReviewsPage() {
         {/* Stats Cards */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 5 })?.map((_, i) => (
               <Card key={i} className="h-40 p-4 space-y-3">
                 <Skeleton className="h-4 w-1/2" />
                 <Skeleton className="h-8 w-1/3" />
@@ -291,7 +291,7 @@ export default function ReviewsPage() {
         {isLoading ? (
           <Card>
             <CardContent className="p-6 space-y-4">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: 5 })?.map((_, i) => (
                 <div key={i} className="flex items-center gap-4">
                   <Skeleton className="h-10 w-10 rounded-full" />
                   <div className="flex-1 space-y-2">
