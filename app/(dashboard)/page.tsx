@@ -33,8 +33,8 @@ export default function DashboardPage() {
     1,
     3
   );
-  console.log(recentBookingData);
-  console.log(recentCustomerData);
+  // console.log(recentBookingData);
+  // console.log(recentCustomerData);
 
   if (statsLoading || reviewsLoading || bookingsLoading) {
     return (

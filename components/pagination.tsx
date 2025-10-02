@@ -58,7 +58,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        {getVisiblePages().map((page, index) => (
+        {getVisiblePages()?.map((page, index) => (
           <Button
             key={index}
             variant={page === currentPage ? "default" : "outline"}

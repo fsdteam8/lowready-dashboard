@@ -85,7 +85,7 @@ export function FacilitiesTable({
           </TableHeader>
           <TableBody>
             {facilities?.length > 0 ? (
-              facilities.map((facility) => (
+              facilities?.map((facility) => (
                 <TableRow key={facility._id}>
                   {/* Facility Info */}
                   <TableCell>

@@ -18,7 +18,7 @@ export default function AllSubscriberSkeleton() {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-green-100 text-left">
-              {["Subscriber", "Billing Month", "Subscription Type", "Amount", "Status"].map(
+              {["Subscriber", "Billing Month", "Subscription Type", "Amount", "Status"]?.map(
                 (header, i) => (
                   <th
                     key={i}
@@ -31,7 +31,7 @@ export default function AllSubscriberSkeleton() {
             </tr>
           </thead>
           <tbody>
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 6 })?.map((_, index) => (
               <tr key={index} className="border-b">
                 <td className="px-4 py-3 flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gray-200"></div>
@@ -62,7 +62,7 @@ export default function AllSubscriberSkeleton() {
       <div className="flex items-center justify-between">
         <div className="h-4 w-40 bg-gray-200 rounded"></div>
         <div className="flex items-center gap-2">
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 5 })?.map((_, i) => (
             <div key={i} className="w-8 h-8 bg-gray-200 rounded"></div>
           ))}
         </div>

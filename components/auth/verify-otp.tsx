@@ -118,7 +118,7 @@ const VerifyOTPForm = () => {
 
             {/* OTP inputs */}
             <div className="flex justify-center gap-5 mb-4">
-              {otp.map((digit, i) => (
+              {otp?.map((digit, i) => (
                 <input
                   key={i}
                   id={`otp-${i}`}

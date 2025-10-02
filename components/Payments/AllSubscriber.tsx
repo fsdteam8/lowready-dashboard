@@ -91,7 +91,7 @@ export default function AllSubscriber() {
             </tr>
           </thead>
           <tbody>
-            {payments.map((item, index) => {
+            {payments?.map((item, index) => {
               const payment = item.payments[0];
               const user = payment?.userId;
               return (
@@ -150,7 +150,7 @@ export default function AllSubscriber() {
               &lt;
             </button>
 
-            {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map(
+            {Array.from({ length: meta.totalPages }, (_, i) => i + 1)?.map(
               (page) => (
                 <button
                   key={page}

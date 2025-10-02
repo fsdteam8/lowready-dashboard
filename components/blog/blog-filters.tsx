@@ -102,7 +102,7 @@ export function BlogFilters({ categories, onFiltersChange }: BlogFiltersProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All categories</SelectItem>
-                {categories.map((category) => (
+                {categories?.map((category) => (
                   <SelectItem key={category.id} value={category.slug}>
                     {category.name}
                   </SelectItem>

@@ -40,7 +40,7 @@ export function ReviewStats({ totalReviews, averageRating, ratingDistribution, r
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold">{averageRating.toFixed(1)}</div>
             <div className="flex items-center">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: 5 })?.map((_, i) => (
                 <Star
                   key={i}
                   className={`h-4 w-4 ${
@@ -60,7 +60,7 @@ export function ReviewStats({ totalReviews, averageRating, ratingDistribution, r
           <CardTitle className="text-sm font-medium">Rating Distribution</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {[5, 4, 3, 2, 1].map((rating) => (
+          {[5, 4, 3, 2, 1]?.map((rating) => (
             <div key={rating} className="flex items-center gap-2">
               <div className="flex items-center gap-1 w-12">
                 <span className="text-sm">{rating}</span>
