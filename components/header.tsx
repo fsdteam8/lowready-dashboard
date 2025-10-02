@@ -86,8 +86,6 @@ export function Header() {
 
   //   const activePage = navigation.find((nav) => {
   //   if (nav.href === "/") return pathname === "/";
-
-  //   // Debug: কোন nav আর path name check হচ্ছে
   //   console.log("Checking nav:", nav.href, "with pathname:", pathname);
 
   //   return pathname?.startsWith(nav.href);
@@ -111,7 +109,7 @@ export function Header() {
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full bg-red-500 p-0 text-xs text-white">
-                1
+                0
               </Badge>
             </Button>
           </Link>

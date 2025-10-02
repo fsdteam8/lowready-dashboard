@@ -47,13 +47,13 @@ export function RecentSection({ title, items }: RecentSectionProps) {
       <CardContent>
         <Table>
           <TableBody>
-            {items.map((user) => {
-              const avatarUrl = user.avatar?.url || DEFAULT_AVATAR;
-              const displayName = `${user.firstName} ${user.lastName || ""}`.trim();
-              const avatarFallback = user.firstName?.charAt(0) || "U";
+            {items?.map((user) => {
+              const avatarUrl = user?.avatar?.url || DEFAULT_AVATAR;
+              const displayName = `${user?.firstName} ${user?.lastName || ""}`.trim();
+              const avatarFallback = user?.firstName?.charAt(0) || "U";
 
               return (
-                <TableRow key={user._id}>
+                <TableRow key={user?._id}>
                   {/* Avatar + Name */}
                   <TableCell className="flex items-center gap-3">
                     <Avatar className="h-10 w-10 border">
@@ -62,7 +62,7 @@ export function RecentSection({ title, items }: RecentSectionProps) {
                     </Avatar>
                     <div>
                       <p className="font-medium text-gray-900">{displayName}</p>
-                      {user.email && <p className="text-xs text-gray-600">{user.email}</p>}
+                      {user?.email && <p className="text-xs text-gray-600">{user?.email}</p>}
                     </div>
                   </TableCell>
 
@@ -70,7 +70,7 @@ export function RecentSection({ title, items }: RecentSectionProps) {
                   <TableCell>
                     <p className="flex items-center text-xs text-gray-600">
                       <MapPin className="h-4 w-4 mr-1" />
-                      {user.street || "N/A"}
+                      {user?.street || "N/A"}
                     </p>
                   </TableCell>
 
@@ -101,66 +101,66 @@ export function RecentSection({ title, items }: RecentSectionProps) {
                             <span className="font-semibold text-gray-700">Name:</span>
                             <span>{displayName}</span>
 
-                            {user.email && (
+                            {user?.email && (
                               <>
                                 <span className="font-semibold text-gray-700">Email:</span>
-                                <span>{user.email}</span>
+                                <span>{user?.email}</span>
                               </>
                             )}
 
-                            {user.phoneNum && (
+                            {user?.phoneNum && (
                               <>
                                 <span className="font-semibold text-gray-700">Phone:</span>
-                                <span>{user.phoneNum}</span>
+                                <span>{user?.phoneNum}</span>
                               </>
                             )}
 
-                            {user.street && (
+                            {user?.street && (
                               <>
                                 <span className="font-semibold text-gray-700">Street:</span>
-                                <span>{user.street}</span>
+                                <span>{user?.street}</span>
                               </>
                             )}
 
-                            {user.postCode && (
+                            {user?.postCode && (
                               <>
                                 <span className="font-semibold text-gray-700">Post Code:</span>
-                                <span>{user.postCode}</span>
+                                <span>{user?.postCode}</span>
                               </>
                             )}
 
-                            {user.role && (
+                            {user?.role && (
                               <>
                                 <span className="font-semibold text-gray-700">Role:</span>
-                                <span>{user.role}</span>
+                                <span>{user?.role}</span>
                               </>
                             )}
 
-                            {user.subscriptionStatus && (
+                            {user?.subscriptionStatus && (
                               <>
                                 <span className="font-semibold text-gray-700">Subscription:</span>
-                                <span>{user.subscriptionStatus}</span>
+                                <span>{user?.subscriptionStatus}</span>
                               </>
                             )}
 
-                            {user.isSubscriptionActive !== undefined && (
+                            {user?.isSubscriptionActive !== undefined && (
                               <>
                                 <span className="font-semibold text-gray-700">Active Subscription:</span>
-                                <span>{user.isSubscriptionActive ? "Yes" : "No"}</span>
+                                <span>{user?.isSubscriptionActive ? "Yes" : "No"}</span>
                               </>
                             )}
 
-                            {user.verificationInfo?.verified !== undefined && (
+                            {user?.verificationInfo?.verified !== undefined && (
                               <>
                                 <span className="font-semibold text-gray-700">Verified:</span>
-                                <span>{user.verificationInfo.verified ? "Yes" : "No"}</span>
+                                <span>{user?.verificationInfo?.verified ? "Yes" : "No"}</span>
                               </>
                             )}
 
-                            {user.bio && (
+                            {user?.bio && (
                               <>
                                 <span className="font-semibold text-gray-700">Bio:</span>
-                                <span>{user.bio}</span>
+                                <span>{user?.bio}</span>
                               </>
                             )}
                           </div>
