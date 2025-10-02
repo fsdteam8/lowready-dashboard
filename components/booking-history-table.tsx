@@ -93,7 +93,7 @@ export function BookingHistoryTable({ bookings }: BookingHistoryTableProps) {
         </TableHeader>
         <TableBody>
           {bookings.length > 0 ? (
-            bookings.slice(0, 5).map((booking) => (
+            bookings.slice(0, 5)?.map((booking) => (
               <TableRow key={booking.id || booking._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">

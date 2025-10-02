@@ -117,7 +117,7 @@ export function ServiceProvidersTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {providers.map((provider: any) => (
+            {providers?.map((provider: any) => (
               <TableRow key={provider._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
