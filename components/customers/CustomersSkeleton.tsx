@@ -20,7 +20,7 @@ export default function CustomersSkeleton() {
         </div>
 
         <div className="space-y-2 p-4">
-          {skeletonRows.map((_, idx) => (
+          {skeletonRows?.map((_, idx) => (
             <div
               key={idx}
               className="grid grid-cols-7 gap-4 items-center text-center animate-pulse"
@@ -47,7 +47,7 @@ export default function CustomersSkeleton() {
 
       {/* Pagination Skeleton */}
       <div className="flex justify-center space-x-2 animate-pulse">
-        {Array.from({ length: 5 }).map((_, idx) => (
+        {Array.from({ length: 5 })?.map((_, idx) => (
           <div key={idx} className="h-8 w-8 bg-gray-200 rounded"></div>
         ))}
       </div>

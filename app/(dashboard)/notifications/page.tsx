@@ -104,7 +104,7 @@ export default function NotificationsPage() {
                   </CardContent>
                 </Card>
               ) : (
-                filteredNotifications.map((notification) => (
+                filteredNotifications?.map((notification) => (
                   <Card
                     key={notification._id}
                     className={

@@ -182,7 +182,7 @@ export function BlogPostForm({ categories, post, onSubmit, onCancel }: BlogPostF
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full" style={{ backgroundColor: category.color }} />
@@ -205,9 +205,9 @@ export function BlogPostForm({ categories, post, onSubmit, onCancel }: BlogPostF
                 <div className="flex flex-wrap gap-1">
                   {formData.tags
                     .split(",")
-                    .map((tag) => tag.trim())
+                    ?.map((tag) => tag.trim())
                     .filter(Boolean)
-                    .map((tag, index) => (
+                    ?.map((tag, index) => (
                       <Badge key={index} variant="secondary" className="text-xs">
                         {tag}
                       </Badge>

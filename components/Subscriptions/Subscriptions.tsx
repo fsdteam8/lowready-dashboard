@@ -29,7 +29,7 @@ interface SubscriptionPlan {
 
 export default function Subscriptions() {
   const { data, isLoading, isError } = useSubscriptionPlan();
-  const plans: SubscriptionPlan[] = (data?.data || []).map(
+  const plans: SubscriptionPlan[] = (data?.data || [])?.map(
     (p: SubscriptionPlan) => ({
       ...p,
       amenities: p.amenities ?? [
@@ -112,7 +112,7 @@ export default function Subscriptions() {
             </tr>
           </thead>
           <tbody>
-            {plans.map((plan) => (
+            {plans?.map((plan) => (
               <tr key={plan._id} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium">{plan.name}</td>
                 <td className="px-4 py-3 text-sm text-gray-600 truncate max-w-xs">

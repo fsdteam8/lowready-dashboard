@@ -63,7 +63,7 @@ export function TourHistoryTable({ tours }: TourHistoryTableProps) {
         </TableHeader>
         <TableBody>
           {tours.length > 0 ? (
-            tours.slice(0, 5).map((tour) => (
+            tours.slice(0, 5)?.map((tour) => (
               <TableRow key={tour._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">

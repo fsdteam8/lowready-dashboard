@@ -102,7 +102,7 @@ export default function Payments() {
             </tr>
           </thead>
           <tbody>
-            {payments.map((item, index) => (
+            {payments?.map((item, index) => (
               <tr key={index} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-3 flex items-center gap-3">
                   <Image
@@ -140,7 +140,7 @@ export default function Payments() {
               &lt;
             </button>
 
-            {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map(
+            {Array.from({ length: meta.totalPages }, (_, i) => i + 1)?.map(
               (page) => (
                 <button
                   key={page}
