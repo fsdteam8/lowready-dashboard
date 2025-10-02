@@ -7,7 +7,7 @@ export default function DashboardSkeleton() {
     <div className="flex-col h-screen bg-gray-50 pt-6 animate-pulse space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-        {[...Array(5)].map((_, i) => (
+        {[...Array(5)]?.map((_, i) => (
           <div
             key={i}
             className="h-24 bg-white rounded-md shadow p-4 flex flex-col justify-between"
@@ -26,7 +26,7 @@ export default function DashboardSkeleton() {
         {/* Recent Service Provider */}
         <div className="bg-white rounded-md shadow p-4 space-y-4">
           <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-          {[...Array(3)].map((_, i) => (
+          {[...Array(3)]?.map((_, i) => (
             <div
               key={i}
               className="h-12 bg-gray-200 rounded w-full"
@@ -37,7 +37,7 @@ export default function DashboardSkeleton() {
         {/* Recent Bookings */}
         <div className="bg-white rounded-md shadow p-4 space-y-4">
           <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-          {[...Array(3)].map((_, i) => (
+          {[...Array(3)]?.map((_, i) => (
             <div
               key={i}
               className="h-12 bg-gray-200 rounded w-full"
@@ -48,7 +48,7 @@ export default function DashboardSkeleton() {
         {/* Recent Customers */}
         <div className="bg-white rounded-md shadow p-4 space-y-4">
           <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-          {[...Array(3)].map((_, i) => (
+          {[...Array(3)]?.map((_, i) => (
             <div
               key={i}
               className="h-12 bg-gray-200 rounded w-full"
@@ -59,7 +59,7 @@ export default function DashboardSkeleton() {
         {/* Reviews Section */}
         <div className="bg-white rounded-md shadow p-4 space-y-4">
           <div className="h-6 bg-gray-200 rounded w-1/4"></div>
-          {[...Array(3)].map((_, i) => (
+          {[...Array(3)]?.map((_, i) => (
             <div
               key={i}
               className="h-12 bg-gray-200 rounded w-full"

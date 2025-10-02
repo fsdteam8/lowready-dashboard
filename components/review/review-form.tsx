@@ -129,7 +129,7 @@
 //           <div className="space-y-2">
 //             <Label>Rating</Label>
 //             <div className="flex items-center gap-1">
-//               {Array.from({ length: 5 }).map((_, i) => (
+//               {Array.from({ length: 5 })?.map((_, i) => (
 //                 <button
 //                   key={i}
 //                   type="button"

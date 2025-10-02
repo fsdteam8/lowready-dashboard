@@ -207,7 +207,7 @@ export default function AddSubscriptions() {
             </div>
             {/* Show amenities */}
             <div className="flex flex-wrap gap-2 mt-2">
-              {features.map((f, i) => (
+              {features?.map((f, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-1 border px-3 py-2 rounded-full text-sm bg-gray-200"

@@ -60,9 +60,9 @@ export function RecentServiceProvider({
         </Link>
       </CardHeader>
       <CardContent className="space-y-4">
-        {items.map((item) => (
+        {items?.map((item) => (
           <div
-            key={item._id}
+            key={item?._id}
             className="flex items-center justify-between border-b pb-3"
           >
             <div className="flex items-center gap-3">

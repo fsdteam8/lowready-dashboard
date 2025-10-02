@@ -38,7 +38,7 @@ export function ProfileCard(userId: userIdProps) {
               <div className="h-4 bg-gray-200 rounded animate-pulse w-48 mx-auto"></div>
             </div>
             <div className="space-y-3">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(6)]?.map((_, i) => (
                 <div
                   key={i}
                   className="h-4 bg-gray-200 rounded animate-pulse"

@@ -96,7 +96,7 @@ export default function ServiceProviderDetailsPage({
         <Skeleton className="h-4 w-48" />
       </CardHeader>
       <CardContent className="space-y-4">
-        {[...Array(5)].map((_, index) => (
+        {[...Array(5)]?.map((_, index) => (
           <div
             key={index}
             className="flex items-center justify-between p-4 border rounded-lg min-w-0"
@@ -163,7 +163,7 @@ export default function ServiceProviderDetailsPage({
                     )}
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {docs.map((document) => (
+                    {docs?.map((document) => (
                       <div
                         key={document._id}
                         className="flex items-center justify-between p-4 border rounded-lg min-w-0"
