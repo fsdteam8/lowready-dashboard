@@ -48,7 +48,7 @@ export function ReviewDetailsModal({
           </Avatar>
 
           <div>
-            {/* h2 এর বদলে DialogTitle ব্যবহার */}
+           
             <DialogTitle className="text-xl font-semibold text-gray-900">
               Connect Directly
             </DialogTitle>
