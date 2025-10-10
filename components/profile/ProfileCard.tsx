@@ -12,7 +12,7 @@ interface userIdProps {
 export function ProfileCard(userId: userIdProps) {
   const session = useSession();
   // console.log(session);
-  const user = userId !== null ? userId.userId : session.data?.user.id;
+  const user = userId !== null ? userId?.userId : session?.data?.user?.id;
   // console.log(user)
   const {
     data: userProfile,
@@ -38,7 +38,7 @@ export function ProfileCard(userId: userIdProps) {
               <div className="h-4 bg-gray-200 rounded animate-pulse w-48 mx-auto"></div>
             </div>
             <div className="space-y-3">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(6)]?.map((_, i) => (
                 <div
                   key={i}
                   className="h-4 bg-gray-200 rounded animate-pulse"
@@ -70,8 +70,8 @@ export function ProfileCard(userId: userIdProps) {
   const userData = userProfile?.data;
   if (!userData) return null;
 
-  const fullName = `${userData.firstName} ${userData.lastName}`.trim();
-  const avatarUrl = userData.avatar?.url || userData.avatars || "";
+  const fullName = `${userData?.firstName} ${userData?.lastName}`.trim();
+  const avatarUrl = userData?.avatar?.url || userData?.avatars || "";
 
   const joinDate = new Date(userData.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
@@ -80,9 +80,9 @@ export function ProfileCard(userId: userIdProps) {
   });
 
   const location =
-    userData.street && userData.postCode
-      ? `${userData.street}, ${userData.postCode}`
-      : userData.street || "Not specified";
+    userData?.street && userData?.postCode
+      ? `${userData?.street}, ${userData?.postCode}`
+      : userData?.street || "Not specified";
 
   return (
     <Card className=" w-[410px] h-[670px]   rounded-2xl py-0 overflow-hidden shadow-md border border-gray-200">
@@ -95,8 +95,8 @@ export function ProfileCard(userId: userIdProps) {
         <Avatar className="h-28 w-28 border-4 border-white shadow-lg rounded-full">
           <AvatarImage src={avatarUrl} alt={fullName} />
           <AvatarFallback className="text-xl font-semibold">
-            {userData.firstName[0]?.toUpperCase() || ""}
-            {userData.lastName[0]?.toUpperCase() || ""}
+            {userData?.firstName[0]?.toUpperCase() || ""}
+            {userData?.lastName[0]?.toUpperCase() || ""}
           </AvatarFallback>
         </Avatar>
       </div>
@@ -104,7 +104,7 @@ export function ProfileCard(userId: userIdProps) {
       {/* User Info */}
       <div className="text-center mt-1">
         <h2 className="text-2xl font-semibold text-[#28A745]">{fullName}</h2>
-        <p className="text-sm text-[#68706A]">{userData.email}</p>
+        <p className="text-sm text-[#68706A]">{userData?.email}</p>
       </div>
 
       {/* Details Section */}
@@ -121,13 +121,13 @@ export function ProfileCard(userId: userIdProps) {
         </div>
         <div>
           <span className="font-semibold">Email:</span>{" "}
-          <span className="text-[#68706A]">{userData.email}</span>
+          <span className="text-[#68706A]">{userData?.email}</span>
         </div>
         <div>
           <span className="font-semibold">Phone:</span>{" "}
           <span className="text-[#68706A]">
             {" "}
-            {userData.phoneNum || "Not specified"}
+            {userData?.phoneNum || "Not specified"}
           </span>
         </div>
         <div>

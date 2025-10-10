@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -11,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Inbox } from "lucide-react"; // Lucide React icon
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export interface Tour {
   _id: string;
@@ -63,22 +63,23 @@ export function TourHistoryTable({ tours }: TourHistoryTableProps) {
         </TableHeader>
         <TableBody>
           {tours.length > 0 ? (
-            tours.slice(0, 5).map((tour) => (
+            tours.slice(0, 5)?.map((tour) => (
               <TableRow key={tour._id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="relative h-10 w-10 rounded-lg overflow-hidden">
-                      <Image
-                        src={
-                          tour.userId?.avatar?.url ||
-                          "/assisted-living-facility.png"
-                        }
-                        alt={`${tour.userId?.firstName ?? ""} ${
-                          tour.userId?.lastName ?? ""
-                        }`}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="relative h-10 w-10 rounded-full overflow-hidden">
+                      <Avatar className="h-full w-full border-2 border-white shadow-lg rounded-full">
+                        <AvatarImage
+                          src={tour.userId?.avatar?.url || "/diverse-group.png"}
+                          alt={`${tour.userId?.firstName ?? ""} ${
+                            tour.userId?.lastName ?? ""
+                          }`}
+                        />
+                        <AvatarFallback className="text-sm font-semibold">
+                          {tour.userId?.firstName?.[0]?.toUpperCase() || ""}
+                          {tour.userId?.lastName?.[0]?.toUpperCase() || ""}
+                        </AvatarFallback>
+                      </Avatar>
                     </div>
                     <div className="text-left">
                       <p className="font-medium text-black">
@@ -90,7 +91,9 @@ export function TourHistoryTable({ tours }: TourHistoryTableProps) {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="text-[#68706A]">{tour.userId?.street ?? "N/A"}</TableCell>
+                <TableCell className="text-[#68706A]">
+                  {tour.userId?.street ?? "N/A"}
+                </TableCell>
                 <TableCell className="text-[#68706A]">
                   {tour.visitDate
                     ? new Date(tour.visitDate).toLocaleDateString("en-US", {
@@ -100,7 +103,9 @@ export function TourHistoryTable({ tours }: TourHistoryTableProps) {
                       })
                     : "N/A"}
                 </TableCell>
-                <TableCell className="text-[#68706A]">{tour.visitTime ?? "N/A"}</TableCell>
+                <TableCell className="text-[#68706A]">
+                  {tour.visitTime ?? "N/A"}
+                </TableCell>
                 <TableCell>
                   <Badge className={getStatusColor(tour.status)}>
                     {tour.status.charAt(0).toUpperCase() + tour.status.slice(1)}

@@ -14,6 +14,7 @@ import {
   LogOut,
   CircleDollarSign,
   Crown,
+  MessageCircleQuestionMark,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
@@ -39,6 +40,7 @@ const navigation = [
   { name: "Blogs Management", href: "/blogs", icon: FileText },
   { name: "Payments", href: "/payments", icon: CircleDollarSign },
   { name: "Subscription", href: "/subscriptions", icon: Crown },
+  { name: "FAQ", href: "/faq", icon: MessageCircleQuestionMark },
 ];
 
 export function Sidebar() {
@@ -71,7 +73,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-6 px-3 py-4">
-        {navigation.map((item) => {
+        {navigation?.map((item) => {
           // Active logic
           const isActive =
             item.href === "/"
@@ -108,7 +110,7 @@ export function Sidebar() {
               Log Out
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Confirm Logout</DialogTitle>
               <DialogDescription>

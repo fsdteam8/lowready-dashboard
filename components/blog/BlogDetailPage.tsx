@@ -82,7 +82,7 @@ export default function BlogDetailPage() {
       <div className="bg-white rounded-lg overflow-hidden">
         <div className="relative h-64 md:h-80">
           <Image
-            src={blog.image?.url || "/placeholder.svg"}
+            src={blog.image?.url }
             alt={blog.title}
             height={500}
             width={500}

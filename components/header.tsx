@@ -65,7 +65,8 @@ const navigation = [
   {
     name: "Subscriptions",
     href: "/subscriptions",
-    description: "Keep track of all your facilities, update details, and stay organized..",
+    description:
+      "Keep track of all your facilities, update details, and stay organized..",
   },
 ];
 
@@ -74,8 +75,9 @@ export function Header() {
 
   const { data: user } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getUserProfile(session?.user.id as string),
-    select: (data) => data.data,
+    queryFn: () => getUserProfile(session?.user?.id as string),
+    select: (data) => data?.data,
+    enabled: !!session?.user?.id,
   });
 
   const pathname = usePathname();
@@ -84,13 +86,11 @@ export function Header() {
 
   //   const activePage = navigation.find((nav) => {
   //   if (nav.href === "/") return pathname === "/";
-
-  //   // Debug: কোন nav আর path name check হচ্ছে
   //   console.log("Checking nav:", nav.href, "with pathname:", pathname);
 
   //   return pathname?.startsWith(nav.href);
   // });
-  
+
   return (
     <div className="flex text-[16px] h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <div>
@@ -109,7 +109,7 @@ export function Header() {
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full bg-red-500 p-0 text-xs text-white">
-                1
+                0
               </Badge>
             </Button>
           </Link>

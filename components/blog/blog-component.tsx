@@ -112,7 +112,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
         </div>
 
         <div className="divide-y">
-          {blogs.map((blog: Blog) => (
+          {blogs?.map((blog: Blog) => (
             <div
               key={blog._id}
               className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50"
@@ -121,7 +121,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
                 <Image
                   width={48}
                   height={48}
-                  src={blog.image?.url || "/placeholder.svg"}
+                  src={blog.image?.url || "/no-image.jpg"}
                   alt={blog.title}
                   className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                 />
@@ -193,7 +193,7 @@ const { data: blogsResponse, isLoading } = useAllBlogs(currentPage, 10) as {
               &lt;
             </Button>
 
-            {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map(
+            {Array.from({ length: meta.totalPages }, (_, i) => i + 1)?.map(
               (page) => (
                 <Button
                   key={page}

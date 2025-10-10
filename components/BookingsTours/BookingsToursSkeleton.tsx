@@ -26,7 +26,7 @@ export default function BookingsToursSkeleton() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {[...Array(6)].map((_, i) => (
+            {[...Array(6)]?.map((_, i) => (
               <TableRow key={i} className="animate-pulse">
                 {/* Customer */}
                 <TableCell>
@@ -71,7 +71,7 @@ export default function BookingsToursSkeleton() {
 
       {/* Pagination Skeleton */}
       <div className="flex justify-center gap-2 animate-pulse">
-        {[...Array(5)].map((_, i) => (
+        {[...Array(5)]?.map((_, i) => (
           <div
             key={i}
             className="h-8 w-8 rounded-md bg-gray-200"

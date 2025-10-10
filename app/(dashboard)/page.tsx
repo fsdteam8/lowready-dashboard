@@ -17,6 +17,7 @@ import { useServiceProviders } from "@/hooks/use-service-providers";
 import { RecentServiceProvider } from "@/components/recent-service-provider";
 import { useCustomers, useReviewRatings } from "@/hooks/use-customers";
 import DashboardSkeleton from "@/components/DashboardSkeleton/DashboardSkeleton";
+import RecentBookings from "@/components/recent-bookings";
 
 export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
@@ -32,7 +33,8 @@ export default function DashboardPage() {
     1,
     3
   );
-  // console.log(recentreviewData?.data);
+  // console.log(recentBookingData);
+  // console.log(recentCustomerData);
 
   if (statsLoading || reviewsLoading || bookingsLoading) {
     return (
@@ -94,7 +96,7 @@ export default function DashboardPage() {
           seeAllHref="/service-providers"
         />
 
-        <RecentSection
+        <RecentBookings
           title="Recent Bookings"
           items={recentBookingData}
           seeAllHref="/placements"

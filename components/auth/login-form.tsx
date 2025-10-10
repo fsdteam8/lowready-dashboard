@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { getSession, signIn } from "next-auth/react";
-import { Eye, EyeOff } from "lucide-react"; // 👈 added icons
+import { Eye, EyeOff } from "lucide-react";  
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

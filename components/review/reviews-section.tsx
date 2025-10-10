@@ -21,12 +21,12 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
         </Link>
       </CardHeader>
       <CardContent className="space-y-4">
-        {reviews.map((review) => (
+        {reviews?.map((review) => (
           <div key={review._id} className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={review.customerAvatar || "/placeholder.svg"} alt={review.customerName} />
+                  <AvatarImage src={review.customerAvatar } alt={review.customerName} />
                   <AvatarFallback>{review.customerName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
@@ -35,7 +35,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
+                {Array.from({ length: 5 })?.map((_, i) => (
                   <Star
                     key={i}
                     className={`h-4 w-4 ${i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}

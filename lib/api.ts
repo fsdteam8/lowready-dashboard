@@ -132,8 +132,6 @@ export async function getBookingHistory(
 
 export async function getRecentBooking(page: number, limit: number) {
   try {
-    console.log("hellos");
-
     const res = await apiBase.get(`/bookings?page=${page}&limit=${limit}`);
     return res.data.data;
   } catch (error) {
@@ -153,9 +151,11 @@ export async function getRecentCustomer(page: number, limit: number) {
 
 // facilities api intigration
 
-export async function getAllFacilityData() {
+export async function getAllFacilityData(page: number, limit: number) {
   try {
-    const res = await apiBase.get(`/payment/all?type=booking`);
+    const res = await apiBase.get(
+      `/facility/all?page=${page}&limit=${limit}&status=approved`
+    );
     return res.data;
   } catch (error) {
     console.error("Error fetching facilities:", error);
@@ -225,6 +225,17 @@ export async function getFacilitys() {
   } catch (error) {
     console.error("Error fetching facilities:", error);
     return { data: [] };
+  }
+}
+
+// Facilities Management Featured True / False Update
+export async function updateFacilitiesFeatured(facilitiesId: string) {
+  try {
+    const res = await apiBase.put(`/facility/update-type/${facilitiesId}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error updating facility featured status:", error);
+    throw error;
   }
 }
 
@@ -447,7 +458,7 @@ export async function getRecentAllBooking(page: number, limit: number) {
       `/bookings/recent-home-bookings?page=${page}&limit=${limit}`
     );
     return res.data;
-  } catch  {
+  } catch {
     throw new Error(`Failed to fetch recent bookings`);
   }
 }
@@ -459,7 +470,73 @@ export async function getRecentAllTours(page: number, limit: number) {
       `/visit-booking/recent-bookings?page=${page}&limit=${limit}`
     );
     return res.data;
-  } catch  {
+  } catch {
     throw new Error(`Failed to fetch recent bookings`);
+  }
+}
+
+// create FAQ
+export async function createFaq(payload: { question: string; answer: string }) {
+  try {
+    const res = await apiBase.post(`/faq/create`, payload);
+    return res.data;
+  } catch {
+    throw new Error(`Failed to create FAQ`);
+  }
+}
+
+// get all FAQ
+export async function getAllFaq() {
+  try {
+    const res = await apiBase.get(`/faq/all`);
+    return res.data;
+  } catch {
+    throw new Error(`Failed to fetch All FAQ`);
+  }
+}
+
+// Delete subscription Plan
+export async function deleteFaq(id: string) {
+  try {
+    const res = await apiBase.delete(`/faq/${id}`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error Deleted FAQ: ${error.message}`);
+    }
+  }
+}
+
+// Update FAQ
+export async function updateFaq(
+  id: string,
+  payload: { question?: string; answer?: string }
+) {
+  try {
+    const res = await apiBase.put(`/faq/${id}`, payload);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to update FAQ: ${error.message}`);
+    } else {
+      throw new Error("Failed to update FAQ");
+    }
+  }
+}
+
+// Update FAQ for home or faq
+export async function updateFaqAction(
+  id: string,
+  type: "home" | "faq"
+) {
+  try {
+    const res = await apiBase.put(`/faq/update-${type}/${id}`);
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to update FAQ: ${error.message}`);
+    } else {
+      throw new Error("Failed to update FAQ");
+    }
   }
 }

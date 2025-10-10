@@ -60,17 +60,14 @@ export function RecentServiceProvider({
         </Link>
       </CardHeader>
       <CardContent className="space-y-4">
-        {items.map((item) => (
+        {items?.map((item) => (
           <div
-            key={item._id}
+            key={item?._id}
             className="flex items-center justify-between border-b pb-3"
           >
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={item.avatar?.url || "/placeholder.svg"}
-                  alt={item.firstName}
-                />
+                <AvatarImage src={item?.avatar?.url} alt={item?.firstName} />
                 <AvatarFallback>{item?.firstName?.charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
@@ -86,9 +83,9 @@ export function RecentServiceProvider({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">
+              {/* <span className="text-sm font-medium">
                 {item?.totalPlacement || "0"}
-              </span>
+              </span> */}
               {item?.subscriptionStatus && (
                 <Badge
                   variant={

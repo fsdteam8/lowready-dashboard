@@ -48,10 +48,10 @@ export default function FacilityDetailsPage({
       <div className="flex h-screen items-center justify-center">Not found</div>
     );
 
-  const selectedImage = facility.images?.[selectedImageIndex]?.url;
+  const selectedImage = facility?.images?.[selectedImageIndex]?.url;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 pt-10 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 pt-10 gap-6 relative">
       {/* Left Column → All Text */}
       <div className="space-y-6">
         {/* Availability + Title */}
@@ -93,7 +93,7 @@ export default function FacilityDetailsPage({
         <div>
           <h4 className="text-[16px] font-semibold pt-[24px]">Amenities</h4>
           <div className=" flex items-center gap-2 text-sm flex-wrap">
-            {facility.amenities?.map((amenity: string, i: number) => (
+            {facility?.amenities?.map((amenity: string, i: number) => (
               <div key={i}>
                 <p className="text-[#68706A] bg-[#E6E7E6] border-1 px-4 py-1">
                   {amenity}
@@ -115,7 +115,7 @@ export default function FacilityDetailsPage({
               <div>
                 <h4 className="font-medium mb-2 pt-[24px]">Care Services</h4>
                 <div className="flex items-center gap-2 text-sm flex-wrap">
-                  {facility.careServices?.map((service: string, i: number) => (
+                  {facility?.careServices?.map((service: string, i: number) => (
                     <div key={i} className="">
                       <p className="flex items-center gap-2 text-[#68706A] bg-[#E6E7E6] border-1 px-4 py-1">
                         <Check className="w-4 h-4 text-green-400" /> {service}
@@ -129,7 +129,7 @@ export default function FacilityDetailsPage({
         </div>
 
         {/* About Section */}
-        <div className="rounded-2xl shadow-md">
+        <div className="rounded-2xl shadow-md p-4">
           <h2 className="text-xl  font-semibold">
             About{" "}
             <span className="text-green-300">Sunny Hills Assisted Living</span>
@@ -161,7 +161,7 @@ export default function FacilityDetailsPage({
 
         {/* Video Section */}
         {facility.uploadVideo && (
-          <div className="rounded-2xl shadow-md">
+          <div className="rounded-2xl shadow-md p-4">
             <div>
               <h2 className="text-xl text-[32px] py-5 font-semibold">
                 {facility?.videoTitle}{" "}
@@ -186,7 +186,7 @@ export default function FacilityDetailsPage({
         )}
         <div>
           <ul className="flex flex-wrap gap-4">
-            {facility.availableTime.map((item: string, id: number) => (
+            {facility.availableTime?.map((item: string, id: number) => (
               <li className="bg-[#E6E7E6] px-4 py-2 shadow-2xs hover:bg-green-300 hover:text-white cursor-pointer" key={id}>
                 {item}
               </li>
@@ -196,7 +196,7 @@ export default function FacilityDetailsPage({
       </div>
 
       {/* Right Column → All Images */}
-      <div className="space-y-4">
+      <div className="space-y-4 sticky top-0 self-start">
         {/* Main Image */}
         <div className="relative h-96 rounded-2xl overflow-hidden shadow-md">
           <Image

@@ -68,7 +68,7 @@ export default function ServiceProvidersPage() {
                 </div>
                 
                 {/* Table rows skeleton */}
-                {[...Array(10)].map((_, index) => (
+                {[...Array(10)]?.map((_, index) => (
                   <div key={index} className="border-b p-4 last:border-b-0">
                     <div className="flex space-x-4">
                       <Skeleton className="h-4 w-32" />
